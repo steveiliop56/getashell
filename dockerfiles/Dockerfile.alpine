@@ -1,0 +1,16 @@
+FROM alpine:3.19.1
+
+RUN apk update && apk add openssh-server sudo
+
+RUN addgroup sudo
+RUN echo '%sudo ALL=(ALL:ALL) ALL' > /etc/sudoers.d/sudo
+
+RUN adduser -D alpine
+RUN addgroup alpine sudo
+
+RUN mkdir /run/sshd
+RUN ssh-keygen -A
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]

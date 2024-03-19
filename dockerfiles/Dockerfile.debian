@@ -1,0 +1,12 @@
+FROM debian:bookworm
+
+RUN apt update && apt install openssh-server sudo -y
+
+RUN adduser debian
+RUN usermod -aG sudo debian
+
+RUN mkdir /run/sshd
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]
