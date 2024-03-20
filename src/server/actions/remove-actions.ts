@@ -5,7 +5,7 @@ import { killContainer } from "../utils/container-helpers";
 
 export async function remove(id: number) {
   const shell = await getShellFromId(id);
-  const kill = await killContainer(shell.name, id);
+  const kill = await killContainer(shell.name, shell.distro);
   if (kill.success) {
     console.log("Container killed! Removing from db...");
   } else {

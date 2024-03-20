@@ -6,7 +6,7 @@ const exec = util.promisify(require("child_process").exec);
 
 export const spawnContainer = async (data: containerData) => {
   if (containerSchema.safeParse(data).success) {
-    const command = `docker run -td --hostname ${data.name} -p ${data.port}:22 --name ${data.distro}-${data.id} getashell:${data.distro} && docker exec ${data.distro}-${data.id} sh -c "echo ${data.distro}:${data.password} | chpasswd"`;
+    const command = `docker run -td --hostname ${data.name} -p ${data.port}:22 --name ${data.name}-${data.distro} getashell:${data.distro} && docker exec ${data.name}-${data.distro} sh -c "echo ${data.distro}:${data.password} | chpasswd"`;
     const { stdout, stderr } = await exec(command);
     if (stderr && stderr.search("chpasswd") != -1) {
       console.warn(`Possible chpasswd error: Stderr: ${stderr}`);
@@ -21,8 +21,8 @@ export const spawnContainer = async (data: containerData) => {
   }
 };
 
-export const killContainer = async (name: string, id: number) => {
-  const { stdout, stderr } = await exec(`docker rm -f ${name}-${id}`);
+export const killContainer = async (name: string, distro: string) => {
+  const { stdout, stderr } = await exec(`docker rm -f ${name}-${distro}`);
   if (stderr) {
     return { success: false, error: stderr };
   } else {
