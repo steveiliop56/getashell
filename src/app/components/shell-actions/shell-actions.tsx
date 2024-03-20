@@ -2,7 +2,6 @@
 
 import { QueryClient, QueryClientProvider, useQuery } from "react-query";
 import { Flex, Separator } from "@radix-ui/themes";
-import { useState, useEffect } from "react";
 import { remove } from "../../../server/actions/remove-actions";
 import { toast } from "react-toastify";
 import { renderShell } from "../render-shell";
