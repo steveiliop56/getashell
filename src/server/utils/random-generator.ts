@@ -1,5 +1,5 @@
 export const getRandomPort = () => {
-  return Math.floor(Math.random() * 10000) + 1234;
+  return Math.floor(Math.random() * 1000) + 1234;
 };
 
 export const getRandomPassword = () => {

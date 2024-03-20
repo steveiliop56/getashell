@@ -1,22 +1,26 @@
 "use server";
+import { addShell, getShellIds, portAvailable } from "../queries/queries";
+import { containerData } from "../types/types";
 import { spawnContainer } from "../utils/container-helpers";
-import { db } from "../db/db";
 import { getRandomPassword, getRandomPort } from "../utils/random-generator";
 
-export async function create(data: any) {
+export async function create(data: containerData) {
   const name = data.name;
   const distro = data.distro;
-  const port = getRandomPort();
+  let port = getRandomPort();
+  while (!portAvailable(port)) {
+    port = getRandomPort();
+  }
   const password = getRandomPassword();
-  const payload = {
-    id: 1,
+  const finalData = {
+    id: (await getShellIds()) + 1,
     distro: distro,
     name: name,
     port: port,
     password: password,
   };
-  console.log(payload);
-  const ok = await spawnContainer(payload);
+  await addShell(finalData);
+  const ok = await spawnContainer(finalData);
   if (ok?.success) {
     console.log("Server ready!");
   } else {

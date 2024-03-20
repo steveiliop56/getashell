@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "da9ed9ab-8bfa-46e2-aa73-b01af6451ef5",
+  "id": "ccd421f7-7a0d-48ff-b719-1df2c0e44c2d",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "shells": {
@@ -10,9 +10,9 @@
         "id": {
           "name": "id",
           "type": "integer",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true,
-          "autoincrement": true
+          "autoincrement": false
         },
         "distro": {
           "name": "distro",

@@ -3,9 +3,12 @@
 import { Flex, Button, Select, TextField } from "@radix-ui/themes";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { create } from "@/server/actions/create-form-action";
 
-export const CreateForm = () => {
+interface props {
+  handleCreate: Function;
+}
+
+export const CreateForm: React.FC<props> = ({ handleCreate }) => {
   const [distro, setDistro] = useState("select");
   const [name, setName] = useState("");
 
@@ -13,16 +16,17 @@ export const CreateForm = () => {
     if (!(distro == "select") && !(name == "")) {
       toast.info(`Creating a shell with name ${name} and distro ${distro}.`);
       const data = {
+        id: 0,
         distro: distro,
         name: name,
+        port: 0,
+        password: "",
       };
-      const result = create(data);
-      console.log(result);
+      handleCreate(data);
     } else {
       toast.error("Please provide both a name and a distro.");
     }
   };
-
   return (
     <Flex className="flex-row">
       <Select.Root defaultValue="select" onValueChange={(e) => setDistro(e)}>
@@ -35,7 +39,7 @@ export const CreateForm = () => {
             <Select.Item value="debian">Debian</Select.Item>
             <Select.Item value="ubuntu">Ubuntu</Select.Item>
             <Select.Item value="alpine">Alpine</Select.Item>
-            <Select.Item value="rocky">Rocky Linux</Select.Item>
+            <Select.Item value="rockylinux">Rocky Linux</Select.Item>
           </Select.Group>
         </Select.Content>
       </Select.Root>

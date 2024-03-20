@@ -1,19 +1,18 @@
-"use client";
+"use server";
 
 import { Flex, Heading, Separator } from "@radix-ui/themes";
-import { CreateForm } from "./components/create-form";
+import { ShellActions } from "./components/shell-actions";
+import { getShells } from "../server/queries/queries";
 
-export default function home() {
+export default async function home() {
+  const shellData = await getShells();
   return (
     <>
-      <Flex className="flex-col p-10 justify-center items-center">
+      <Flex className="flex-col p-10 justify-center items-center text-center">
         <Heading className="p-10" size="9" as="h1">
           Get A Shell
         </Heading>
-        <Flex className="flex-col border-sky-500 border-2 border-dashed rounded-md justify-center items-center p-5">
-          <CreateForm></CreateForm>
-          <Separator my="3" size="4" />
-        </Flex>
+        <ShellActions initialData={shellData} />
       </Flex>
     </>
   );

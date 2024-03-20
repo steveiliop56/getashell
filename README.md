@@ -1,7 +1,34 @@
-## Get A Shell
+## Get A Shell 🐚
 
-_Right now you are not getting a shell..._
+Have you ever wanted to just spin up a quick server than you can ssh into to test something real quick? Well with get a shell
+you can just spin up the ui select a distro and click _Get me a shell!_ and 💥 you have an ssh server with your specified distro. No need to spin up vms, run commands or anything harder than a click!
 
-> Warning: I BEG YOU NOT TO LOOK AT THE CODE NOR TRY TO RUN IT I AM **NOT** RESPONSIBLE FOR ANYTHING THAT HAPPENS TO YOU
+![Preview](screenshots/app.png)
 
-↑ (Yeah... it is work in progress....)
+> Warning ⚠️: The app is in early stages of development, I am still quite new to both writing full stack apps and using technologies like drizzle and react. Any contributions are welcome.
+
+### Installation ⏬ (not ready)
+
+The installation is fast and straight forward. Just run the docker command bellow and you will have your ui ready in less than 5 minutes (depending on your internet connection lol).
+
+```Bash
+docker run -td --name getashell -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/getashell:app
+```
+
+If you would like to store the database too run this commands:
+
+```Bash
+docker run -td --name getashell -p 3000:3000 -v /some/awesome/location/database.db:/app/sqlite.db -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/getashell:app
+```
+
+> Note 🗒️: The app right now doesntt support restarting the shells you create, also it has no way to know if one stopped or failed. That doesntt mean that the app can't be restarted. As long as you just restart the app itself your shells will be kept.
+
+> Warning ⚠️: Docker images are not ready yet. I am finishing with the github action workflow soon.
+
+### Contributing ❤️
+
+As I mentioned above I am fairly new to all these technologies and my code may be _probably is_ terrifying to look at. Any contributions on fixing my mistakes (lol) are welcome.
+
+### License 📜
+
+The project is licensed under the GPL V3 License. You may modify, distribute and copy the code as long as you keep the changes in the source files. Any modifications you make using a compiler must be also licensed under the GPL license and include build and install instructions.
