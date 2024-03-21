@@ -18,8 +18,8 @@ export const ShellActions = (initialData: initialData) => {
     remove(shell.id);
   };
 
-  const handleCreate = (name: string, distro: string) => {
-    create(name, distro);
+  const handleCreate = (name: string, distro: string, extraArgs: string) => {
+    create(name, distro, extraArgs);
   };
 
   return (

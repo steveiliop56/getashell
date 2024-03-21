@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "sqlite",
-  "id": "ccd421f7-7a0d-48ff-b719-1df2c0e44c2d",
+  "id": "8bb98af3-fe24-4378-8a91-f420b7cccf82",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "shells": {
@@ -40,6 +40,13 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "extraArgs": {
+          "name": "extraArgs",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         }
       },

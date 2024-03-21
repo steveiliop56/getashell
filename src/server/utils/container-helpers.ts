@@ -9,7 +9,7 @@ export const createContainer = async (data: containerData) => {
   if (containerSchema.safeParse(data).success) {
     const build = await dockerImageBuild(data.distro);
     if (build.success) {
-      const createCommand = `docker run -td --hostname ${data.name} -p ${data.port}:22 --name ${data.name}-${data.distro} getashell:${data.distro}`;
+      const createCommand = `docker run -td --hostname ${data.name} -p ${data.port}:22 --name ${data.name}-${data.distro} ${data.extraArgs} getashell:${data.distro}`;
 
       const { stdout: createCommandStdout, stderr: createCommandStderr } =
         await exec(createCommand);

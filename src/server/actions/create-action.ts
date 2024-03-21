@@ -5,7 +5,7 @@ import { createContainer } from "../utils/container-helpers";
 import { getRandomPassword, getRandomPort } from "../utils/random-generator";
 import { revalidatePath } from "next/cache";
 
-export async function create(name: string, distro: string) {
+export async function create(name: string, distro: string, extraArgs: string) {
   let port = getRandomPort();
   while (!portAvailable(port)) {
     port = getRandomPort();
@@ -19,6 +19,7 @@ export async function create(name: string, distro: string) {
     name: name,
     port: port,
     password: password,
+    extraArgs: extraArgs,
   };
 
   const ok = await createContainer(finalData);

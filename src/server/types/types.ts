@@ -4,4 +4,5 @@ export interface containerData {
   name: string;
   port: number;
   password: string;
+  extraArgs: string | null;
 }

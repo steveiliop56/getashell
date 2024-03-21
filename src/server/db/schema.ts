@@ -6,4 +6,5 @@ export const shells = sqliteTable("shells", {
   name: text("name").notNull(),
   port: integer("port").notNull(),
   password: text("password").notNull(),
+  extraArgs: text("extraArgs"),
 });

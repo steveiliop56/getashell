@@ -24,6 +24,7 @@ export const addShell = async (data: containerData) => {
     name: data.name,
     port: data.port,
     password: data.password,
+    extraArgs: data.extraArgs,
   });
   return result;
 };

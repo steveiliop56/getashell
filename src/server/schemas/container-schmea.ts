@@ -6,4 +6,5 @@ export const containerSchema = z.object({
   name: z.string(),
   port: z.number(),
   password: z.string(),
+  extraArgs: z.string(),
 });
