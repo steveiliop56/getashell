@@ -8,6 +8,14 @@ interface props {
   handleCreate: Function;
 }
 
+const availableDistos = {
+  debian: "Debian",
+  ubuntu: "Ubuntu",
+  alpine: "Alpine",
+  fedora: "Fedora",
+  rockylinux: "Rocky Linux",
+};
+
 export const CreateForm: React.FC<props> = ({ handleCreate }) => {
   const [distro, setDistro] = useState("select");
   const [name, setName] = useState("");
@@ -32,10 +40,11 @@ export const CreateForm: React.FC<props> = ({ handleCreate }) => {
             <Select.Item disabled={true} value={"select"}>
               Select
             </Select.Item>
-            <Select.Item value="debian">Debian</Select.Item>
-            <Select.Item value="ubuntu">Ubuntu</Select.Item>
-            <Select.Item value="alpine">Alpine</Select.Item>
-            <Select.Item value="rockylinux">Rocky Linux</Select.Item>
+            {Object.keys(availableDistos).map((distro: string) => (
+              <Select.Item value={distro} key={distro}>
+                {availableDistos[distro as keyof typeof availableDistos]}
+              </Select.Item>
+            ))}
           </Select.Group>
         </Select.Content>
       </Select.Root>

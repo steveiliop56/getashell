@@ -53,6 +53,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/sqlite.db ./
+COPY ./dockerfiles ./dockerfiles
 
 EXPOSE 3000
 
