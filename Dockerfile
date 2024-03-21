@@ -9,13 +9,13 @@ RUN apk add --no-cache tar wget
 FROM builder_base as builder
 
 ARG DOCKER_VERSION="25.0.5"
-ARG ARCH="amd64"
+ARG TARGETARCH
 ENV DOCKER_VERSION=${DOCKER_VERSION}
-ENV ARCH=${ARCH}
+ENV TARGETARCH=${TARGETARCH}
 
-RUN if [ "${ARCH}" = "amd64" ]; then \
+RUN if [ "${TARGETARCH}" = "amd64" ]; then \
   wget -O docker-bundle.tgz "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz"; \
-  elif [ "${ARCH}" = "arm64" ]; then \
+  elif [ "${TARGETARCH}" = "arm64" ]; then \
   wget -O docker-bundle.tgz "https://download.docker.com/linux/static/stable/aarch64/docker-${DOCKER_VERSION}.tgz"; \
   else \
   echo "Unsupported architecture"; \

@@ -12,13 +12,13 @@ you can just spin up the ui select a distro and click _Get me a shell!_ and 💥
 The installation is fast and straight forward. Just run the docker command bellow and you will have your ui ready in less than 5 minutes (depending on your internet connection lol).
 
 ```Bash
-docker run -td --name getashell -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/getashell:app
+docker run -td --name getashell -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/getashell:latest
 ```
 
 If you would like to store the database too run this commands:
 
 ```Bash
-docker run -td --name getashell -p 3000:3000 -v /some/awesome/location/database.db:/app/sqlite.db -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/getashell:app
+docker run -td --name getashell -p 3000:3000 -v /some/awesome/location/database.db:/app/sqlite.db -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/getashell:latest
 ```
 
 > Note 🗒️: The app right now doesntt support restarting the shells you create, also it has no way to know if one stopped or failed. That doesntt mean that the app can't be restarted. As long as you just restart the app itself your shells will be kept.
@@ -32,3 +32,7 @@ As I mentioned above I am fairly new to all these technologies and my code may b
 ### License 📜
 
 The project is licensed under the GPL V3 License. You may modify, distribute and copy the code as long as you keep the changes in the source files. Any modifications you make using a compiler must be also licensed under the GPL license and include build and install instructions.
+
+### Credits
+
+[Nicolas](https://github.com/meienberger), thank you once again for helping me with workflow and docker stuff lol.
