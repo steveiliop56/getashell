@@ -7,18 +7,18 @@ you can just spin up the ui select a distro and click _Get me a shell!_ and 💥
 
 > Warning ⚠️: The app is in early stages of development, I am still quite new to both writing full stack apps and using technologies like drizzle and react. Any contributions are welcome.
 
-### Installation ⏬ (not ready)
+### Installation ⏬
 
 The installation is fast and straight forward. Just run the docker command bellow and you will have your ui ready in less than 5 minutes (depending on your internet connection lol).
 
 ```Bash
-docker run -td --name getashell -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/getashell:latest
+docker run -td --name getashell -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/steveiliop56/getashell:latest
 ```
 
 If you would like to store the database too run this commands:
 
 ```Bash
-docker run -td --name getashell -p 3000:3000 -v /some/awesome/location/database.db:/app/sqlite.db -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/getashell:latest
+docker run -td --name getashell -p 3000:3000 -v /some/awesome/location/database.db:/app/sqlite.db -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/steveiliop56/getashell:latest
 ```
 
 > Note 🗒️: The app right now doesntt support restarting the shells you create, also it has no way to know if one stopped or failed. That doesntt mean that the app can't be restarted. As long as you just restart the app itself your shells will be kept.
