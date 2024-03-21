@@ -18,7 +18,7 @@ jobs:
       - name: Get tag from package.json
         id: get_tag
         run: |
-          VERSION=$(npm run version --silent)
+          VERSION=$(cat package.json | jq -r '.version')
           echo "tagname=v${VERSION}-beta.${{ github.event.inputs.tag }}" >> $GITHUB_OUTPUT
 
       - uses: rickstaa/action-create-tag@v1
