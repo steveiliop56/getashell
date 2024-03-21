@@ -1,6 +1,7 @@
 import { Flex, Card, Text, Button, Dialog } from "@radix-ui/themes";
 import { InfoCircledIcon } from "@radix-ui/react-icons";
 import { containerData } from "../../../server/types/types";
+import React from "react";
 
 export const renderShell = (shell: containerData, handleDelete: Function) => {
   return (
@@ -44,7 +45,7 @@ export const renderShell = (shell: containerData, handleDelete: Function) => {
             </Dialog.Content>
           </Dialog.Root>
           <Button
-            onClick={() => handleDelete(shell.id, shell.name)}
+            onClick={() => handleDelete(shell)}
             className="m-1"
             color="orange"
             variant="soft"

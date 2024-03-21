@@ -1,6 +1,6 @@
 "use server";
 
-import { Flex, Heading, Separator } from "@radix-ui/themes";
+import { Flex, Heading } from "@radix-ui/themes";
 import { ShellActions } from "./components/shell-actions";
 import { getShells } from "../server/queries/queries";
 

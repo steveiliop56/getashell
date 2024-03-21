@@ -14,19 +14,15 @@ export const CreateForm: React.FC<props> = ({ handleCreate }) => {
 
   const handleSubmit = () => {
     if (!(distro == "select") && !(name == "")) {
-      toast.info(`Creating a shell with name ${name} and distro ${distro}.`);
-      const data = {
-        id: 0,
-        distro: distro,
-        name: name,
-        port: 0,
-        password: "",
-      };
-      handleCreate(data);
+      toast.info(
+        `Creating a shell with name "${name}" and distro "${distro}".`,
+      );
+      handleCreate(name, distro);
     } else {
       toast.error("Please provide both a name and a distro.");
     }
   };
+
   return (
     <Flex className="flex-row">
       <Select.Root defaultValue="select" onValueChange={(e) => setDistro(e)}>

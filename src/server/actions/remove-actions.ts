@@ -1,19 +1,18 @@
 "use server";
 
 import { getShellFromId, deleteShell } from "../queries/queries";
-import { killContainer } from "../utils/container-helpers";
+import { removeContainer } from "../utils/container-helpers";
 import { revalidatePath } from "next/cache";
 
 export async function remove(id: number) {
   const shell = await getShellFromId(id);
-  const kill = await killContainer(shell.name, shell.distro);
-  if (kill.success) {
+  const remove = await removeContainer(shell);
+
+  if (remove?.success) {
     console.log("Container killed! Removing from db...");
+    await deleteShell(id);
+    revalidatePath("/", "layout");
   } else {
-    console.error(
-      `Cannot remove container error: ${kill.error}. Still removing from db...`,
-    );
+    console.error(`Cannot remove container error: ${remove?.error}.`);
   }
-  await deleteShell(id);
-  revalidatePath("/", "layout");
 }

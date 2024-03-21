@@ -8,14 +8,18 @@ import { containerData } from "../../../server/types/types";
 import { CreateForm } from "../create-form";
 import { create } from "../../../server/actions/create-action";
 
-export const ShellActions = (initialData: any) => {
-  const handleDelete = (id: number, name: string) => {
-    toast.info(`Deleting ${name}...`);
-    remove(id);
+type initialData = {
+  initialData: containerData[];
+};
+
+export const ShellActions = (initialData: initialData) => {
+  const handleDelete = (shell: containerData) => {
+    toast.info(`Deleting ${shell.name}...`);
+    remove(shell.id);
   };
 
-  const handleCreate = (data: containerData) => {
-    create(data);
+  const handleCreate = (name: string, distro: string) => {
+    create(name, distro);
   };
 
   return (
