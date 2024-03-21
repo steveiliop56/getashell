@@ -9,9 +9,11 @@ RUN apk add --no-cache tar wget
 FROM builder_base as builder
 
 ARG DOCKER_VERSION="25.0.5"
+ARG BUILDX_VERSION="0.13.1"
 ARG TARGETARCH
 ENV DOCKER_VERSION=${DOCKER_VERSION}
 ENV TARGETARCH=${TARGETARCH}
+ENV BUILDX_VERSION=${BUILDX_VERSION}
 
 RUN if [ "${TARGETARCH}" = "amd64" ]; then \
   wget -O docker-bundle.tgz "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz"; \
@@ -24,6 +26,16 @@ RUN if [ "${TARGETARCH}" = "amd64" ]; then \
 RUN tar xzvf docker-bundle.tgz
 
 RUN chmod +x docker/docker
+
+RUN if [ "${TARGETARCH}" = "amd64" ]; then \
+  wget -O docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-amd64"; \
+  elif [ "${TARGETARCH}" = "arm64" ]; then \
+  wget -O docker-buildx "https://github.com/docker/buildx/releases/download/v${BUILDX_VERSION}/buildx-v${BUILDX_VERSION}.linux-arm64"; \
+  else \
+  echo "Unsupported architecture"; \
+  fi
+
+RUN chmod +x docker-buildx
 
 WORKDIR /app
 
@@ -48,6 +60,7 @@ FROM node_base as app
 
 WORKDIR /app
 
+COPY --from=builder /docker-buildx /usr/lib/docker/cli-plugins/docker-buildx
 COPY --from=builder /docker/docker /usr/bin/docker
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
