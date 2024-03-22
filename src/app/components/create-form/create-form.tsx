@@ -22,7 +22,7 @@ export const CreateForm: React.FC<props> = ({ handleCreate }) => {
   const [extaArgs, setExtraArgs] = useState("");
 
   const handleSubmit = () => {
-    if (!(distro == "select") && !(name == "")) {
+    if (!(distro == "") && !(name == "")) {
       toast.info(
         `Creating a shell with name "${name}" and distro "${distro}".`,
       );
@@ -34,39 +34,30 @@ export const CreateForm: React.FC<props> = ({ handleCreate }) => {
 
   return (
     <Flex className="flex-col md:flex-row">
-      <Flex className="m-1 items-center justify-center">
-        <Select.Root defaultValue="select" onValueChange={(e) => setDistro(e)}>
-          <Select.Trigger />
-          <Select.Content>
-            <Select.Group>
-              <Select.Item disabled={true} value={"select"}>
-                Select
+      <Select.Root defaultValue="" onValueChange={(e) => setDistro(e)}>
+        <Select.Trigger className="m-1" placeholder="Select" />
+        <Select.Content>
+          <Select.Group>
+            {Object.keys(availableDistos).map((distro: string) => (
+              <Select.Item value={distro} key={distro}>
+                {availableDistos[distro as keyof typeof availableDistos]}
               </Select.Item>
-              {Object.keys(availableDistos).map((distro: string) => (
-                <Select.Item value={distro} key={distro}>
-                  {availableDistos[distro as keyof typeof availableDistos]}
-                </Select.Item>
-              ))}
-            </Select.Group>
-          </Select.Content>
-        </Select.Root>
-      </Flex>
-      <Flex className="m-1">
-        <TextField.Root>
-          <TextField.Input
-            onChange={(e) => setName(e.currentTarget.value)}
-            placeholder="Enter a name..."
-          />
-        </TextField.Root>
-      </Flex>
-      <Flex className="m-1">
-        <TextField.Root>
-          <TextField.Input
-            onChange={(e) => setExtraArgs(e.currentTarget.value)}
-            placeholder="Pass exta arguments..."
-          />
-        </TextField.Root>
-      </Flex>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+      <TextField.Root className="m-1">
+        <TextField.Input
+          onChange={(e) => setName(e.currentTarget.value)}
+          placeholder="Enter a name..."
+        />
+      </TextField.Root>
+      <TextField.Root className="m-1">
+        <TextField.Input
+          onChange={(e) => setExtraArgs(e.currentTarget.value)}
+          placeholder="Pass exta arguments..."
+        />
+      </TextField.Root>
       <Button
         className="m-1"
         onClick={() => handleSubmit()}

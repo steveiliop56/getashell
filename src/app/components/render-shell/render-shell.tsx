@@ -36,10 +36,12 @@ export const renderShell = (shell: containerData, handleDelete: Function) => {
                 <Text weight={"medium"}>
                   Port: <Text weight={"regular"}>{shell.port}</Text>
                 </Text>
-                <Text weight={"medium"}>
-                  Extra Arguments:{" "}
-                  <Text weight={"regular"}>{shell.extraArgs}</Text>
-                </Text>
+                {shell.extraArgs?.length != 0 && (
+                  <Text weight={"medium"}>
+                    Extra Arguments:{" "}
+                    <Text weight={"regular"}>{shell.extraArgs}</Text>
+                  </Text>
+                )}
               </Flex>
               <Flex justify={"end"}>
                 <Dialog.Close>
