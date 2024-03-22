@@ -28,7 +28,8 @@ export async function create(name: string, distro: string, extraArgs: string) {
     console.log("Server ready!");
     await addShell(finalData);
     revalidatePath("/", "layout");
-  } else {
-    console.error(`Failed to bake server. Error ${ok?.error}`);
+    return { success: true };
   }
+  console.error(`Failed to bake server: ${ok?.error}`);
+  return { success: false };
 }

@@ -13,13 +13,27 @@ type initialData = {
 };
 
 export const ShellActions = (initialData: initialData) => {
-  const handleDelete = (shell: containerData) => {
+  const handleDelete = async (shell: containerData) => {
     toast.info(`Deleting ${shell.name}...`);
-    remove(shell.id);
+    const { success } = await remove(shell.id);
+    if (success) {
+      toast.success("Shell deleted!");
+    } else {
+      toast.error("Error in deleting shell, please check logs.");
+    }
   };
 
-  const handleCreate = (name: string, distro: string, extraArgs: string) => {
-    create(name, distro, extraArgs);
+  const handleCreate = async (
+    name: string,
+    distro: string,
+    extraArgs: string,
+  ) => {
+    const { success } = await create(name, distro, extraArgs);
+    if (success) {
+      toast.success("Shell successfully created!");
+    } else {
+      toast.error("Error in creating shell, please checks logs.");
+    }
   };
 
   return (
