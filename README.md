@@ -15,15 +15,13 @@ The installation is fast and straight forward. Just run the docker command bello
 docker run -td --name getashell -p 3000:3000 -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/steveiliop56/getashell:latest
 ```
 
-If you would like to store the database too run this commands:
+If you would like to store the database too run this command:
 
 ```Bash
 docker run -td --name getashell -p 3000:3000 -v /some/awesome/location/database.db:/app/sqlite.db -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/steveiliop56/getashell:latest
 ```
 
-> Note 🗒️: The app right now doesn't support restarting the shells you create, also it has no way to know if one stopped or failed. That doesn't mean that the app can't be restarted. As long as you just restart the app itself your shells will be kept.
-
-> Warning ⚠️: Docker images are not ready yet. I am finishing with the github action workflow soon.
+> Note 🗒️: The app right now doesn't support restarting the shells you create, moreover it has no way to know if one stopped or failed. That doesn't mean that the app can't be restarted. As long as you just restart the app itself your shells will be kept.
 
 ### Contributing ❤️
 
