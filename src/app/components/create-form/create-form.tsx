@@ -22,7 +22,7 @@ export const CreateForm: React.FC<props> = ({ handleCreate }) => {
   const [extaArgs, setExtraArgs] = useState("");
 
   const handleSubmit = () => {
-    if (!(distro == "") && !(name == "")) {
+    if (!(distro == "select") && !(name == "")) {
       toast.info(
         `Creating a shell with name "${name}" and distro "${distro}".`,
       );
