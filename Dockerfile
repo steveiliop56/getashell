@@ -52,6 +52,7 @@ COPY ./tailwind.config.ts ./
 COPY ./drizzle.config.build.json ./drizzle.config.json
 COPY ./migrations ./migartions
 
+RUN mkdir data/
 RUN npm run migrate
 RUN npm run build
 
@@ -65,8 +66,10 @@ COPY --from=builder /docker/docker /usr/bin/docker
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/sqlite.db ./
 COPY ./dockerfiles ./dockerfiles
+
+RUN mkdir data/
+COPY --from=builder /app/data/sqlite.db ./data/sqlite.db
 
 EXPOSE 3000
 
