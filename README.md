@@ -10,11 +10,11 @@ you can just spin up the ui select a distro and click _Get me a shell!_ and 💥
 ### Todo
 
 - [x] Ability to pass extra arguments to container
-- [] Ability to save shell data
-- [] Ability to start shells on app start
-- [] Make the app know if shell is started or not
-- [] Edit container password/port
-- [] Handle db migrations on target computer not on build time
+- [ ] Ability to save shell data
+- [ ] Ability to start shells on app start
+- [ ] Make the app know if shell is started or not
+- [ ] Edit container password/port
+- [ ] Handle db migrations on target computer not on build time
 
 ### Installation ⏬
 
