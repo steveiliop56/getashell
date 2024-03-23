@@ -7,9 +7,11 @@ import * as schema from "./schema";
 import * as fs from "fs";
 
 if (fs.existsSync("sqlite.db")) {
+  console.log("DB not in data directory! Moving...");
   fs.mkdirSync("data");
   fs.renameSync("sqlite.db", "data/sqlite.db");
 } else if (!fs.existsSync("data/sqlite.db") && !fs.existsSync("sqlite.db")) {
+  console.log("Couldn't find DB copying from assets...");
   fs.mkdirSync("data");
   fs.copyFileSync("assets/sqlite.db", "data/sqlite.db");
 }
