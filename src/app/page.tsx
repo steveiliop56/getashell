@@ -9,7 +9,11 @@ export default async function home() {
   return (
     <>
       <Flex className="flex-col p-10 justify-center items-center text-center">
-        <Heading className="p-10" size="9" as="h1">
+        <Heading
+          className="p-10 bg-gradient-to-r from-cyan-500 to-blue-500 text-transparent bg-clip-text"
+          size="9"
+          as="h1"
+        >
           Get A Shell
         </Heading>
         <ShellActions initialData={shellData} />
