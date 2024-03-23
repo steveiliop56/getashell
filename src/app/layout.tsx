@@ -4,7 +4,6 @@ import { Theme } from "@radix-ui/themes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
-import "@radix-ui/themes/styles.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
