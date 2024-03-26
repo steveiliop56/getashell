@@ -10,7 +10,7 @@ export const createContainer = async (data: containerData) => {
     if (containerSchema.safeParse(data).success) {
       const build = await dockerImageBuild(data.distro);
       if (build.success) {
-        const createCommand = `docker run -td --hostname ${data.name} -p ${data.port}:22 --name ${data.name}-${data.distro} ${data.extraArgs} getashell:${data.distro}`;
+        const createCommand = `docker run -td --hostname ${data.name} -v ${data.name}-${data.distro}:/home/${data.distro} -p ${data.port}:22 --name ${data.name}-${data.distro} ${data.extraArgs} getashell:${data.distro}`;
 
         const { stdout: createCommandStdout, stderr: createCommandStderr } =
           await exec(createCommand);
@@ -51,9 +51,8 @@ export const removeContainer = async (data: containerData) => {
         `docker rm -f ${data.name}-${data.distro}`,
       );
 
-      if (removeStderr.search("Error") != -1) {
-        return { success: false, error: removeStderr };
-      }
+      const { stdout: removeVolumeStdout, stderr: removeVolumeStderr } =
+        await exec(`docker volume rm ${data.name}-${data.distro}`);
 
       return { success: true, error: "" };
     } else {
