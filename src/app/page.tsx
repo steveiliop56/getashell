@@ -6,7 +6,6 @@ import { ShellActions } from "./components/shell-actions";
 
 export default async function home() {
   const shellData = await getShells();
-  console.log(`Shell Data: ${shellData}`);
   return (
     <>
       <Flex className="flex-col p-10 justify-center items-center text-center">
