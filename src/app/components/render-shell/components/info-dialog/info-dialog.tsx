@@ -54,6 +54,12 @@ export const InfoDialog: React.FC<props> = ({ shell }) => {
               {shell.port}
             </Code>
           </Text>
+          <Text weight="medium">
+            Extra Arguments:{" "}
+            <Code color="gray" variant="ghost">
+              {shell.extraArgs}
+            </Code>
+          </Text>
         </Flex>
 
         <Flex justify={"end"}>
