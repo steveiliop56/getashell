@@ -49,7 +49,7 @@ COPY ./tsconfig.json ./
 COPY ./next.config.mjs ./
 COPY ./postcss.config.js ./
 COPY ./tailwind.config.ts ./
-COPY ./migrations ./migartions
+COPY ./migrations ./migrations
 
 RUN npm run build
 
