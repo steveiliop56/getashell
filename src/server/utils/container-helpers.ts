@@ -51,8 +51,14 @@ export const removeContainer = async (data: containerData) => {
         `docker rm -f ${data.name}-${data.distro}`,
       );
 
-      const { stdout: removeVolumeStdout, stderr: removeVolumeStderr } =
-        await exec(`docker volume rm ${data.name}-${data.distro}`);
+      const { stdout: volumeFindStdout, stderr: volumeFindStderr } = await exec(
+        `docker volume ls --format "{{.Name}}"`,
+      );
+
+      if (volumeFindStdout.includes(`${data.name}-${data.distro}`)) {
+        const { stdout: removeVolumeStdout, stderr: removeVolumeStderr } =
+          await exec(`docker volume rm ${data.name}-${data.distro}`);
+      }
 
       return { success: true, error: "" };
     } else {

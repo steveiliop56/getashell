@@ -23,7 +23,7 @@ export const InfoDialog: React.FC<props> = ({ shell }) => {
         <Dialog.Title>Shell info</Dialog.Title>
         <Dialog.Description>View your shell information</Dialog.Description>
 
-        <Flex className="flex-col justify-start">
+        <Flex className="my-2 flex-col justify-start">
           <Text weight="medium">
             Name:{" "}
             <Code color="gray" variant="ghost">
@@ -54,12 +54,14 @@ export const InfoDialog: React.FC<props> = ({ shell }) => {
               {shell.port}
             </Code>
           </Text>
-          <Text weight="medium">
-            Extra Arguments:{" "}
-            <Code color="gray" variant="ghost">
-              {shell.extraArgs}
-            </Code>
-          </Text>
+          {shell.extraArgs && (
+            <Text weight="medium">
+              Extra Arguments:{" "}
+              <Code color="gray" variant="ghost">
+                {shell.extraArgs}
+              </Code>
+            </Text>
+          )}
         </Flex>
 
         <Flex justify={"end"}>
