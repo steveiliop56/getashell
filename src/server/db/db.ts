@@ -5,20 +5,13 @@ import {
 import Database from "better-sqlite3";
 import * as schema from "./schema";
 import * as fs from "fs";
+import { migrateDb } from "./migrator";
 
-if (fs.existsSync("sqlite.db")) {
-  console.log("DB not in data directory! Moving...");
-  if (!fs.existsSync("data")) {
-    fs.mkdirSync("data");
-  }
-  fs.renameSync("sqlite.db", "data/sqlite.db");
-} else if (!fs.existsSync("data/sqlite.db") && !fs.existsSync("sqlite.db")) {
-  console.log("Couldn't find DB copying from assets...");
-  if (!fs.existsSync("data")) {
-    fs.mkdirSync("data");
-  }
-  fs.copyFileSync("assets/sqlite.db", "data/sqlite.db");
+if (!fs.existsSync("data")) {
+  fs.mkdirSync("data");
 }
+
+migrateDb();
 
 const sqlite = new Database("data/sqlite.db");
 

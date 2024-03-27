@@ -49,10 +49,8 @@ COPY ./tsconfig.json ./
 COPY ./next.config.mjs ./
 COPY ./postcss.config.js ./
 COPY ./tailwind.config.ts ./
-COPY ./drizzle.config.build.json ./drizzle.config.json
 COPY ./migrations ./migartions
 
-RUN npm run migrate
 RUN npm run build
 
 # ---- RUN APP ----
@@ -66,9 +64,6 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY ./dockerfiles ./dockerfiles
-
-RUN mkdir assets/
-COPY --from=builder /app/data/sqlite.db ./assets/sqlite.db
 
 EXPOSE 3000
 
