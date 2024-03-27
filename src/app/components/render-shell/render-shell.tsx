@@ -1,65 +1,39 @@
-import { Flex, Card, Text, Button, Dialog } from "@radix-ui/themes";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { containerData } from "../../../server/types/types";
-import React from "react";
+"use client";
 
-export const renderShell = (shell: containerData, handleDelete: Function) => {
+import { remove } from "@/server/actions/remove-actions";
+import { containerData } from "@/server/types/types";
+import { Card, Flex, Text, Button } from "@radix-ui/themes";
+import { toast } from "react-toastify";
+import { InfoDialog } from "./components/info-dialog";
+
+export const renderShell = (shell: containerData) => {
+  const handleDelete = async (shell: containerData) => {
+    toast.info(`Deleting ${shell.name}...`);
+    const { success } = await remove(shell.id);
+    if (success) {
+      toast.success("Shell deleted!");
+    } else {
+      toast.error("Error in deleting shell, please check logs.");
+    }
+  };
+
   return (
-    <Card key={shell.id} className="m-2">
-      <div className="flex flex-row justify-between">
-        <Flex className="items-center m-1">
-          <Text>{shell.name}</Text>
+    <Card key={shell.name}>
+      <Flex className="flex-row justify-between p-1">
+        <Flex className="items-center">
+          <Text weight="medium">{shell.name}</Text>
         </Flex>
-        <Flex>
-          <Dialog.Root>
-            <Dialog.Trigger>
-              <Button className="m-1">
-                <InfoCircledIcon />
-                Info
-              </Button>
-            </Dialog.Trigger>
-            <Dialog.Content>
-              <Dialog.Title>Info</Dialog.Title>
-              <Dialog.Description size="2" mb="4">
-                View your {shell.name} credentials.
-              </Dialog.Description>
-              <Flex className="justify-items-start flex-col">
-                <Text weight={"medium"}>
-                  Distro: <Text weight={"regular"}>{shell.distro}</Text>
-                </Text>
-                <Text weight={"medium"}>
-                  Username: <Text weight={"regular"}>{shell.distro}</Text>
-                </Text>
-                <Text weight={"medium"}>
-                  Password: <Text weight={"regular"}>{shell.password}</Text>
-                </Text>
-                <Text weight={"medium"}>
-                  Port: <Text weight={"regular"}>{shell.port}</Text>
-                </Text>
-                {shell.extraArgs?.length != 0 && (
-                  <Text weight={"medium"}>
-                    Extra Arguments:{" "}
-                    <Text weight={"regular"}>{shell.extraArgs}</Text>
-                  </Text>
-                )}
-              </Flex>
-              <Flex justify={"end"}>
-                <Dialog.Close>
-                  <Button>Close</Button>
-                </Dialog.Close>
-              </Flex>
-            </Dialog.Content>
-          </Dialog.Root>
+        <Flex className="flex-row gap-1 items-center">
+          <InfoDialog shell={shell} />
           <Button
             onClick={() => handleDelete(shell)}
-            className="m-1"
             color="orange"
             variant="soft"
           >
             Delete
           </Button>
         </Flex>
-      </div>
+      </Flex>
     </Card>
   );
 };
