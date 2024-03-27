@@ -7,8 +7,8 @@ import * as schema from "./schema";
 import * as fs from "fs";
 import { migrateDb } from "./migrator";
 
-if (!fs.existsSync("data")) {
-  fs.mkdirSync("data");
+if (!fs.existsSync("/app/data")) {
+  fs.mkdirSync("/app/data");
 }
 
 console.log("Running database migrations...");
@@ -17,7 +17,7 @@ migrateDb();
 
 console.log("Migrations finished! Connecting to databse...");
 
-const sqlite = new Database("data/sqlite.db");
+const sqlite = new Database("/app/data/sqlite.db");
 
 export const db: BetterSQLite3Database<typeof schema> = drizzle(sqlite, {
   schema,
