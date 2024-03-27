@@ -20,7 +20,7 @@ export const CreateShellForm = () => {
     toast.info(
       `Creating shell ${formData.get("name") as string} with distro ${formData.get("distro") as string}...`,
     );
-    const success = await create(
+    const { success } = await create(
       formData.get("name") as string,
       formData.get("distro") as string,
       formData.get("extraArguments") as string,

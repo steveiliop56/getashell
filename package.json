@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "build:images": "sh build-images.sh",
+    "build:image": "docker buildx build -t getashell:testing .",
     "clean:containers": "docker rm -f $(docker ps -aq)",
     "clean:keys": "ssh-keygen -f ~/.ssh/known_hosts -R [localhost]:2222",
     "start": "next start",

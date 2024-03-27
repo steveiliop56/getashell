@@ -1,9 +1,0 @@
-{
-  "out": "/app/migrations",
-  "schema": "/app/src/server/db/schema.ts",
-  "driver": "better-sqlite",
-  "dbCredentials": {
-    "url": "/app/data/sqlite.db"
-  },
-  "breakpoints": false
-}
