@@ -1,8 +1,8 @@
 "use server";
 
 import { Flex, Heading } from "@radix-ui/themes";
-import { ShellActions } from "./components/shell-actions";
 import { getShells } from "../server/queries/queries";
+import { ShellActions } from "./components/shell-actions";
 
 export default async function home() {
   const shellData = await getShells();
@@ -16,7 +16,7 @@ export default async function home() {
         >
           Get A Shell
         </Heading>
-        <ShellActions initialData={shellData} />
+        <ShellActions shellData={shellData} />
       </Flex>
     </>
   );
