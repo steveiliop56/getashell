@@ -11,10 +11,16 @@ if (!fs.existsSync("data")) {
   fs.mkdirSync("data");
 }
 
+console.log("Running database migrations...");
+
 migrateDb();
+
+console.log("Migrations finished! Connecting to databse...");
 
 const sqlite = new Database("data/sqlite.db");
 
 export const db: BetterSQLite3Database<typeof schema> = drizzle(sqlite, {
   schema,
 });
+
+console.log("Connected to database!");
