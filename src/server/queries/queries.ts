@@ -50,7 +50,7 @@ export const checkIfShellExists = async (name: string) => {
     return false;
   }
   for (let i = 0; i <= result.length; i++) {
-    if (result[i].name == name) {
+    if (result[i].name == name && i != 0) {
       return true;
     }
   }
