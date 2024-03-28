@@ -14,6 +14,9 @@ export async function remove(id: number) {
     revalidatePath("/", "layout");
     return { success: true };
   }
-  console.error(`Cannot remove container error: ${remove?.error}`);
+  console.error(
+    `Cannot remove container, still removing from db, error: ${remove?.error}`,
+  );
+  await deleteShell(id);
   return { success: false };
 }

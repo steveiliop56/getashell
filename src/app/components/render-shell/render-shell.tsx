@@ -13,7 +13,9 @@ export const renderShell = (shell: containerData) => {
     if (success) {
       toast.success("Shell deleted!");
     } else {
-      toast.error("Error in deleting shell, please check logs.");
+      toast.error(
+        "Error in deleting shell, please check logs. Still removing from database...",
+      );
     }
   };
 
