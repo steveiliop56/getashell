@@ -39,7 +39,7 @@ export const InfoDialog: React.FC<props> = ({ shell }) => {
           <Text weight="medium">
             Username:{" "}
             <Code color="gray" variant="ghost">
-              {shell.name}
+              {shell.distro}
             </Code>
           </Text>
           <Text weight="medium">
