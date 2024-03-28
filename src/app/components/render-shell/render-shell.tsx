@@ -1,6 +1,6 @@
 "use client";
 
-import { remove } from "@/server/actions/remove-actions";
+import { remove } from "@/server/actions/remove-action";
 import { containerData } from "@/server/types/types";
 import { Card, Flex, Text, Button } from "@radix-ui/themes";
 import { toast } from "react-toastify";
