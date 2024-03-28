@@ -43,3 +43,16 @@ export const getShellFromId = async (id: number) => {
   const result = await db.select().from(shells).where(eq(shells.id, id));
   return result[0];
 };
+
+export const checkIfShellExists = async (name: string) => {
+  const result = await db.select().from(shells);
+  if (result.length == 0) {
+    return false;
+  }
+  for (let i = 0; i <= result.length; i++) {
+    if (result[i].name == name) {
+      return true;
+    }
+  }
+  return false;
+};

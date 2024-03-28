@@ -15,7 +15,7 @@ export const createContainer = async (data: containerData) => {
         if (delOldContainer.error) {
           throw delOldContainer.error;
         }
-        const createCommand = `docker run -td --hostname ${data.name} -v ${data.name}-${data.distro}:/home/${data.distro} -p ${data.port}:22 --name ${data.name}-${data.distro} ${data.extraArgs} getashell:${data.distro}`;
+        const createCommand = `docker run -td --restart unless-stopped --hostname ${data.name} -v ${data.name}-${data.distro}:/home/${data.distro} -p ${data.port}:22 --name ${data.name}-${data.distro} ${data.extraArgs} getashell:${data.distro}`;
 
         const { stdout: createCommandStdout, stderr: createCommandStderr } =
           await exec(createCommand);
@@ -83,7 +83,8 @@ const dockerImageBuild = async (distro: string) => {
     const { stdout: findStdout, stderr: findStderr } = await exec(
       `docker image ls --format "{{.Repository}}:{{.Tag}}"`,
     );
-    if (findStdout.includes(`getashell:${distro}`)) {
+
+    if (!findStdout.includes(`getashell:${distro}`)) {
       const { stdout: buildStdout, stderr: buildStderr } = await exec(
         `docker buildx build -t getashell:${distro} -f dockerfiles/Dockerfile.${distro} .`,
       );

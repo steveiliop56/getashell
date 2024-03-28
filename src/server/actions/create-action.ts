@@ -1,6 +1,11 @@
 "use server";
 
-import { addShell, getShellIds, portAvailable } from "../queries/queries";
+import {
+  addShell,
+  checkIfShellExists,
+  getShellIds,
+  portAvailable,
+} from "../queries/queries";
 import { createContainer } from "../utils/container-helpers";
 import { revalidatePath } from "next/cache";
 import {
@@ -13,6 +18,10 @@ export async function create(name: string, distro: string, extraArgs: string) {
   console.log(
     `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`,
   );
+
+  if (await checkIfShellExists(name)) {
+    return { success: false, shellExists: true };
+  }
 
   let port = createRandomPort();
   console.log(port);

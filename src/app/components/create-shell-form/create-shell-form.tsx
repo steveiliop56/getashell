@@ -20,7 +20,7 @@ export const CreateShellForm = () => {
     toast.info(
       `Creating shell ${formData.get("name") as string} with distro ${formData.get("distro") as string}...`,
     );
-    const { success } = await create(
+    const { success, shellExists } = await create(
       formData.get("name") as string,
       formData.get("distro") as string,
       formData.get("extraArguments") as string,
@@ -29,6 +29,8 @@ export const CreateShellForm = () => {
       toast.success(
         `Shell ${formData.get("name") as string} successfully created!`,
       );
+    } else if (shellExists) {
+      toast.error("Cannot create shell with same name!");
     } else {
       toast.error(
         `Error in creating shell ${formData.get("name") as string}! Please check logs!`,
