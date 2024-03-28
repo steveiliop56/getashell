@@ -18,5 +18,6 @@ export async function remove(id: number) {
     `Cannot remove container, still removing from db, error: ${remove?.error}`,
   );
   await deleteShell(id);
+  revalidatePath("/", "layout");
   return { success: false };
 }
