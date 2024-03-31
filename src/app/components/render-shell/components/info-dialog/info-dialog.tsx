@@ -1,5 +1,6 @@
 "use client";
 
+import { change } from "@/server/actions/change-password-action";
 import { containerData } from "@/server/types/types";
 import { InfoCircledIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import {
@@ -12,7 +13,8 @@ import {
   IconButton,
   TextArea,
 } from "@radix-ui/themes";
-import React from "react";
+import React, { FormEvent } from "react";
+import { toast } from "react-toastify";
 
 interface shellData {
   shell: containerData;
@@ -81,6 +83,20 @@ export const InfoDialog: React.FC<shellData> = ({ shell }) => {
 const PasswordEdit: React.FC<shellData> = ({ shell }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isRequired, setIsRequired] = React.useState(true);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsOpen(false);
+    const newPassword = new FormData(e.currentTarget).get(
+      "new-password",
+    ) as string;
+    const { success } = await change(shell, newPassword);
+    if (success) {
+      toast.success("Password changed successfully!");
+    } else {
+      toast.error("Error in changing password! Please check logs.");
+    }
+  };
   return (
     <Flex className="flex-row gap-2">
       <Text weight="medium">
@@ -98,16 +114,18 @@ const PasswordEdit: React.FC<shellData> = ({ shell }) => {
         </Popover.Trigger>
 
         <Popover.Content>
-          <form onSubmit={() => setIsOpen(false)}>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <Flex className="flex-col gap-2">
               <TextArea
                 required={isRequired}
+                name="new-password"
                 placeholder="Type new password..."
               />
               <Flex className="flex-row gap-2 justify-end">
                 <Button
                   color="gray"
                   variant="soft"
+                  type="button"
                   highContrast
                   onClick={() => {
                     setIsRequired(false);
