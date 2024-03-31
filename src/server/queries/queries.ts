@@ -51,3 +51,11 @@ export const checkIfShellExists = async (name: string) => {
   }
   return false;
 };
+
+export const changeShellPassword = async (shell: containerData) => {
+  const result = await db
+    .update(shells)
+    .set({ password: shell.password })
+    .where(eq(shells.id, shell.id));
+  return result;
+};

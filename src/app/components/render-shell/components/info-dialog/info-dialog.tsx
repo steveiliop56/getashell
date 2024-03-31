@@ -1,15 +1,26 @@
 "use client";
 
+import { change } from "@/server/actions/change-password-action";
 import { containerData } from "@/server/types/types";
-import { InfoCircledIcon } from "@radix-ui/react-icons";
-import { Button, Dialog, Flex, Text, Code } from "@radix-ui/themes";
-import React from "react";
+import { InfoCircledIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import {
+  Button,
+  Dialog,
+  Flex,
+  Text,
+  Code,
+  Popover,
+  IconButton,
+  TextArea,
+} from "@radix-ui/themes";
+import React, { FormEvent } from "react";
+import { toast } from "react-toastify";
 
-interface props {
+interface shellData {
   shell: containerData;
 }
 
-export const InfoDialog: React.FC<props> = ({ shell }) => {
+export const InfoDialog: React.FC<shellData> = ({ shell }) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -42,12 +53,7 @@ export const InfoDialog: React.FC<props> = ({ shell }) => {
               {shell.distro}
             </Code>
           </Text>
-          <Text weight="medium">
-            Password:{" "}
-            <Code color="gray" variant="ghost">
-              {shell.password}
-            </Code>
-          </Text>
+          <PasswordEdit shell={shell} />
           <Text weight="medium">
             Port:{" "}
             <Code color="gray" variant="ghost">
@@ -71,5 +77,69 @@ export const InfoDialog: React.FC<props> = ({ shell }) => {
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
+  );
+};
+
+const PasswordEdit: React.FC<shellData> = ({ shell }) => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isRequired, setIsRequired] = React.useState(true);
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsOpen(false);
+    const newPassword = new FormData(e.currentTarget).get(
+      "new-password",
+    ) as string;
+    const { success } = await change(shell, newPassword);
+    if (success) {
+      toast.success("Password changed successfully!");
+    } else {
+      toast.error("Error in changing password! Please check logs.");
+    }
+  };
+  return (
+    <Flex className="flex-row gap-2">
+      <Text weight="medium">
+        Password:{" "}
+        <Code color="gray" variant="ghost">
+          {shell.password}
+        </Code>
+      </Text>
+
+      <Popover.Root open={isOpen}>
+        <Popover.Trigger>
+          <IconButton onClick={() => setIsOpen(true)} className="size-5">
+            <Pencil1Icon />
+          </IconButton>
+        </Popover.Trigger>
+
+        <Popover.Content>
+          <form onSubmit={(e) => handleSubmit(e)}>
+            <Flex className="flex-col gap-2">
+              <TextArea
+                required={isRequired}
+                name="new-password"
+                placeholder="Type new password..."
+              />
+              <Flex className="flex-row gap-2 justify-end">
+                <Button
+                  color="gray"
+                  variant="soft"
+                  type="button"
+                  highContrast
+                  onClick={() => {
+                    setIsRequired(false);
+                    setIsOpen(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button type="submit">Save</Button>
+              </Flex>
+            </Flex>
+          </form>
+        </Popover.Content>
+      </Popover.Root>
+    </Flex>
   );
 };
