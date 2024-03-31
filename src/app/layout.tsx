@@ -22,7 +22,12 @@ export default function RootLayout({
       <body className={inter.className}>
         <Theme appearance="dark">
           {children}
-          <ToastContainer position="top-center" hideProgressBar={true} />
+          <ToastContainer
+            position="top-center"
+            hideProgressBar={true}
+            limit={1}
+            autoClose={350}
+          />
         </Theme>
       </body>
     </html>
