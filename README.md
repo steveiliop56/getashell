@@ -12,9 +12,9 @@ you can just spin up the ui select a distro and click _Get me a shell!_ and 💥
 - [x] Ability to pass extra arguments to shells
 - [x] Ability to save shell user data
 - [x] Handle db migrations on target computer not on build time
+- [x] Edit shell password
 - [ ] Ability to start shells on app start
 - [ ] Make the app know if shell is started or not
-- [ ] Edit shell password/port
 
 ### Installation ⏬
 
