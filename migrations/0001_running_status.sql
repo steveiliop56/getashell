@@ -1,1 +1,1 @@
-ALTER TABLE shells ADD `running` text 1;
+ALTER TABLE shells ADD `running` text;

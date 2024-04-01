@@ -149,7 +149,7 @@ export class containerHelpers {
       if (success) {
         await this.removeContainer();
 
-        const dockerArguments = `-t -d --restart unless-stopped --name ${this.containerName} --hostname ${this.containerName} --volume ${this.containerName}:/home/${this.shell.distro} -p ${this.shell.port}:22`;
+        const dockerArguments = `-t -d --restart unless-stopped --name ${this.containerName} --hostname ${this.containerName} --volume ${this.containerName}:/home/${this.shell.distro} -p ${this.shell.port}:22 ${this.shell.extraArgs}`;
         const { stdout, stderr } = await this.exec(
           `docker run ${dockerArguments} getashell:${this.shell.distro}`,
         );
