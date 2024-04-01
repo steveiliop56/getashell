@@ -37,7 +37,7 @@ export async function create(name: string, distro: string, extraArgs: string) {
     port: port,
     password: createRandomPassowrd(),
     extraArgs: extraArgs,
-    running: "true",
+    running: true,
   };
 
   const { success, error } = await new containerHelpers(data).createContainer();

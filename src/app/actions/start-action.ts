@@ -6,7 +6,7 @@ import { containerHelpers } from "@/utils/container-helpers";
 import { revalidatePath } from "next/cache";
 
 export const start = async (shell: containerData) => {
-  shell.running = "true";
+  shell.running = true;
   const { success, error } = await new containerHelpers(shell).startContainer();
 
   if (success) {

@@ -8,8 +8,9 @@ import { stop } from "../../actions/stop-action";
 import { start } from "../../actions/start-action";
 
 export const renderShell = (shell: containerData) => {
+  console.log(shell);
   const handleStopStart = async () => {
-    if (shell.running == "true") {
+    if (shell.running) {
       toast.info(`Stopping ${shell.name}...`);
       const { success } = await stop(shell);
       if (success) {
@@ -36,7 +37,7 @@ export const renderShell = (shell: containerData) => {
         </Flex>
         <Flex className="flex-row gap-1 items-center">
           <SettingsDialog shell={shell} />
-          {shell.running == "true" ? (
+          {shell.running ? (
             <Button onClick={() => handleStopStart()} color="red">
               Stop
             </Button>
