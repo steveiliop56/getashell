@@ -65,9 +65,7 @@ export const CreateShellForm = () => {
           />
         </TextField.Root>
 
-        <Button type="submit" color="indigo" variant="soft">
-          Get me a shell
-        </Button>
+        <Button type="submit">Get me a shell</Button>
       </Flex>
     </form>
   );
