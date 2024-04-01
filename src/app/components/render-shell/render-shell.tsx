@@ -8,7 +8,6 @@ import { stop } from "../../actions/stop-action";
 import { start } from "../../actions/start-action";
 
 export const renderShell = (shell: containerData) => {
-  console.log(shell);
   const handleStopStart = async () => {
     if (shell.running) {
       toast.info(`Stopping ${shell.name}...`);
