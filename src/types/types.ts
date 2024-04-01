@@ -5,4 +5,5 @@ export interface containerData {
   port: number;
   password: string;
   extraArgs: string | null;
+  running: boolean | null;
 }

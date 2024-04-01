@@ -1,6 +1,6 @@
 "use client";
 
-import { create } from "@/server/actions/create-action";
+import { create } from "../../actions/create-action";
 import { Button, Flex, Select, TextField } from "@radix-ui/themes";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";

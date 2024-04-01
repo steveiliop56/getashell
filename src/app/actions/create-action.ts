@@ -5,14 +5,14 @@ import {
   checkIfShellExists,
   getShellIds,
   portAvailable,
-} from "../queries/queries";
-import { createContainer } from "../utils/container-helpers";
+} from "../../server/queries/queries";
+import { containerHelpers } from "../../utils/container-helpers";
 import { revalidatePath } from "next/cache";
 import {
   createRandomPassowrd,
   createRandomPort,
-} from "../utils/random-generator";
-import { availablePortChecker } from "../utils/port-checker";
+} from "../../utils/random-generator";
+import { availablePortChecker } from "../../utils/port-checker";
 
 export async function create(name: string, distro: string, extraArgs: string) {
   console.log(
@@ -37,16 +37,17 @@ export async function create(name: string, distro: string, extraArgs: string) {
     port: port,
     password: createRandomPassowrd(),
     extraArgs: extraArgs,
+    running: true,
   };
 
-  const ok = await createContainer(data);
+  const { success, error } = await new containerHelpers(data).createContainer();
 
-  if (ok?.success) {
+  if (success) {
     console.log("Server ready!");
     await addShell(data);
     revalidatePath("/", "layout");
     return { success: true };
   }
-  console.error(`Failed to bake server: ${ok?.error}`);
+  console.error(`Failed to bake server: ${error}`);
   return { success: false };
 }

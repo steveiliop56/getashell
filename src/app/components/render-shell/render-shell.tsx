@@ -1,21 +1,30 @@
 "use client";
 
-import { remove } from "@/server/actions/remove-action";
-import { containerData } from "@/server/types/types";
+import { containerData } from "@/types/types";
 import { Card, Flex, Text, Button } from "@radix-ui/themes";
+import { SettingsDialog } from "../settings-dialog";
 import { toast } from "react-toastify";
-import { InfoDialog } from "./components/info-dialog";
+import { stop } from "../../actions/stop-action";
+import { start } from "../../actions/start-action";
 
 export const renderShell = (shell: containerData) => {
-  const handleDelete = async (shell: containerData) => {
-    toast.info(`Deleting ${shell.name}...`);
-    const { success } = await remove(shell.id);
-    if (success) {
-      toast.success("Shell deleted!");
+  const handleStopStart = async () => {
+    if (shell.running) {
+      toast.info(`Stopping ${shell.name}...`);
+      const { success } = await stop(shell);
+      if (success) {
+        toast.success("Shell stopped!");
+      } else {
+        toast.error("Error in stopping shell! Please check logs!");
+      }
     } else {
-      toast.error(
-        "Error in deleting shell, please check logs. Still removing from database...",
-      );
+      toast.info(`Starting ${shell.name}...`);
+      const { success } = await start(shell);
+      if (success) {
+        toast.success("Shell starrted");
+      } else {
+        toast.error("Error in starrting shell! Please check logs!");
+      }
     }
   };
 
@@ -26,14 +35,14 @@ export const renderShell = (shell: containerData) => {
           <Text weight="medium">{shell.name}</Text>
         </Flex>
         <Flex className="flex-row gap-1 items-center">
-          <InfoDialog shell={shell} />
-          <Button
-            onClick={() => handleDelete(shell)}
-            color="orange"
-            variant="soft"
-          >
-            Delete
-          </Button>
+          <SettingsDialog shell={shell} />
+          {shell.running ? (
+            <Button onClick={() => handleStopStart()} color="red">
+              Stop
+            </Button>
+          ) : (
+            <Button onClick={() => handleStopStart()}>Start</Button>
+          )}
         </Flex>
       </Flex>
     </Card>

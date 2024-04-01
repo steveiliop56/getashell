@@ -1,6 +1,6 @@
 "use client";
 
-import { containerData } from "@/server/types/types";
+import { containerData } from "@/types/types";
 import { Flex, Separator } from "@radix-ui/themes";
 import { CreateShellForm } from "../create-shell-form";
 import { renderShell } from "../render-shell";

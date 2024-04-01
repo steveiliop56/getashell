@@ -1,0 +1,1 @@
+ALTER TABLE shells ADD `running` text;

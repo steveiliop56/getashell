@@ -1,38 +1,57 @@
 "use client";
 
-import { change } from "@/server/actions/change-password-action";
-import { containerData } from "@/server/types/types";
-import { InfoCircledIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { remove } from "../../actions/remove-action";
+import { containerData } from "@/types/types";
+import { GearIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import {
   Button,
   Dialog,
   Flex,
   Text,
   Code,
-  Popover,
   IconButton,
+  Popover,
   TextArea,
 } from "@radix-ui/themes";
 import React, { FormEvent } from "react";
 import { toast } from "react-toastify";
+import { change } from "@/app/actions/change-password-action";
 
 interface shellData {
   shell: containerData;
 }
 
-export const InfoDialog: React.FC<shellData> = ({ shell }) => {
+export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
+  const sshCommand = `ssh -o StrictHostKeyChecking=no -p ${shell.port} ${shell.distro}@yourhost`;
+  const [open, setOpen] = React.useState(false);
+
+  const handleDelete = async () => {
+    setOpen(false);
+    toast.info(`Deleting ${shell.name}...`);
+    const { success } = await remove(shell.id);
+    if (success) {
+      toast.success("Shell deleted!");
+    } else {
+      toast.error(
+        "Error in deleting shell, please check logs. Still removing from database...",
+      );
+    }
+  };
+
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>
-        <Button className="m-1">
-          <InfoCircledIcon />
-          Info
+        <Button onClick={() => setOpen(true)} className="m-1">
+          <GearIcon />
+          Settings
         </Button>
       </Dialog.Trigger>
 
       <Dialog.Content>
-        <Dialog.Title>Shell info</Dialog.Title>
-        <Dialog.Description>View your shell information</Dialog.Description>
+        <Dialog.Title>Shell Settings</Dialog.Title>
+        <Dialog.Description>
+          View your shell information and edit settings
+        </Dialog.Description>
 
         <Flex className="my-2 flex-col justify-start">
           <Text weight="medium">
@@ -70,10 +89,24 @@ export const InfoDialog: React.FC<shellData> = ({ shell }) => {
           )}
         </Flex>
 
-        <Flex justify={"end"}>
-          <Dialog.Close>
-            <Button>Close</Button>
-          </Dialog.Close>
+        <Flex>
+          <Text weight="medium" id="command-copy">
+            SSH Command:{" "}
+            <Code color="gray" variant="ghost">
+              {sshCommand}
+            </Code>
+          </Text>
+        </Flex>
+
+        <Flex className="justify-end gap-2">
+          <Button
+            title="When you click the button your shell is gone!"
+            onClick={() => handleDelete()}
+            color="red"
+          >
+            Delete
+          </Button>
+          <Button onClick={() => setOpen(false)}>Close</Button>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
@@ -81,12 +114,12 @@ export const InfoDialog: React.FC<shellData> = ({ shell }) => {
 };
 
 const PasswordEdit: React.FC<shellData> = ({ shell }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [mainOpen, setMainOpen] = React.useState(false);
   const [isRequired, setIsRequired] = React.useState(true);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsOpen(false);
+    setMainOpen(false);
     const newPassword = new FormData(e.currentTarget).get(
       "new-password",
     ) as string;
@@ -97,6 +130,7 @@ const PasswordEdit: React.FC<shellData> = ({ shell }) => {
       toast.error("Error in changing password! Please check logs.");
     }
   };
+
   return (
     <Flex className="flex-row gap-2">
       <Text weight="medium">
@@ -106,9 +140,9 @@ const PasswordEdit: React.FC<shellData> = ({ shell }) => {
         </Code>
       </Text>
 
-      <Popover.Root open={isOpen}>
+      <Popover.Root open={mainOpen}>
         <Popover.Trigger>
-          <IconButton onClick={() => setIsOpen(true)} className="size-5">
+          <IconButton onClick={() => setMainOpen(true)} className="size-5">
             <Pencil1Icon />
           </IconButton>
         </Popover.Trigger>
@@ -129,7 +163,7 @@ const PasswordEdit: React.FC<shellData> = ({ shell }) => {
                   highContrast
                   onClick={() => {
                     setIsRequired(false);
-                    setIsOpen(false);
+                    setMainOpen(false);
                   }}
                 >
                   Cancel
