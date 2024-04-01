@@ -1,7 +1,7 @@
 import { sql, eq } from "drizzle-orm";
 import { db } from "../db/db";
 import { shells } from "../db/schema";
-import { containerData } from "../types/types";
+import { containerData } from "../../types/types";
 
 export const getShellIds = async () => {
   const result = await db.select({ count: sql<number>`count(*)` }).from(shells);
@@ -25,6 +25,7 @@ export const addShell = async (data: containerData) => {
     port: data.port,
     password: data.password,
     extraArgs: data.extraArgs,
+    running: data.running,
   });
   return result;
 };
@@ -56,6 +57,14 @@ export const changeShellPassword = async (shell: containerData) => {
   const result = await db
     .update(shells)
     .set({ password: shell.password })
+    .where(eq(shells.id, shell.id));
+  return result;
+};
+
+export const changeShellRunningStatus = async (shell: containerData) => {
+  const result = await db
+    .update(shells)
+    .set({ running: shell.running })
     .where(eq(shells.id, shell.id));
   return result;
 };

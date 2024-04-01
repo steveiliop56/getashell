@@ -6,7 +6,7 @@ import Database from "better-sqlite3";
 import * as schema from "./schema";
 import * as fs from "fs";
 import { migrateDb } from "./migrator";
-import { getConfig } from "../config/config";
+import { getConfig } from "../../config/config";
 
 const { databasePath, dataDir } = getConfig();
 
