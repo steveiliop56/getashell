@@ -54,18 +54,20 @@ export const CreateShellForm = () => {
           </Select.Content>
         </Select.Root>
 
-        <TextField.Root>
-          <TextField.Input name="name" required placeholder="Enter a name..." />
-        </TextField.Root>
+        <TextField.Root
+          name="name"
+          required
+          placeholder="Enter a name..."
+        ></TextField.Root>
 
-        <TextField.Root>
-          <TextField.Input
-            name="extraArguments"
-            placeholder="Enter extra arguments..."
-          />
-        </TextField.Root>
+        <TextField.Root
+          name="extraArguments"
+          placeholder="Enter extra arguments..."
+        ></TextField.Root>
 
-        <Button type="submit">Get me a shell</Button>
+        <Button type="submit" color="indigo" variant="soft">
+          Get me a shell
+        </Button>
       </Flex>
     </form>
   );

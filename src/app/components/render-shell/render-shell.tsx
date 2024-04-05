@@ -37,11 +37,21 @@ export const renderShell = (shell: containerData) => {
         <Flex className="flex-row gap-1 items-center">
           <SettingsDialog shell={shell} />
           {shell.running ? (
-            <Button onClick={() => handleStopStart()} color="red">
+            <Button
+              onClick={() => handleStopStart()}
+              color="orange"
+              variant="soft"
+            >
               Stop
             </Button>
           ) : (
-            <Button onClick={() => handleStopStart()}>Start</Button>
+            <Button
+              onClick={() => handleStopStart()}
+              color="indigo"
+              variant="soft"
+            >
+              Start
+            </Button>
           )}
         </Flex>
       </Flex>

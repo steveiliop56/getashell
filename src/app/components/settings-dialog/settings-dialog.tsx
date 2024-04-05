@@ -9,9 +9,8 @@ import {
   Flex,
   Text,
   Code,
+  TextField,
   IconButton,
-  Popover,
-  TextArea,
 } from "@radix-ui/themes";
 import React, { FormEvent } from "react";
 import { toast } from "react-toastify";
@@ -24,6 +23,7 @@ interface shellData {
 export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
   const sshCommand = `ssh -o StrictHostKeyChecking=no -p ${shell.port} ${shell.distro}@yourhost`;
   const [open, setOpen] = React.useState(false);
+  const [passwdEdit, setPasswdEdit] = React.useState(false);
 
   const handleDelete = async () => {
     setOpen(false);
@@ -38,10 +38,29 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
     }
   };
 
+  const handlePasswordSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setPasswdEdit(false);
+    const newPassword = new FormData(e.currentTarget).get(
+      "new-password",
+    ) as string;
+    const { success } = await change(shell, newPassword);
+    if (success) {
+      toast.success("Password changed successfully!");
+    } else {
+      toast.error("Error in changing password! Please check logs.");
+    }
+  };
+
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>
-        <Button onClick={() => setOpen(true)} className="m-1">
+        <Button
+          onClick={() => setOpen(true)}
+          className="m-1"
+          color="gray"
+          variant="soft"
+        >
           <GearIcon />
           Settings
         </Button>
@@ -72,7 +91,49 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
               {shell.distro}
             </Code>
           </Text>
-          <PasswordEdit shell={shell} />
+          {!passwdEdit ? (
+            <Flex className="flex-row gap-1">
+              <Text weight="medium">
+                Password:{" "}
+                <Code color="gray" variant="ghost">
+                  {shell.password}
+                </Code>
+              </Text>
+              <IconButton
+                className="size-5"
+                color="blue"
+                variant="soft"
+                onClick={() => setPasswdEdit(true)}
+              >
+                <Pencil1Icon></Pencil1Icon>
+              </IconButton>
+            </Flex>
+          ) : (
+            <Flex className="flex-row gap-1">
+              <Text weight="medium">Password: </Text>
+              <form onSubmit={(e) => handlePasswordSubmit(e)}>
+                <Flex className="flex-row gap-1">
+                  <TextField.Root
+                    required
+                    placeholder="New password..."
+                    size="1"
+                    name="new-password"
+                  />
+                  <Button type="submit" color="blue" variant="soft" size="1">
+                    Save
+                  </Button>
+                  <Button
+                    color="gray"
+                    variant="soft"
+                    size="1"
+                    onClick={() => setPasswdEdit(false)}
+                  >
+                    Cancel
+                  </Button>
+                </Flex>
+              </form>
+            </Flex>
+          )}
           <Text weight="medium">
             Port:{" "}
             <Code color="gray" variant="ghost">
@@ -102,78 +163,16 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
           <Button
             title="When you click the button your shell is gone!"
             onClick={() => handleDelete()}
-            color="red"
+            color="orange"
+            variant="soft"
           >
             Delete
           </Button>
-          <Button onClick={() => setOpen(false)}>Close</Button>
+          <Button onClick={() => setOpen(false)} color="blue" variant="soft">
+            Close
+          </Button>
         </Flex>
       </Dialog.Content>
     </Dialog.Root>
-  );
-};
-
-const PasswordEdit: React.FC<shellData> = ({ shell }) => {
-  const [mainOpen, setMainOpen] = React.useState(false);
-  const [isRequired, setIsRequired] = React.useState(true);
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setMainOpen(false);
-    const newPassword = new FormData(e.currentTarget).get(
-      "new-password",
-    ) as string;
-    const { success } = await change(shell, newPassword);
-    if (success) {
-      toast.success("Password changed successfully!");
-    } else {
-      toast.error("Error in changing password! Please check logs.");
-    }
-  };
-
-  return (
-    <Flex className="flex-row gap-2">
-      <Text weight="medium">
-        Password:{" "}
-        <Code color="gray" variant="ghost">
-          {shell.password}
-        </Code>
-      </Text>
-
-      <Popover.Root open={mainOpen}>
-        <Popover.Trigger>
-          <IconButton onClick={() => setMainOpen(true)} className="size-5">
-            <Pencil1Icon />
-          </IconButton>
-        </Popover.Trigger>
-
-        <Popover.Content>
-          <form onSubmit={(e) => handleSubmit(e)}>
-            <Flex className="flex-col gap-2">
-              <TextArea
-                required={isRequired}
-                name="new-password"
-                placeholder="Type new password..."
-              />
-              <Flex className="flex-row gap-2 justify-end">
-                <Button
-                  color="gray"
-                  variant="soft"
-                  type="button"
-                  highContrast
-                  onClick={() => {
-                    setIsRequired(false);
-                    setMainOpen(false);
-                  }}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit">Save</Button>
-              </Flex>
-            </Flex>
-          </form>
-        </Popover.Content>
-      </Popover.Root>
-    </Flex>
   );
 };
