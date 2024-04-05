@@ -4,15 +4,13 @@ import {
   addShell,
   checkIfShellExists,
   getShellIds,
-  portAvailable,
 } from "../../server/queries/queries";
 import { containerHelpers } from "../../utils/container-helpers";
 import { revalidatePath } from "next/cache";
 import {
-  createRandomPassowrd,
-  createRandomPort,
+  createRandomPassword
 } from "../../utils/random-generator";
-import { availablePortChecker } from "../../utils/port-checker";
+import { getAvailablePort } from "../../utils/port-checker";
 
 export async function create(name: string, distro: string, extraArgs: string) {
   console.log(
@@ -23,18 +21,14 @@ export async function create(name: string, distro: string, extraArgs: string) {
     return { success: false, shellExists: true };
   }
 
-  let port: number;
-  do {
-    port = createRandomPort(); // FUTURE - Consider refactoring this into a `getAvailablePort` function which does all of this for us.
-    console.log(`Attempting port ${port}`);
-  } while (!(await availablePortChecker(port).success || !portAvailable(port));
+  let port = await getAvailablePort();
 
   const data = {
     id: (await getShellIds()) + 1,
     distro: distro,
     name: name,
     port: port,
-    password: createRandomPassowrd(),
+    password: createRandomPassword(),
     extraArgs: extraArgs,
     running: true,
   };

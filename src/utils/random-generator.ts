@@ -2,7 +2,7 @@ export const createRandomPort = () => {
   return Math.floor(Math.random() * (10000 - 1023)) + 1023;
 };
 
-export const createRandomPassowrd = () => {
+export const createRandomPassword = () => {
   const chars =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   let result = "";
