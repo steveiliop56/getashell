@@ -23,12 +23,11 @@ export async function create(name: string, distro: string, extraArgs: string) {
     return { success: false, shellExists: true };
   }
 
-  let port = createRandomPort();
-  console.log(port);
-
-  while (!(await availablePortChecker(port)).success || !portAvailable(port)) {
-    port = createRandomPort();
-  }
+  let port: number;
+  do {
+    port = createRandomPort(); // FUTURE - Consider refactoring this into a `getAvailablePort` function which does all of this for us.
+    console.log(`Attempting port ${port}`);
+  } while (!(await availablePortChecker(port).success || !portAvailable(port));
 
   const data = {
     id: (await getShellIds()) + 1,
