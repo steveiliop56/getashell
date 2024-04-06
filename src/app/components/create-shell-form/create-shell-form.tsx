@@ -1,6 +1,6 @@
 "use client";
 
-import { createShellAsync } from "../../actions/create-action";
+import { createShellActionAsync } from "../../actions/create-action";
 import { Button, Flex, Select, TextField } from "@radix-ui/themes";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
@@ -20,7 +20,7 @@ export const CreateShellForm = () => {
     toast.info(
       `Creating shell ${formData.get("name") as string} with distro ${formData.get("distro") as string}...`,
     );
-    const { success, shellExists } = await createShellAsync(
+    const { success, shellExists } = await createShellActionAsync(
       formData.get("name") as string,
       formData.get("distro") as string,
       formData.get("extraArguments") as string,

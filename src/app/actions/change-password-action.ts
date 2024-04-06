@@ -5,7 +5,7 @@ import { ContainerData, OperationResult } from "../../types/types";
 import QueriesService from "@/server/queries/queries.service";
 import ContainerService from "@/utils/container.service";
 
-export async function changeShellPasswordAsync(
+export async function changeShellPasswordActionAsync(
   shell: ContainerData,
   newPassword: string,
 ): Promise<OperationResult> {

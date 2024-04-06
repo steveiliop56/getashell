@@ -7,7 +7,7 @@ import PortService from "@/utils/port.service";
 import RandomService from "@/utils/random.service";
 import { revalidatePath } from "next/cache";
 
-export async function createShellAsync(
+export async function createShellActionAsync(
   name: string,
   distro: string,
   extraArgs: string,

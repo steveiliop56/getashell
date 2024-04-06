@@ -4,7 +4,7 @@ import { ContainerData, OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
 import { revalidatePath } from "next/cache";
 
-export async function stopShellAsync(
+export async function stopShellActionAsync(
   shell: ContainerData,
 ): Promise<OperationResult> {
   shell.running = false;

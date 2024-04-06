@@ -5,7 +5,9 @@ import { OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
 import { revalidatePath } from "next/cache";
 
-export async function removeShellAsync(id: number): Promise<OperationResult> {
+export async function removeShellActionAsync(
+  id: number,
+): Promise<OperationResult> {
   const shell = await QueriesService.getShellFromIdAsync(id);
   if (!shell) {
     console.log(
