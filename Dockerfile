@@ -50,6 +50,7 @@ COPY ./next.config.mjs ./
 COPY ./postcss.config.js ./
 COPY ./tailwind.config.ts ./
 COPY ./migrations ./migrations
+COPY ./.env.prod ./
 
 RUN npm run build
 
@@ -64,6 +65,7 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/migrations ./migrations
+COPY --from=builder /app/.env.prod ./
 COPY ./dockerfiles ./dockerfiles
 
 EXPOSE 3000

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { ContainerData, OperationResult } from "../../types/types";
 import QueriesService from "@/server/queries/queries.service";
 import ContainerService from "@/utils/container.service";
-import { logger } from "@/utils/logger";
+import { logger } from "@/lib/logger";
 
 export async function changeShellPasswordActionAsync(
   shell: ContainerData,
@@ -23,6 +23,6 @@ export async function changeShellPasswordActionAsync(
     return { success: true };
   }
 
-  logger.warn(`Error changing password! Error: ${error}`);
+  logger.error(`Error changing password! Error: ${error}`);
   return { success: false };
 }

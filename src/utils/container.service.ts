@@ -1,7 +1,7 @@
 import * as util from "util";
 import { exec as execCallback } from "child_process";
 import { ContainerData, OperationResult } from "../types/types";
-import { logger } from "./logger";
+import { logger } from "../lib/logger";
 
 export default class ContainerService {
   shell: ContainerData;
@@ -175,7 +175,9 @@ export default class ContainerService {
 
   public async stopContainerAsync(): Promise<OperationResult> {
     try {
-      const { stdout, stderr } = this.exec(`docker stop ${this.containerName}`);
+      const { stdout, stderr } = await this.exec(
+        `docker stop ${this.containerName}`,
+      );
 
       if (stderr && stderr.includes("Error")) {
         throw stderr;
@@ -190,7 +192,7 @@ export default class ContainerService {
 
   public async startContainerAsync(): Promise<OperationResult> {
     try {
-      const { stdout, stderr } = this.exec(
+      const { stdout, stderr } = await this.exec(
         `docker start ${this.containerName}`,
       );
 
