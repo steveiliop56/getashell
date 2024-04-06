@@ -7,9 +7,9 @@ import * as schema from "./schema";
 import * as fs from "fs";
 import { migrateDb } from "./migrator";
 import { getConfig } from "../../config/config";
-import { logger } from "@/utils/logger";
+import { logger } from "@/lib/logger";
 
-const { databasePath, dataDir } = getConfig();
+const { dataDir } = getConfig();
 
 if (!fs.existsSync(dataDir)) {
   fs.mkdirSync(dataDir);
@@ -21,7 +21,7 @@ migrateDb();
 
 logger.info("Migrations finished! Connecting to databse...");
 
-const sqlite = new Database(databasePath);
+const sqlite = new Database(`${dataDir}/sqlite.db`);
 
 export const db: BetterSQLite3Database<typeof schema> = drizzle(sqlite, {
   schema,

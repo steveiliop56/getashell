@@ -2,7 +2,7 @@ import { exec as execCallback } from "child_process";
 import * as util from "util";
 import { getConfig } from "../config/config";
 import QueriesService from "@/server/queries/queries.service";
-import { logger } from "./logger";
+import { logger } from "../lib/logger";
 
 export default class PortService {
   private static exec = util.promisify(execCallback);

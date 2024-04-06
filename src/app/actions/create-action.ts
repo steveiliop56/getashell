@@ -3,7 +3,7 @@
 import QueriesService from "@/server/queries/queries.service";
 import { OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
-import { logger } from "@/utils/logger";
+import { logger } from "@/lib/logger";
 import PortService from "@/utils/port.service";
 import RandomService from "@/utils/random.service";
 import { revalidatePath } from "next/cache";

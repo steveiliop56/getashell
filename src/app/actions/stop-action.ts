@@ -2,7 +2,7 @@
 import QueriesService from "@/server/queries/queries.service";
 import { ContainerData, OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
-import { logger } from "@/utils/logger";
+import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
 
 export async function stopShellActionAsync(
