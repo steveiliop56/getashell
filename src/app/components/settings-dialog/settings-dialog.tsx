@@ -1,6 +1,6 @@
 "use client";
 
-import { removeAsync } from "../../actions/remove-action";
+import { removeShellAsync } from "../../actions/remove-action";
 import { ContainerData } from "@/types/types";
 import { GearIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import {
@@ -28,7 +28,7 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
   const handleDelete = async () => {
     setOpen(false);
     toast.info(`Deleting ${shell.name}...`);
-    const { success } = await removeAsync(shell.id);
+    const { success } = await removeShellAsync(shell.id);
     if (success) {
       toast.success("Shell deleted!");
     } else {

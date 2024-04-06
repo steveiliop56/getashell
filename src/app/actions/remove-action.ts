@@ -5,7 +5,7 @@ import { OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
 import { revalidatePath } from "next/cache";
 
-export async function removeAsync(id: number): Promise<OperationResult> {
+export async function removeShellAsync(id: number): Promise<OperationResult> {
   const shell = await QueriesService.getShellFromIdAsync(id);
   if (!shell) {
     console.log(`Shell with id ${id} does not exist, so we can safely return a success.`);
