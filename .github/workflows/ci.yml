@@ -1,4 +1,4 @@
-name: Pull Request Build
+name: Get A Shell CI
 
 on:
   pull_request:
@@ -13,9 +13,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
       - name: Setup Node
         uses: actions/setup-node@v4
-      - name: npm install
+
+      - name: Install packages
         run: npm ci
-      - name: npm build
+
+      - name: Build
         run: npm run build
