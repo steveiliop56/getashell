@@ -1,7 +1,7 @@
 "use client";
 
-import { remove } from "../../actions/remove-action";
-import { containerData } from "@/types/types";
+import { removeAsync } from "../../actions/remove-action";
+import { ContainerData } from "@/types/types";
 import { GearIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import {
   Button,
@@ -14,10 +14,10 @@ import {
 } from "@radix-ui/themes";
 import React, { FormEvent } from "react";
 import { toast } from "react-toastify";
-import { change } from "@/app/actions/change-password-action";
+import { changeShellPasswordAsync } from "@/app/actions/change-password-action";
 
 interface shellData {
-  shell: containerData;
+  shell: ContainerData;
 }
 
 export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
@@ -28,7 +28,7 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
   const handleDelete = async () => {
     setOpen(false);
     toast.info(`Deleting ${shell.name}...`);
-    const { success } = await remove(shell.id);
+    const { success } = await removeAsync(shell.id);
     if (success) {
       toast.success("Shell deleted!");
     } else {
@@ -44,7 +44,7 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
     const newPassword = new FormData(e.currentTarget).get(
       "new-password",
     ) as string;
-    const { success } = await change(shell, newPassword);
+    const { success } = await changeShellPasswordAsync(shell, newPassword);
     if (success) {
       toast.success("Password changed successfully!");
     } else {

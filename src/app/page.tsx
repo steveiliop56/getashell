@@ -1,11 +1,11 @@
 "use server";
 
 import { Flex, Heading } from "@radix-ui/themes";
-import { getShells } from "../server/queries/queries";
 import { ShellActions } from "./components/shell-actions";
+import QueriesService from "@/server/queries/queries.service";
 
 export default async function home() {
-  const shellData = await getShells();
+  const shellData = await QueriesService.getShellsAsync();
   return (
     <>
       <Flex className="flex-col p-10 justify-center items-center text-center">

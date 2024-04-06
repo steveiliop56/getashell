@@ -1,18 +1,17 @@
 "use server";
-
-import { changeShellRunningStatus } from "@/server/queries/queries";
-import { containerData } from "@/types/types";
-import { containerHelpers } from "@/utils/container-helpers";
+import QueriesService from "@/server/queries/queries.service";
+import { ContainerData, OperationResult } from "@/types/types";
+import ContainerService from "@/utils/container.service";
 import { revalidatePath } from "next/cache";
 
-export const stop = async (shell: containerData) => {
+export async function stopShellAsync (shell: ContainerData): Promise<OperationResult> {
   shell.running = false;
-  const { success, error } = await new containerHelpers(shell).stopContainer();
+  const { success, error } = await new ContainerService(shell).stopContainerAsync();
 
   if (success) {
     console.log("Shell stopped!");
     revalidatePath("/", "layout");
-    await changeShellRunningStatus(shell);
+    await QueriesService.changeShellRunningStatusAsync(shell);
     return { success: true };
   }
 

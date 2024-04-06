@@ -1,23 +1,23 @@
 import * as util from "util";
 import { exec as execCallback } from "child_process";
-import { containerData } from "../types/types";
+import { ContainerData, OperationResult } from "../types/types";
 
-export class containerHelpers {
-  shell: containerData;
+export default class ContainerService {
+  shell: ContainerData;
   exec: Function;
   containerName: string;
 
-  constructor(shell: containerData) {
+  constructor(shell: ContainerData) {
     this.shell = shell;
     this.exec = util.promisify(execCallback);
     this.containerName = `${this.shell.name}-${this.shell.distro}`;
   }
 
-  private handleError = (error: unknown, job: string) => {
+  private handleError(error: unknown, job: string) {
     console.error(`Error running job ${job}!\nError: ${error}`);
   };
 
-  private findImage = async () => {
+  private async findImageAsync(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
         `docker image ls --format "{{.Repository}}::{{.Tag}}"`,
@@ -36,9 +36,9 @@ export class containerHelpers {
     }
   };
 
-  private buildImage = async () => {
+  private async buildImageAsync(): Promise<OperationResult> {
     try {
-      const { message, error, success } = await this.findImage();
+      const { message, error, success } = await this.findImageAsync();
 
       if (success && message == "not-found") {
         const { stdout, stderr } = await this.exec(
@@ -59,7 +59,7 @@ export class containerHelpers {
     }
   };
 
-  private findContainer = async () => {
+  private async findContainerAsync(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
         `docker container ls -a --format "{{.Names}}"`,
@@ -81,7 +81,7 @@ export class containerHelpers {
     }
   };
 
-  private removeVolume = async () => {
+  private async removeVolumeAsync(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
         `docker volume rm -f ${this.shell.name}-${this.shell.distro}`,
@@ -98,7 +98,7 @@ export class containerHelpers {
     }
   };
 
-  public changePassword = async () => {
+  public async changePasswordAsync(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
         `docker exec ${this.containerName} sh -c "echo ${this.shell.distro}:${this.shell.password} | chpasswd"`,
@@ -117,9 +117,9 @@ export class containerHelpers {
     }
   };
 
-  public removeContainer = async () => {
+  public async removeContainerAsync(): Promise<OperationResult> {
     try {
-      const { success, error, message } = await this.findContainer();
+      const { success, error, message } = await this.findContainerAsync();
 
       if (success && message == "found") {
         const { stdout, stderr } = await this.exec(
@@ -130,7 +130,7 @@ export class containerHelpers {
           throw stderr;
         }
 
-        await this.removeVolume();
+        await this.removeVolumeAsync();
       } else if (error) {
         throw error;
       }
@@ -142,12 +142,12 @@ export class containerHelpers {
     }
   };
 
-  public createContainer = async () => {
+  public async createContainerAsync(): Promise<OperationResult> {
     try {
-      const { success, error } = await this.buildImage();
+      const { success, error } = await this.buildImageAsync();
 
       if (success) {
-        await this.removeContainer();
+        await this.removeContainerAsync();
 
         const dockerArguments = `-t -d --restart unless-stopped --name ${this.containerName} --hostname ${this.containerName} --volume ${this.containerName}:/home/${this.shell.distro} -p ${this.shell.port}:22 ${this.shell.extraArgs}`;
         const { stdout, stderr } = await this.exec(
@@ -158,7 +158,7 @@ export class containerHelpers {
           throw stderr;
         }
 
-        await this.changePassword();
+        await this.changePasswordAsync();
       } else if (error) {
         throw error;
       }
@@ -170,7 +170,7 @@ export class containerHelpers {
     }
   };
 
-  public stopContainer = async () => {
+  public async stopContainerAsync(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = this.exec(`docker stop ${this.containerName}`);
 
@@ -185,7 +185,7 @@ export class containerHelpers {
     }
   };
 
-  public startContainer = async () => {
+  public async startContainerAsync(): Promise<OperationResult>  {
     try {
       const { stdout, stderr } = this.exec(
         `docker start ${this.containerName}`,
