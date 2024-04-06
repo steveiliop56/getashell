@@ -2,6 +2,7 @@
 import QueriesService from "@/server/queries/queries.service";
 import { ContainerData, OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
+import { logger } from "@/utils/logger";
 import { revalidatePath } from "next/cache";
 
 export async function stopShellActionAsync(
@@ -13,12 +14,12 @@ export async function stopShellActionAsync(
   ).stopContainerAsync();
 
   if (success) {
-    console.log("Shell stopped!");
+    logger.info("Shell stopped!");
     revalidatePath("/", "layout");
     await QueriesService.changeShellRunningStatusAsync(shell);
     return { success: true };
   }
 
-  console.error(`Failed to stop ${shell.name}! Error: ${error}`);
+  logger.error(`Failed to stop ${shell.name}! Error: ${error}`);
   return { success: false };
 }

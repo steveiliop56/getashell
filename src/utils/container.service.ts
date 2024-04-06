@@ -1,20 +1,23 @@
 import * as util from "util";
 import { exec as execCallback } from "child_process";
 import { ContainerData, OperationResult } from "../types/types";
+import { logger } from "./logger";
 
 export default class ContainerService {
   shell: ContainerData;
   exec: Function;
   containerName: string;
+  logger: typeof logger;
 
   constructor(shell: ContainerData) {
     this.shell = shell;
     this.exec = util.promisify(execCallback);
     this.containerName = `${this.shell.name}-${this.shell.distro}`;
+    this.logger = logger;
   }
 
   private handleError(error: unknown, job: string) {
-    console.error(`Error running job ${job}!\nError: ${error}`);
+    this.logger.error(`Error running job ${job}!\nError: ${error}`);
   }
 
   private async findImageAsync(): Promise<OperationResult> {

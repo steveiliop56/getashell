@@ -2,6 +2,7 @@ import { exec as execCallback } from "child_process";
 import * as util from "util";
 import { getConfig } from "../config/config";
 import QueriesService from "@/server/queries/queries.service";
+import { logger } from "./logger";
 
 export default class PortService {
   private static exec = util.promisify(execCallback);
@@ -10,16 +11,16 @@ export default class PortService {
     let port: number | undefined;
     do {
       if (port)
-        console.log(`Port ${port} isn't available. Generating a new port...`);
+        logger.warn(`Port ${port} isn't available. Generating a new port...`);
       port = this.generateRandomPort();
-      console.log(
+      logger.info(
         `Generated port ${port}. Checking it's not already in use...`,
       );
     } while (
       !(await this.checkPortIsAvailableAsync(port)).success ||
       !QueriesService.isPortAvailableAsync(port)
     );
-    console.log(`Success! Using port ${port}`);
+    logger.info(`Success! Using port ${port}`);
     return port;
   }
 
