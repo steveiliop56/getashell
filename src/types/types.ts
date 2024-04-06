@@ -1,4 +1,4 @@
-export interface containerData {
+export interface ContainerData {
   id: number;
   distro: string;
   name: string;
@@ -6,4 +6,11 @@ export interface containerData {
   password: string;
   extraArgs: string | null;
   running: boolean | null;
+}
+
+export interface OperationResult {
+  success: boolean;
+  error?: unknown;
+  message?: string;
+  [key: string]: unknown;
 }

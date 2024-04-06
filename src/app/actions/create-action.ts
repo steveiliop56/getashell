@@ -1,50 +1,44 @@
 "use server";
 
-import {
-  addShell,
-  checkIfShellExists,
-  getShellIds,
-  portAvailable,
-} from "../../server/queries/queries";
-import { containerHelpers } from "../../utils/container-helpers";
+import QueriesService from "@/server/queries/queries.service";
+import { OperationResult } from "@/types/types";
+import ContainerService from "@/utils/container.service";
+import PortService from "@/utils/port.service";
+import RandomService from "@/utils/random.service";
 import { revalidatePath } from "next/cache";
-import {
-  createRandomPassowrd,
-  createRandomPort,
-} from "../../utils/random-generator";
-import { availablePortChecker } from "../../utils/port-checker";
 
-export async function create(name: string, distro: string, extraArgs: string) {
+export async function createShellActionAsync(
+  name: string,
+  distro: string,
+  extraArgs: string,
+): Promise<OperationResult> {
   console.log(
     `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`,
   );
 
-  if (await checkIfShellExists(name)) {
+  if (await QueriesService.checkIfShellExistsAsync(name)) {
     return { success: false, shellExists: true };
   }
 
-  let port = createRandomPort();
-  console.log(port);
-
-  while (!(await availablePortChecker(port)).success || !portAvailable(port)) {
-    port = createRandomPort();
-  }
+  let port = await PortService.getAvailablePortAsync();
 
   const data = {
-    id: (await getShellIds()) + 1,
+    id: (await QueriesService.getShellIdsAsync()) + 1,
     distro: distro,
     name: name,
     port: port,
-    password: createRandomPassowrd(),
+    password: RandomService.createRandomPassword(),
     extraArgs: extraArgs,
     running: true,
   };
 
-  const { success, error } = await new containerHelpers(data).createContainer();
+  const { success, error } = await new ContainerService(
+    data,
+  ).createContainerAsync();
 
   if (success) {
     console.log("Server ready!");
-    await addShell(data);
+    await QueriesService.addShellAsync(data);
     revalidatePath("/", "layout");
     return { success: true };
   }

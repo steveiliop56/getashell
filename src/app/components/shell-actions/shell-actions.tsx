@@ -1,12 +1,12 @@
 "use client";
 
-import { containerData } from "@/types/types";
+import { ContainerData } from "@/types/types";
 import { Flex, Separator } from "@radix-ui/themes";
 import { CreateShellForm } from "../create-shell-form";
 import { renderShell } from "../render-shell";
 
 interface shellDataType {
-  shellData: containerData[];
+  shellData: ContainerData[];
 }
 
 export const ShellActions = (shellData: shellDataType) => {
@@ -16,7 +16,7 @@ export const ShellActions = (shellData: shellDataType) => {
       <CreateShellForm />
       <Separator my="3" size="4" />
       <Flex className="flex-col gap-2">
-        {shells.map((shell: containerData) => renderShell(shell))}
+        {shells.map((shell: ContainerData) => renderShell(shell))}
       </Flex>
     </Flex>
   );
