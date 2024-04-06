@@ -9,10 +9,16 @@ export default class PortService {
   public static async getAvailablePortAsync(): Promise<number> {
     let port: number | undefined;
     do {
-      if (port) console.log(`Port ${port} isn't available. Generating a new port...`);
+      if (port)
+        console.log(`Port ${port} isn't available. Generating a new port...`);
       port = this.generateRandomPort();
-      console.log(`Generated port ${port}. Checking it's not already in use...`)
-    } while (!(await this.checkPortIsAvailableAsync(port)).success || !QueriesService.isPortAvailableAsync(port));
+      console.log(
+        `Generated port ${port}. Checking it's not already in use...`,
+      );
+    } while (
+      !(await this.checkPortIsAvailableAsync(port)).success ||
+      !QueriesService.isPortAvailableAsync(port)
+    );
     console.log(`Success! Using port ${port}`);
     return port;
   }
@@ -21,7 +27,9 @@ export default class PortService {
     return Math.floor(Math.random() * (10000 - 1023)) + 1023;
   }
 
-  private static async checkPortIsAvailableAsync(port: number): Promise<{success: boolean, error: unknown}> {
+  private static async checkPortIsAvailableAsync(
+    port: number,
+  ): Promise<{ success: boolean; error: unknown }> {
     try {
       const { ncHost } = getConfig();
       const { stdout: tcpStdout, stderr: tcpStderr } = await PortService.exec(

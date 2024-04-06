@@ -7,7 +7,11 @@ import PortService from "@/utils/port.service";
 import RandomService from "@/utils/random.service";
 import { revalidatePath } from "next/cache";
 
-export async function createShellAsync(name: string, distro: string, extraArgs: string): Promise<OperationResult> {
+export async function createShellAsync(
+  name: string,
+  distro: string,
+  extraArgs: string,
+): Promise<OperationResult> {
   console.log(
     `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`,
   );
@@ -28,7 +32,9 @@ export async function createShellAsync(name: string, distro: string, extraArgs: 
     running: true,
   };
 
-  const { success, error } = await new ContainerService(data).createContainerAsync();
+  const { success, error } = await new ContainerService(
+    data,
+  ).createContainerAsync();
 
   if (success) {
     console.log("Server ready!");

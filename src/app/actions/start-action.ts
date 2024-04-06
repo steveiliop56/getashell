@@ -5,9 +5,13 @@ import { ContainerData, OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
 import { revalidatePath } from "next/cache";
 
-export async function startShellAsync(shell: ContainerData): Promise<OperationResult> {
+export async function startShellAsync(
+  shell: ContainerData,
+): Promise<OperationResult> {
   shell.running = true;
-  const { success, error } = await new ContainerService(shell).startContainerAsync();
+  const { success, error } = await new ContainerService(
+    shell,
+  ).startContainerAsync();
 
   if (success) {
     console.log("Shell started!");
@@ -18,4 +22,4 @@ export async function startShellAsync(shell: ContainerData): Promise<OperationRe
 
   console.error(`Failed to start ${shell.name}! Error: ${error}`);
   return { success: false };
-};
+}

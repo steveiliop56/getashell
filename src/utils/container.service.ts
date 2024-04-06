@@ -15,7 +15,7 @@ export default class ContainerService {
 
   private handleError(error: unknown, job: string) {
     console.error(`Error running job ${job}!\nError: ${error}`);
-  };
+  }
 
   private async findImageAsync(): Promise<OperationResult> {
     try {
@@ -34,7 +34,7 @@ export default class ContainerService {
       this.handleError(e, "findImage");
       return { success: false, error: e };
     }
-  };
+  }
 
   private async buildImageAsync(): Promise<OperationResult> {
     try {
@@ -57,7 +57,7 @@ export default class ContainerService {
       this.handleError(e, "buildImage");
       return { success: false, error: e };
     }
-  };
+  }
 
   private async findContainerAsync(): Promise<OperationResult> {
     try {
@@ -79,7 +79,7 @@ export default class ContainerService {
       this.handleError(e, "findContainer");
       return { success: false, error: e };
     }
-  };
+  }
 
   private async removeVolumeAsync(): Promise<OperationResult> {
     try {
@@ -96,7 +96,7 @@ export default class ContainerService {
       this.handleError(e, "removeVolume");
       return { success: false, error: e };
     }
-  };
+  }
 
   public async changePasswordAsync(): Promise<OperationResult> {
     try {
@@ -115,7 +115,7 @@ export default class ContainerService {
       this.handleError(e, "changePassword");
       return { success: false, error: e };
     }
-  };
+  }
 
   public async removeContainerAsync(): Promise<OperationResult> {
     try {
@@ -140,7 +140,7 @@ export default class ContainerService {
       this.handleError(e, "removeContainer");
       return { success: false, error: e };
     }
-  };
+  }
 
   public async createContainerAsync(): Promise<OperationResult> {
     try {
@@ -168,7 +168,7 @@ export default class ContainerService {
       this.handleError(e, "createContainer");
       return { success: false, error: e };
     }
-  };
+  }
 
   public async stopContainerAsync(): Promise<OperationResult> {
     try {
@@ -183,9 +183,9 @@ export default class ContainerService {
       this.handleError(e, "stopContainer");
       return { success: false, error: e };
     }
-  };
+  }
 
-  public async startContainerAsync(): Promise<OperationResult>  {
+  public async startContainerAsync(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = this.exec(
         `docker start ${this.containerName}`,
@@ -200,5 +200,5 @@ export default class ContainerService {
       this.handleError(e, "startContainer");
       return { success: false, error: e };
     }
-  };
+  }
 }

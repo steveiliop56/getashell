@@ -4,9 +4,13 @@ import { ContainerData, OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
 import { revalidatePath } from "next/cache";
 
-export async function stopShellAsync (shell: ContainerData): Promise<OperationResult> {
+export async function stopShellAsync(
+  shell: ContainerData,
+): Promise<OperationResult> {
   shell.running = false;
-  const { success, error } = await new ContainerService(shell).stopContainerAsync();
+  const { success, error } = await new ContainerService(
+    shell,
+  ).stopContainerAsync();
 
   if (success) {
     console.log("Shell stopped!");
@@ -17,4 +21,4 @@ export async function stopShellAsync (shell: ContainerData): Promise<OperationRe
 
   console.error(`Failed to stop ${shell.name}! Error: ${error}`);
   return { success: false };
-};
+}

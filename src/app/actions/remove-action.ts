@@ -8,8 +8,10 @@ import { revalidatePath } from "next/cache";
 export async function removeShellAsync(id: number): Promise<OperationResult> {
   const shell = await QueriesService.getShellFromIdAsync(id);
   if (!shell) {
-    console.log(`Shell with id ${id} does not exist, so we can safely return a success.`);
-    return {success: true};
+    console.log(
+      `Shell with id ${id} does not exist, so we can safely return a success.`,
+    );
+    return { success: true };
   }
   const remove = await new ContainerService(shell).removeContainerAsync();
 

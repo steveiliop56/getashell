@@ -12,5 +12,5 @@ export interface OperationResult {
   success: boolean;
   error?: unknown;
   message?: string;
-  [key: string]: unknown
+  [key: string]: unknown;
 }

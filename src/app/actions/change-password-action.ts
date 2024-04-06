@@ -5,10 +5,15 @@ import { ContainerData, OperationResult } from "../../types/types";
 import QueriesService from "@/server/queries/queries.service";
 import ContainerService from "@/utils/container.service";
 
-export async function changeShellPasswordAsync(shell: ContainerData, newPassword: string): Promise<OperationResult> {
+export async function changeShellPasswordAsync(
+  shell: ContainerData,
+  newPassword: string,
+): Promise<OperationResult> {
   shell.password = newPassword;
 
-  const { success, error } = await new ContainerService(shell).changePasswordAsync();
+  const { success, error } = await new ContainerService(
+    shell,
+  ).changePasswordAsync();
 
   if (success) {
     console.log("Password changed!");
@@ -19,4 +24,4 @@ export async function changeShellPasswordAsync(shell: ContainerData, newPassword
 
   console.log(`Error changing password! Error: ${error}`);
   return { success: false };
-};
+}
