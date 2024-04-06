@@ -3,6 +3,7 @@
 import QueriesService from "@/server/queries/queries.service";
 import { OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
+import { logger } from "@/utils/logger";
 import PortService from "@/utils/port.service";
 import RandomService from "@/utils/random.service";
 import { revalidatePath } from "next/cache";
@@ -12,7 +13,7 @@ export async function createShellActionAsync(
   distro: string,
   extraArgs: string,
 ): Promise<OperationResult> {
-  console.log(
+  logger.info(
     `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`,
   );
 
@@ -37,11 +38,11 @@ export async function createShellActionAsync(
   ).createContainerAsync();
 
   if (success) {
-    console.log("Server ready!");
+    logger.info("Server ready!");
     await QueriesService.addShellAsync(data);
     revalidatePath("/", "layout");
     return { success: true };
   }
-  console.error(`Failed to bake server: ${error}`);
+  logger.warn(`Failed to bake server: ${error}`);
   return { success: false };
 }

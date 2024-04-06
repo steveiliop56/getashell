@@ -3,6 +3,7 @@
 import QueriesService from "@/server/queries/queries.service";
 import { OperationResult } from "@/types/types";
 import ContainerService from "@/utils/container.service";
+import { logger } from "@/utils/logger";
 import { revalidatePath } from "next/cache";
 
 export async function removeShellActionAsync(
@@ -10,7 +11,7 @@ export async function removeShellActionAsync(
 ): Promise<OperationResult> {
   const shell = await QueriesService.getShellFromIdAsync(id);
   if (!shell) {
-    console.log(
+    logger.info(
       `Shell with id ${id} does not exist, so we can safely return a success.`,
     );
     return { success: true };
@@ -18,12 +19,12 @@ export async function removeShellActionAsync(
   const remove = await new ContainerService(shell).removeContainerAsync();
 
   if (remove.success) {
-    console.log("Container killed! Removing from db...");
+    logger.info("Container killed! Removing from db...");
     await QueriesService.deleteShellAsync(id);
     revalidatePath("/", "layout");
     return { success: true };
   }
-  console.error(
+  logger.warn(
     `Cannot remove container, still removing from db, error: ${remove.error}`,
   );
   await QueriesService.deleteShellAsync(id);
