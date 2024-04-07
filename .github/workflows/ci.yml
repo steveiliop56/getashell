@@ -39,7 +39,7 @@ jobs:
           files: dockerfiles/Dockerfile.*
           json: true
           quotepath: false
-          dir_names: flase
+          dir_names: false
 
       - name: Set unique changed Dockerfiles as matrix
         id: set-matrix
