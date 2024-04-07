@@ -24,6 +24,7 @@ jobs:
         run: npm run build
 
   list-dockerfiles:
+    needs: build
     runs-on: ubuntu-latest
     name: Detect Dockerfiles
     outputs:
@@ -31,7 +32,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - id: set-matrix
-        run: echo "{matrix}={$(ls dockerfiles/Dockerfile.* | jq -R -s -c 'split("\n")[:-1]')}" >> $GITHUB_OUTPUT
+        run: echo "matrix={\"dockerfiles\":$(ls dockerfiles/Dockerfile.* | jq -R -s -c 'split("\n")[:-1]')}" >> $GITHUB_OUTPUT
     
   build-dockerfiles:
     needs: list-dockerfiles
