@@ -1,0 +1,16 @@
+FROM oraclelinux:9
+
+RUN dnf update -y && dnf install openssh-server sudo -y
+
+RUN groupadd sudo
+RUN echo '%sudo ALL=(ALL:ALL) ALL' > /etc/sudoers.d/sudo
+
+RUN adduser oraclelinux
+RUN usermod -aG sudo oraclelinux
+
+RUN mkdir /run/sshd
+RUN ssh-keygen -A
+
+EXPOSE 22
+
+CMD ["/usr/sbin/sshd", "-D"]

@@ -6,11 +6,15 @@ import { FormEvent } from "react";
 import { toast } from "react-toastify";
 
 const availableDistos = {
-  debian: "Debian",
-  ubuntu: "Ubuntu",
-  alpine: "Alpine",
-  fedora: "Fedora",
-  rockylinux: "Rocky Linux",
+  almalinux: "AlmaLinux 8",
+  alpine: "Alpine 3.19.1",
+  amazonlinux: "Amazon Linux 2023",
+  archlinux: "ArchLinux",
+  debian: "Debian 12",
+  fedora: "Fedora 41",
+  oraclelinux: "Oracle Linux 9",
+  rockylinux: "Rocky Linux 9.3",
+  ubuntu: "Ubuntu 22.04",
 };
 
 export const CreateShellForm = () => {
