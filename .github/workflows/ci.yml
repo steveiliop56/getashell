@@ -35,7 +35,7 @@ jobs:
         with: 
           fetch-depth: 0
       - name: Get changed Dockerfiles
-        uses: tj-actions/changed-files@v41
+        uses: tj-actions/changed-files@v44
         id: list-changed-dockerfiles
         with:
           files: dockerfiles/Dockerfile.*
