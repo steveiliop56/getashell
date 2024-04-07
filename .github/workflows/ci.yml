@@ -22,3 +22,24 @@ jobs:
 
       - name: Build
         run: npm run build
+
+  list-dockerfiles:
+    runs-on: ubuntu-latest
+    name: Detect Dockerfiles
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: set-matrix
+        run: echo "::set-output name=matrix::$ls dockerfiles/Dockerfile.* | jq -R -s -c 'split("\n")[:-1]')"
+    
+  build-dockerfiles:
+    needs: list-dockerfiles
+    runs-on: ubuntu-latest
+    name: Build Dockerfiles
+    strategy:
+      matrix:
+        dockerfile: ${{ fromJson(needs.list-dockerfiles.outputs.matrix) }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build - ${{ matrix.dockerfile }}
