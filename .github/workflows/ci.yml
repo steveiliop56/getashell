@@ -26,11 +26,11 @@ jobs:
   list-changed-dockerfiles:
     needs: build
     runs-on: ubuntu-latest
-    name: Detect Dockerfiles
+    name: Detect changed Dockerfiles
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - name: Chekcout
+      - name: Checkout
         uses: actions/checkout@v4
       - name: Get changed Dockerfiles
         uses: tj-actions/changed-files@v41
