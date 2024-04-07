@@ -59,3 +59,17 @@ jobs:
         uses: docker/setup-buildx-action@v3
       - name: Build Docker image for ${{ matrix.files }}
         run: docker build -f ${{ matrix.files }} .
+
+  build-get-a-shell-dockerfile:
+    needs: [build-dockerfiles]
+    runs-on: ubuntu-latest
+    name: Build GetAShell Dockerfile
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build Docker image
+        run: docker build -f Dockerfile .
