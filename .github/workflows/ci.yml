@@ -23,24 +23,37 @@ jobs:
       - name: Build
         run: npm run build
 
-  list-dockerfiles:
+  list-changed-dockerfiles:
     needs: build
     runs-on: ubuntu-latest
     name: Detect Dockerfiles
     outputs:
       matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-      - uses: actions/checkout@v4
-      - id: set-matrix
-        run: echo "matrix={\"dockerfiles\":$(ls dockerfiles/Dockerfile.* | jq -R -s -c 'split("\n")[:-1]')}" >> $GITHUB_OUTPUT
+      - name: Chekcout
+        uses: actions/checkout@v4
+      - name: Get changed Dockerfiles
+        uses: tj-actions/changed-files@v41
+        id: list-changed-dockerfiles
+        with:
+          files: dockerfiles/Dockerfile.*
+          json: true
+          quotepath: false
+          dir_names: flase
+
+      - name: Set unique changed Dockerfiles as matrix
+        id: set-matrix
+        run: echo "matrix={\"dockerfile\":${{ steps.list-changed-dockerfiles.outputs.all-changed-files }}}" >> $GITHUB_OUTPUT
     
   build-dockerfiles:
-    needs: list-dockerfiles
+    needs: list-changed-dockerfiles
     runs-on: ubuntu-latest
     name: Build Dockerfiles
     strategy:
-      matrix:
-        dockerfiles: ${{ fromJson(needs.list-dockerfiles.outputs.matrix) }}
+      fail-fast: false
+      matrix: ${{ fromJson(needs.list-changed-dockerfiles.outputs.matrix) }}
     steps:
-      - uses: actions/checkout@v4
-      - run: docker build - ${{ matrix.dockerfiles }}
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Build Docker image for ${{ matrix.dockerfile }}
+        run: docker build - ${{ matrix.dockerfile }}
