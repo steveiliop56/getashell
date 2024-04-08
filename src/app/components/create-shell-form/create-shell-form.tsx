@@ -1,19 +1,18 @@
 "use client";
 
+import { SupportedDistros } from "@/types/types";
 import { createShellActionAsync } from "../../actions/create-action";
 import { Button, Flex, Select, TextField } from "@radix-ui/themes";
-import { FormEvent } from "react";
+import React, { FormEvent } from "react";
 import { toast } from "react-toastify";
 
-const availableDistos = {
-  debian: "Debian",
-  ubuntu: "Ubuntu",
-  alpine: "Alpine",
-  fedora: "Fedora",
-  rockylinux: "Rocky Linux",
-};
+interface initialData {
+  availableDistros: SupportedDistros;
+}
 
-export const CreateShellForm = () => {
+export const CreateShellForm: React.FC<initialData> = ({
+  availableDistros,
+}) => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
@@ -45,9 +44,9 @@ export const CreateShellForm = () => {
           <Select.Trigger placeholder="Select" />
           <Select.Content>
             <Select.Group>
-              {Object.keys(availableDistos).map((distro: string) => (
+              {Object.keys(availableDistros).map((distro: string) => (
                 <Select.Item value={distro} key={distro}>
-                  {availableDistos[distro as keyof typeof availableDistos]}
+                  {availableDistros[distro].name.toString()}
                 </Select.Item>
               ))}
             </Select.Group>

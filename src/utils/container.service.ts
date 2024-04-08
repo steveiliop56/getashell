@@ -17,7 +17,7 @@ export default class ContainerService {
   }
 
   private handleError(error: unknown, job: string) {
-    this.logger.error(`Error running job ${job}!\nError: ${error}`);
+    this.logger.error(`Error running job ${job}! Error: ${error}`);
   }
 
   private async findImageAsync(): Promise<OperationResult> {
