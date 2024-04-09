@@ -34,7 +34,7 @@ docker run -td --name getashell -p 3000:3000 --add-host=host.docker.internal:hos
 
 ### Contributing ❤️
 
-As I mentioned above I am fairly new to all these technologies and my code may be _probably is_ terrifying to look at. Any contributions on fixing my mistakes (lol) are welcome.
+As I mentioned above I am fairly new to all these technologies and my code may be _probably is_ terrifying to look at. Any contributions on fixing my mistakes (lol) are welcome. In order to get started follow the Contribution Guide [here](CONTRIBUTING.md).
 
 ### License 📜
 
