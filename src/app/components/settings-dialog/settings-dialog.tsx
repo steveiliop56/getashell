@@ -45,6 +45,7 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
   const handlePasswordSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPasswdEdit(false);
+    setOpen(false);
     const newPassword = new FormData(e.currentTarget).get(
       "new-password",
     ) as string;

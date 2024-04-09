@@ -62,10 +62,10 @@ export default class ContainerService {
     }
   }
 
-  private async findContainerAsync(): Promise<OperationResult> {
+  private async findContainerAsync(all: boolean): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
-        `docker container ls -a --format "{{.Names}}"`,
+        `docker container ls ${all ? "-a" : ""} --format "{{.Names}}"`,
       );
 
       if (
@@ -103,14 +103,22 @@ export default class ContainerService {
 
   public async changePasswordAsync(): Promise<OperationResult> {
     try {
-      const { stdout, stderr } = await this.exec(
-        `docker exec ${this.containerName} sh -c "echo ${this.shell.distro}:${this.shell.password} | chpasswd"`,
-      );
+      const running = await this.findContainerAsync(false);
 
-      if (stderr && stderr.includes("chpasswd")) {
-        console.warn(`Possible chpasswd error: ${stderr}`);
-      } else if (stderr) {
-        throw stderr;
+      if (running.message == "found" && !running.error) {
+        const { stdout, stderr } = await this.exec(
+          `docker exec ${this.containerName} sh -c "echo ${this.shell.distro}:${this.shell.password} | chpasswd"`,
+        );
+
+        if (stderr && stderr.includes("chpasswd")) {
+          console.warn(`Possible chpasswd error: ${stderr}`);
+        } else if (stderr) {
+          throw stderr;
+        }
+      } else if (running.message != "found") {
+        throw "Container not running/doesn't exist.";
+      } else if (running.error) {
+        throw running.error;
       }
 
       return { success: true, error: "" };
@@ -122,7 +130,7 @@ export default class ContainerService {
 
   public async removeContainerAsync(): Promise<OperationResult> {
     try {
-      const { success, error, message } = await this.findContainerAsync();
+      const { success, error, message } = await this.findContainerAsync(true);
 
       if (success && message == "found") {
         const { stdout, stderr } = await this.exec(

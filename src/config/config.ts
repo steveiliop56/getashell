@@ -18,6 +18,7 @@ export const getConfig = () => {
   logger.error(
     "Wrong env file...GOOD LUCK (nah i am joking returning dev values...)",
   );
+
   return {
     migrationDir: "migrations",
     dataDir: "data",
