@@ -66,8 +66,8 @@ COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/migrations ./migrations
-COPY ./.env.prod ./
-COPY ./distros.json ./
+COPY --from=builder /app/.env.prod ./.env
+COPY --from=builder ./distros.json ./
 COPY ./dockerfiles ./dockerfiles
 
 EXPOSE 3000
