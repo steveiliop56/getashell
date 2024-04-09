@@ -65,9 +65,9 @@ COPY --from=builder /docker/docker /usr/bin/docker
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
-COPY --from=builder /app/migrations ./migrations
-COPY --from=builder /app/.env.prod ./.env
-COPY --from=builder /app/distros.json ./
+COPY ./migrations ./migrations
+COPY ./.env.prod ./.env
+COPY ./distros.json ./
 COPY ./dockerfiles ./dockerfiles
 
 EXPOSE 3000
