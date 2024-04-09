@@ -51,7 +51,7 @@ COPY ./postcss.config.js ./
 COPY ./tailwind.config.ts ./
 COPY ./migrations ./migrations
 COPY ./distros.json ./distros.json
-COPY ./.env.prod ./
+COPY ./.env.prod ./.env
 
 RUN npm run build
 

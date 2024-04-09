@@ -27,6 +27,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
 
 # vercel
 .vercel
@@ -38,3 +39,4 @@ next-env.d.ts
 # app data
 /data
 /assets
+

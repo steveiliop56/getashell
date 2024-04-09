@@ -3,13 +3,8 @@ import { envSchema } from "@/schemas/environmentSchema";
 import dotenv from "dotenv";
 
 export const getConfig = () => {
-  if (process.env.NODE_ENV == "development") {
-    logger.info("Detected developemt environment! Using .env.dev");
-    dotenv.config({ path: ".env.dev" });
-  } else {
-    logger.info("Using production .env file!");
-    dotenv.config({ path: ".env.prod" });
-  }
+  logger.info("Loading .env file");
+  dotenv.config({ path: ".env" });
 
   if (envSchema.safeParse(process.env).success) {
     logger.info("Env file parsed!");
