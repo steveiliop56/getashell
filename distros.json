@@ -1,0 +1,22 @@
+{
+  "debian": {
+    "name": "Debian",
+    "supported_architectures": ["x64", "arm64"]
+  },
+  "ubuntu": {
+    "name": "Ubuntu",
+    "supported_architectures": ["x64", "arm64"]
+  },
+  "fedora": {
+    "name": "Fedora",
+    "supported_architectures": ["x64", "arm64"]
+  },
+  "alpine": {
+    "name": "Alpine",
+    "supported_architectures": ["x64", "arm64"]
+  },
+  "rockylinux": {
+    "name": "Rocky Linux",
+    "supported_architectures": ["x64", "arm64"]
+  }
+}

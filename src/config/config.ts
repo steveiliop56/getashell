@@ -1,6 +1,6 @@
 import { logger } from "@/lib/logger";
+import { envSchema } from "@/schemas/environmentSchema";
 import dotenv from "dotenv";
-import z from "zod";
 
 export const getConfig = () => {
   if (process.env.NODE_ENV == "development") {
@@ -10,12 +10,6 @@ export const getConfig = () => {
     logger.info("Using production .env file!");
     dotenv.config({ path: ".env.prod" });
   }
-
-  const envSchema = z.object({
-    MIGRATION_DIR: z.string(),
-    DATA_DIR: z.string(),
-    NC_HOST: z.string(),
-  });
 
   if (envSchema.safeParse(process.env).success) {
     logger.info("Env file parsed!");

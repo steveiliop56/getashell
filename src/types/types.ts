@@ -14,3 +14,10 @@ export interface OperationResult {
   message?: string;
   [key: string]: unknown;
 }
+
+export interface SupportedDistros {
+  [id: string]: {
+    name: string;
+    supported_architectures: Array<string>;
+  };
+}
