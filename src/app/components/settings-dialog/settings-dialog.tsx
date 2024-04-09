@@ -12,7 +12,7 @@ import {
   TextField,
   IconButton,
 } from "@radix-ui/themes";
-import React, { FormEvent } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { changeShellPasswordActionAsync } from "@/app/actions/change-password-action";
 
@@ -21,7 +21,11 @@ interface shellData {
 }
 
 export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
-  const sshCommand = `ssh -o StrictHostKeyChecking=no -p ${shell.port} ${shell.distro}@yourhost`;
+  const [hostname, setHostname] = useState("yourhost");
+  useEffect(() => {
+    setHostname(window.location.hostname);
+  }, []);
+  const sshCommand = `ssh -o StrictHostKeyChecking=no -p ${shell.port} ${shell.distro}@${hostname}`;
   const [open, setOpen] = React.useState(false);
   const [passwdEdit, setPasswdEdit] = React.useState(false);
 
