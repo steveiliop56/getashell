@@ -7,15 +7,6 @@ you can just spin up the ui select a distro and click _Get me a shell!_ and 💥
 
 > Warning ⚠️: The app is in early stages of development, I am still quite new to both writing full stack apps and using technologies like drizzle and react. Any contributions are welcome.
 
-### Todo
-
-- [x] Ability to pass extra arguments to shells
-- [x] Ability to save shell user data
-- [x] Handle db migrations on target computer not on build time
-- [x] Edit shell password
-- [ ] Ability to start shells on app start
-- [ ] Make the app know if shell is started or not
-
 ### Installation ⏬
 
 The installation is fast and straight forward. Just run the docker command bellow and you will have your ui ready in less than 5 minutes (depending on your internet connection lol).
