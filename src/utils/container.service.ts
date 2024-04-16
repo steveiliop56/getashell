@@ -8,16 +8,41 @@ export default class ContainerService {
   exec: Function;
   containerName: string;
   logger: typeof logger;
+  errorMessages: string[];
 
   constructor(shell: ContainerData) {
     this.shell = shell;
     this.exec = util.promisify(execCallback);
     this.containerName = `${this.shell.name}-${this.shell.distro}`;
     this.logger = logger;
+    this.errorMessages = [
+      "Error",
+      "ERROR",
+      "error",
+      "Container not running/doesn't exist.",
+      "/bin/sh: 1:",
+      "no space left on device",
+      "Error running job",
+      "Command failed",
+    ];
   }
 
-  private handleError(error: unknown, job: string) {
-    this.logger.error(`Error running job ${job}! Error: ${error}`);
+  private handleError(error: any, job: string) {
+    this.logger.info(`Job name: ${job}`);
+    let realError = false;
+    this.errorMessages.forEach((errorName) => {
+      if (error.toString().includes(errorName)) {
+        realError = true; // TODO: Find a better way to fix this
+      }
+    });
+    if (realError) {
+      this.logger.error(`Error in job ${job}. Error: ${error}`);
+      return { success: false, error: error };
+    }
+    this.logger.warn(
+      `This is probably not an error ${error} in job ${job}... Returning success...`,
+    );
+    return { success: false, error: "" };
   }
 
   private async findImageAsync(): Promise<OperationResult> {
@@ -28,14 +53,11 @@ export default class ContainerService {
 
       if (stdout.includes(`getashell:${this.shell.distro}`)) {
         return { success: true, error: "", message: "found" };
-      } else if (stderr) {
-        throw stderr;
       }
 
       return { success: true, error: "", message: "not-found" };
     } catch (e) {
-      this.handleError(e, "findImage");
-      return { success: false, error: e };
+      return this.handleError(e, "findImageAsync");
     }
   }
 
@@ -47,18 +69,12 @@ export default class ContainerService {
         const { stdout, stderr } = await this.exec(
           `docker buildx build -t getashell:${this.shell.distro} -f dockerfiles/Dockerfile.${this.shell.distro} .`,
         );
-
-        if (stderr && stderr.includes("ERROR")) {
-          throw stderr;
-        }
       } else if (error) {
         throw error;
       }
-
       return { success: true, error: "" };
     } catch (e) {
-      this.handleError(e, "buildImage");
-      return { success: false, error: e };
+      return this.handleError(e, "buildImage");
     }
   }
 
@@ -73,14 +89,11 @@ export default class ContainerService {
         stderr.includes(this.containerName)
       ) {
         return { success: true, error: "", message: "found" };
-      } else if (stderr.includes("Error")) {
-        throw stderr;
       }
 
       return { success: true, error: "", message: "not-found" };
     } catch (e) {
-      this.handleError(e, "findContainer");
-      return { success: false, error: e };
+      return this.handleError(e, "findContainer");
     }
   }
 
@@ -90,14 +103,9 @@ export default class ContainerService {
         `docker volume rm -f ${this.shell.name}-${this.shell.distro}`,
       );
 
-      if (stderr) {
-        throw stderr;
-      }
-
       return { success: true, error: "" };
     } catch (e) {
-      this.handleError(e, "removeVolume");
-      return { success: false, error: e };
+      return this.handleError(e, "removeVolume");
     }
   }
 
@@ -111,9 +119,7 @@ export default class ContainerService {
         );
 
         if (stderr && stderr.includes("chpasswd")) {
-          console.warn(`Possible chpasswd error: ${stderr}`);
-        } else if (stderr) {
-          throw stderr;
+          this.logger.warn(`Possible chpasswd error: ${stderr}`);
         }
       } else if (running.message != "found") {
         throw "Container not running/doesn't exist.";
@@ -123,8 +129,7 @@ export default class ContainerService {
 
       return { success: true, error: "" };
     } catch (e) {
-      this.handleError(e, "changePassword");
-      return { success: false, error: e };
+      return this.handleError(e, "changePassword");
     }
   }
 
@@ -137,10 +142,6 @@ export default class ContainerService {
           `docker rm -f ${this.shell.name}-${this.shell.distro}`,
         );
 
-        if (stderr) {
-          throw stderr;
-        }
-
         await this.removeVolumeAsync();
       } else if (error) {
         throw error;
@@ -148,8 +149,7 @@ export default class ContainerService {
 
       return { success: true, error: "" };
     } catch (e) {
-      this.handleError(e, "removeContainer");
-      return { success: false, error: e };
+      return this.handleError(e, "removeContainer");
     }
   }
 
@@ -165,10 +165,6 @@ export default class ContainerService {
           `docker run ${dockerArguments} getashell:${this.shell.distro}`,
         );
 
-        if (stderr && stderr.includes("Error")) {
-          throw stderr;
-        }
-
         await this.changePasswordAsync();
       } else if (error) {
         throw error;
@@ -176,8 +172,7 @@ export default class ContainerService {
 
       return { success: true, error: "" };
     } catch (e) {
-      this.handleError(e, "createContainer");
-      return { success: false, error: e };
+      return this.handleError(e, "createContainer");
     }
   }
 
@@ -187,14 +182,9 @@ export default class ContainerService {
         `docker stop ${this.containerName}`,
       );
 
-      if (stderr && stderr.includes("Error")) {
-        throw stderr;
-      }
-
       return { success: true, error: "" };
     } catch (e) {
-      this.handleError(e, "stopContainer");
-      return { success: false, error: e };
+      return this.handleError(e, "stopContainer");
     }
   }
 
@@ -204,14 +194,9 @@ export default class ContainerService {
         `docker start ${this.containerName}`,
       );
 
-      if (stderr && stderr.includes("Error")) {
-        throw stderr;
-      }
-
       return { success: true, error: "" };
     } catch (e) {
-      this.handleError(e, "startContainer");
-      return { success: false, error: e };
+      return this.handleError(e, "startContainer");
     }
   }
 }
