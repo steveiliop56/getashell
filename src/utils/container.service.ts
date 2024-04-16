@@ -29,15 +29,11 @@ export default class ContainerService {
 
   private handleError(error: any, job: string) {
     this.logger.info(`Job name: ${job}`);
-    let realError = false;
-    this.errorMessages.forEach((errorName) => {
-      if (error.toString().includes(errorName)) {
-        realError = true; // TODO: Find a better way to fix this
+    for (let i = 0; i < this.errorMessages.length; i++) {
+      if (error.toString().includes(this.errorMessages[i])) {
+        this.logger.error(`Error in job ${job}. Error: ${error}`);
+        return { success: false, error: error };
       }
-    });
-    if (realError) {
-      this.logger.error(`Error in job ${job}. Error: ${error}`);
-      return { success: false, error: error };
     }
     this.logger.warn(
       `This is probably not an error ${error} in job ${job}... Returning success...`,
@@ -78,10 +74,10 @@ export default class ContainerService {
     }
   }
 
-  private async findContainerAsync(all: boolean): Promise<OperationResult> {
+  public async findContainerAsync(running: boolean): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
-        `docker container ls ${all ? "-a" : ""} --format "{{.Names}}"`,
+        `docker container ls ${running ? "-a" : ""} --format "{{.Names}}"`,
       );
 
       if (
