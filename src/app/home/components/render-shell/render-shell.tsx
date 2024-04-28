@@ -4,14 +4,14 @@ import { ContainerData } from "@/types/types";
 import { Card, Flex, Text, Button } from "@radix-ui/themes";
 import { SettingsDialog } from "../settings-dialog";
 import { toast } from "react-toastify";
-import { stopShellActionAsync } from "../../actions/stop-action";
-import { startShellActionAsync } from "../../actions/start-action";
+import { stopShellAction } from "../../../actions/stop-action";
+import { startShellAction } from "../../../actions/start-action";
 
 export const renderShell = (shell: ContainerData) => {
   const handleStopStart = async () => {
     if (shell.running) {
       toast.info(`Stopping ${shell.name}...`);
-      const { success } = await stopShellActionAsync(shell);
+      const { success } = await stopShellAction(shell);
       if (success) {
         toast.success("Shell stopped!");
       } else {
@@ -19,7 +19,7 @@ export const renderShell = (shell: ContainerData) => {
       }
     } else {
       toast.info(`Starting ${shell.name}...`);
-      const { success } = await startShellActionAsync(shell);
+      const { success } = await startShellAction(shell);
       if (success) {
         toast.success("Shell starrted");
       } else {

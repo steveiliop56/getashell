@@ -9,3 +9,9 @@ export const shells = sqliteTable("shells", {
   extraArgs: text("extraArgs"),
   running: integer("running", { mode: "boolean" }),
 });
+
+export const users = sqliteTable("users", {
+  id: integer("id").notNull().primaryKey({ autoIncrement: true }),
+  username: text("username").notNull(),
+  passwordHash: text("passwordHash").notNull(),
+});

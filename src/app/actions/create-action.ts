@@ -2,13 +2,13 @@
 
 import QueriesService from "@/server/queries/queries.service";
 import { OperationResult } from "@/types/types";
-import ContainerService from "@/utils/container.service";
 import { logger } from "@/lib/logger";
-import PortService from "@/utils/port.service";
-import RandomService from "@/utils/random.service";
 import { revalidatePath } from "next/cache";
+import { createRandomPassword } from "@/utils/random";
+import PortHelper from "@/helpers/port.helper";
+import ContainerHelper from "@/helpers/container.helper";
 
-export async function createShellActionAsync(
+export async function createShellAction(
   name: string,
   distro: string,
   extraArgs: string,
@@ -17,29 +17,27 @@ export async function createShellActionAsync(
     `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`,
   );
 
-  if (await QueriesService.checkIfShellExistsAsync(name)) {
+  if (await QueriesService.checkIfShellExists(name)) {
     return { success: false, shellExists: true };
   }
 
-  let port = await PortService.getAvailablePortAsync();
+  let port = await PortHelper.getAvailablePort();
 
   const data = {
-    id: (await QueriesService.getShellIdsAsync()) + 1,
+    id: (await QueriesService.getShellIds()) + 1,
     distro: distro,
     name: name,
     port: port,
-    password: RandomService.createRandomPassword(),
+    password: createRandomPassword(),
     extraArgs: extraArgs,
     running: true,
   };
 
-  const { success, error } = await new ContainerService(
-    data,
-  ).createContainerAsync();
+  const { success, error } = await new ContainerHelper(data).createContainer();
 
   if (success) {
     logger.info("Server ready!");
-    await QueriesService.addShellAsync(data);
+    await QueriesService.addShell(data);
     revalidatePath("/", "layout");
     return { success: true };
   }

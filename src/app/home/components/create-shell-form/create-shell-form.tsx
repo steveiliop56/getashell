@@ -1,7 +1,7 @@
 "use client";
 
 import { SupportedDistros } from "@/types/types";
-import { createShellActionAsync } from "../../actions/create-action";
+import { createShellAction } from "../../../actions/create-action";
 import { Button, Flex, Select, TextField } from "@radix-ui/themes";
 import React, { FormEvent } from "react";
 import { toast } from "react-toastify";
@@ -19,7 +19,7 @@ export const CreateShellForm: React.FC<initialData> = ({
     toast.info(
       `Creating shell ${formData.get("name") as string} with distro ${formData.get("distro") as string}...`,
     );
-    const { success, shellExists } = await createShellActionAsync(
+    const { success, shellExists } = await createShellAction(
       formData.get("name") as string,
       formData.get("distro") as string,
       formData.get("extraArguments") as string,

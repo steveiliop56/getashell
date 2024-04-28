@@ -1,24 +1,22 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { ContainerData, OperationResult } from "../../types/types";
+import { ContainerData, OperationResult } from "@/types/types";
 import QueriesService from "@/server/queries/queries.service";
-import ContainerService from "@/utils/container.service";
+import ContainerHelper from "@/helpers/container.helper";
 import { logger } from "@/lib/logger";
 
-export async function changeShellPasswordActionAsync(
+export async function changeShellPasswordAction(
   shell: ContainerData,
   newPassword: string,
 ): Promise<OperationResult> {
   shell.password = newPassword;
 
-  const { success, error } = await new ContainerService(
-    shell,
-  ).changePasswordAsync();
+  const { success, error } = await new ContainerHelper(shell).changePassword();
 
   if (success) {
     logger.info("Password changed!");
-    await QueriesService.changeShellPasswordAsync(shell);
+    await QueriesService.changeShellPassword(shell);
     revalidatePath("/", "layout");
     return { success: true };
   }
