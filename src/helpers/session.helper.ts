@@ -1,3 +1,4 @@
+import { getConfig } from "@/config/config";
 import { SessionData } from "@/types/types";
 import { SessionOptions, getIronSession } from "iron-session";
 import { cookies } from "next/headers";
@@ -8,7 +9,7 @@ const defaultSession: SessionData = {
 };
 
 export const sessionOptions: SessionOptions = {
-  password: "H78BE3ZRH0qU1C0UATrmy90tH/skx913dxoRtlWmLhw=",
+  password: getConfig().secretKey,
   cookieName: "session",
   cookieOptions: {
     secure: false, // TODO: Use https in the future

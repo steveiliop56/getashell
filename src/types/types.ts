@@ -28,6 +28,7 @@ export interface EnvironmentData {
   ncHost: string;
   username: string;
   password: string;
+  secretKey: string;
 }
 
 export interface SessionData {

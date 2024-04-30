@@ -15,6 +15,7 @@ export const getConfig = (): EnvironmentData => {
       ncHost: process.env.NC_HOST || "",
       username: process.env.USERNAME || "",
       password: process.env.PASSWORD || "",
+      secretKey: process.env.SECRET_KEY || "",
     };
   }
 
@@ -28,5 +29,6 @@ export const getConfig = (): EnvironmentData => {
     ncHost: "127.0.0.1",
     username: "user",
     password: "password",
+    secretKey: "9mS1DztMXY42tS8XAtDQxAd2C3zT18PI",
   };
 };
