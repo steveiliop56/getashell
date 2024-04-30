@@ -29,6 +29,6 @@ export const getConfig = (): EnvironmentData => {
     ncHost: "127.0.0.1",
     username: "user",
     password: "password",
-    secretKey: "9mS1DztMXY42tS8XAtDQxAd2C3zT18PI",
+    secretKey: "verylongsupersecretkeythatnobodywillsee",
   };
 };

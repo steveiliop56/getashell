@@ -9,19 +9,27 @@ you can just spin up the ui select a distro and click _Get me a shell!_ and 💥
 
 ### Installation ⏬
 
-The installation is fast and straight forward. Just run the docker command bellow and you will have your ui ready in less than 5 minutes (depending on your internet connection lol).
+The installation is very simple and straight forward. You will firstly need to generate a super secure secret key with openssl. This can be done with this command:
 
 ```Bash
-docker run -td --name getashell -p 3000:3000 --add-host=host.docker.internal:host-gateway -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/steveiliop56/getashell:latest
+openssl rand -base64 32
 ```
 
-If you would like to store the database too run this command:
+Now you simply need to take the output (which will be something like this: `0sWoIgLqYIskcvHbe4mENjj9btHKuOS3vDdYzhob6Mg=`) and put it in the [docker-compose](docker-compose.yml) file in the `SECRET_KEY` environment variable, there you can also change your username and password.
+
+Finally just start the app with this command:
 
 ```Bash
-docker run -td --name getashell -p 3000:3000 --add-host=host.docker.internal:host-gateway -v /some/awesome/location/data:/app/data -v /var/run/docker.sock:/var/run/docker.sock ghcr.io/steveiliop56/getashell:latest
+docker compose up -d
 ```
 
-> Note 🗒️: The app right now doesn't support restarting the shells you create, moreover it has no way to know if one stopped or failed. That doesn't mean that the app can't be restarted. As long as you just restart the app itself your shells will be kept.
+Alternatively you can run the application with a simple docker run command, you will still need to run the openssl command and get the secret key though. Here is the full docker run command:
+
+```Bash
+docker run -t -d --name getashell --restart unless-stopped -p 3000:3000 -v ./data:/app/data -v /var/run/docker.sock:/var/run/docker.sock -e USERNAME=me -e PASSWORD=supersecurepassword -e SECRET_KEY=verylongsupersecretkeythatnobodywillsee --add-host host.docker.internal:host-gateway ghcr.io/steveiliop56/getashell:latest
+```
+
+> Note 🗒️: If you don't want to run all of these command you can install the app through [Runtipi](https://runtipi.io) which will configure everything for you.
 
 ### Contributing ❤️
 
