@@ -57,7 +57,7 @@ jobs:
     needs: [get-changed-dockerfiles]
     runs-on: ubuntu-latest
     name: Build Shells
-    if: ${{ ne(steps.get-changed-dockerfiles.outputs.matrix, '') }}
+    if: ${{ steps.get-changed-dockerfiles.outputs.matrix != '' }}
     strategy:
       fail-fast: false
       max-parallel: 4
