@@ -1,20 +1,17 @@
 "use server";
 
 import { Flex, Heading } from "@radix-ui/themes";
-import { cookies } from "next/headers";
 import { ShellActions } from "./components/shell-actions";
 import QueriesService from "@/server/queries/queries.service";
 import distroHelper from "@/helpers/distro.helper";
 import { redirect } from "next/navigation";
 import { LogoutButton } from "./components/logout-button";
+import { getSession } from "@/helpers/session.helper";
 
 export default async function Home() {
-  const cookieStore = cookies();
-  const cookieExists = cookieStore.has("loggedIn");
+  const session = await getSession();
 
-  if (!cookieExists) {
-    redirect("/login");
-  }
+  if (!session.isLoggedIn) redirect("/login");
 
   const shellData = await QueriesService.getShells();
   const availableDistos = new distroHelper().getDistros();

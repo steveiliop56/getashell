@@ -2,23 +2,18 @@
 
 import { loginAction } from "@/app/actions/login-action";
 import { Button, Card, Flex, TextField } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
 import { FormEvent } from "react";
 import { toast } from "react-toastify";
 
 export const LoginForm = () => {
-  const router = useRouter();
-
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
-    const { success } = await loginAction(username, password);
-    if (success) {
-      router.push("/home");
-    } else {
-      toast.error("Invalid login!");
+    const result = await loginAction({ username, password });
+    if (result) {
+      if (!result.data?.success) toast.error("Invalid login!");
     }
   };
 

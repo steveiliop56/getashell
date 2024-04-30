@@ -14,7 +14,7 @@ import {
 } from "@radix-ui/themes";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { changeShellPasswordAction } from "../../../actions/change-password-action";
+import { changeShellPasswordAction } from "../../../actions/change-shell-password-action";
 
 interface shellData {
   shell: ContainerData;
@@ -32,9 +32,15 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
   const handleDelete = async () => {
     setOpen(false);
     toast.info(`Deleting ${shell.name}...`);
-    const { success } = await removeShellAction(shell.id);
-    if (success) {
-      toast.success("Shell deleted!");
+    const result = await removeShellAction({ id: shell.id });
+    if (result.data) {
+      if (result.data.success) {
+        toast.success("Shell deleted!");
+      } else {
+        toast.error(
+          "Error in deleting shell, please check logs. Still removing from database...",
+        );
+      }
     } else {
       toast.error(
         "Error in deleting shell, please check logs. Still removing from database...",
@@ -49,9 +55,13 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
     const newPassword = new FormData(e.currentTarget).get(
       "new-password",
     ) as string;
-    const { success } = await changeShellPasswordAction(shell, newPassword);
-    if (success) {
-      toast.success("Password changed successfully!");
+    const result = await changeShellPasswordAction({ shell, newPassword });
+    if (result.data) {
+      if (result.data.success) {
+        toast.success("Password changed successfully!");
+      } else {
+        toast.error("Error in changing password! Please check logs.");
+      }
     } else {
       toast.error("Error in changing password! Please check logs.");
     }

@@ -1,19 +1,30 @@
 "use server";
 
 import { getConfig } from "@/config/config";
-import { cookies } from "next/headers";
+import { getSession } from "@/helpers/session.helper";
+import { action } from "@/lib/safe-action";
+import { redirect } from "next/navigation";
+import { z } from "zod";
 
-export async function loginAction(
-  inputUsername: string,
-  inputPassword: string,
-) {
-  const { username, password } = getConfig();
+const schema = z.object({
+  username: z.string(),
+  password: z.string(),
+});
 
-  cookies().set("loggedIn", "true");
+export const loginAction = action(schema, async ({ username, password }) => {
+  const user = {
+    username: getConfig().username,
+    password: getConfig().password,
+  };
 
-  if (username == inputUsername && password == inputPassword) {
-    return { success: true };
+  const session = await getSession();
+
+  if (user.username == username && user.password == password) {
+    session.username = user.username;
+    session.isLoggedIn = true;
+    await session.save();
+    redirect("/home");
   }
 
   return { success: false };
-}
+});

@@ -1,17 +1,10 @@
-import { sql, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { db } from "../db/db";
 import { shells } from "../db/schema";
 import { ContainerData } from "../../types/types";
 import Database from "better-sqlite3";
 
 export default class QueriesService {
-  public static async getShellIds(): Promise<number> {
-    const result = await db
-      .select({ count: sql<number>`count(*)` })
-      .from(shells);
-    return result[0].count;
-  }
-
   public static async isPortAvailable(port: number): Promise<boolean> {
     const check = await db.select().from(shells).where(eq(shells.port, port));
     return check.length == 0;
@@ -21,7 +14,6 @@ export default class QueriesService {
     data: ContainerData,
   ): Promise<Database.RunResult> {
     const result = await db.insert(shells).values({
-      id: data.id,
       distro: data.distro,
       name: data.name,
       port: data.port,

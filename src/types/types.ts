@@ -29,3 +29,8 @@ export interface EnvironmentData {
   username: string;
   password: string;
 }
+
+export interface SessionData {
+  username: string;
+  isLoggedIn: boolean;
+}

@@ -16,24 +16,21 @@ export const CreateShellForm: React.FC<initialData> = ({
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
-    toast.info(
-      `Creating shell ${formData.get("name") as string} with distro ${formData.get("distro") as string}...`,
-    );
-    const { success, shellExists } = await createShellAction(
-      formData.get("name") as string,
-      formData.get("distro") as string,
-      formData.get("extraArguments") as string,
-    );
-    if (success) {
-      toast.success(
-        `Shell ${formData.get("name") as string} successfully created!`,
-      );
-    } else if (shellExists) {
-      toast.error("Cannot create shell with same name!");
+    const name = formData.get("name") as string;
+    const distro = formData.get("distro") as string;
+    const extraArgs = formData.get("extraArguments") as string;
+    toast.info(`Creating shell ${name} with distro ${distro}...`);
+    const result = await createShellAction({ name, distro, extraArgs });
+    if (result.data) {
+      if (result.data.success) {
+        toast.success(`Shell ${name} successfully created!`);
+      } else if (result.data.shellExists) {
+        toast.error("Cannot create shell with same name!");
+      } else {
+        toast.error(`Error in creating shell ${name}! Please check logs!`);
+      }
     } else {
-      toast.error(
-        `Error in creating shell ${formData.get("name") as string}! Please check logs!`,
-      );
+      toast.error(`Error in creating shell ${name}! Please check logs!`);
     }
   };
 
