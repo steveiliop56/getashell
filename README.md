@@ -1,7 +1,6 @@
 ## Get A Shell 🐚
 
-Have you ever wanted to just spin up a quick server than you can ssh into to test something real quick? Well with get a shell
-you can just spin up the ui select a distro and click _Get me a shell!_ and 💥 you have an ssh server with your specified distro. No need to spin up vms, run commands or anything harder than a click!
+Have you ever wanted to just spin up a quick server that you can ssh into to test something real quick? Well with get a shell you can just spin up the UI select a distro and click _Get me a shell!_ and boom you have an ssh server with your specified distro. No need to spin up vms, run commands or anything harder than a click!
 
 ![Preview](screenshots/app.png)
 
@@ -29,7 +28,7 @@ Alternatively you can run the application with a simple docker run command, you 
 docker run -t -d --name getashell --restart unless-stopped -p 3000:3000 -v ./data:/app/data -v /var/run/docker.sock:/var/run/docker.sock -e USERNAME=me -e PASSWORD=supersecurepassword -e SECRET_KEY=verylongsupersecretkeythatnobodywillsee --add-host host.docker.internal:host-gateway ghcr.io/steveiliop56/getashell:latest
 ```
 
-> Note 🗒️: If you don't want to run all of these command you can install the app through [Runtipi](https://runtipi.io) which will configure everything for you.
+> Note 🗒️: If you don't want to run all of these commands you can install the app through [Runtipi](https://runtipi.io) which will configure everything for you.
 
 ### Contributing ❤️
 
