@@ -57,7 +57,7 @@ jobs:
     needs: [get-changed-dockerfiles]
     runs-on: ubuntu-latest
     name: Build Shells
-    if: ${{ fromJson(needs.get-changed-dockerfiles.outputs.matrix).files > 0 }}
+    if: ${{ ne(steps.get-changed-dockerfiles.outputs.matrix, '') }}
     strategy:
       fail-fast: false
       max-parallel: 4
