@@ -1,0 +1,16 @@
+services:
+  getashell:
+    container_name: getashell
+    image: ghcr.io/steveiliop56/getashell:latest
+    restart: unless-stopped
+    extra_hosts:
+      - host.docker.internal:host-gateway
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/app/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - USERNAME=me
+      - PASSWORD=supersecurepassword
+      - SECRET_KEY=verylongsupersecretkeythatnobodywillsee

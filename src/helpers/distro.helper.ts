@@ -2,7 +2,7 @@ import { logger } from "@/lib/logger";
 import { SupportedDistros } from "@/types/types";
 import fs from "fs";
 
-export default class distroService {
+export default class distroHelper {
   logger: typeof logger;
 
   constructor() {
@@ -53,5 +53,3 @@ export default class distroService {
     }
   };
 }
-
-new distroService().getDistros();

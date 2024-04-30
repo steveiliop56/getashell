@@ -2,25 +2,33 @@
 
 import QueriesService from "@/server/queries/queries.service";
 import { ContainerData, OperationResult } from "@/types/types";
-import ContainerService from "@/utils/container.service";
 import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
+import ContainerHelper from "@/helpers/container.helper";
+import { shellSchema } from "@/schemas/shellSchema";
+import { z } from "zod";
+import { action } from "@/lib/safe-action";
 
-export async function startShellActionAsync(
-  shell: ContainerData,
-): Promise<OperationResult> {
-  shell.running = true;
-  const { success, error } = await new ContainerService(
-    shell,
-  ).startContainerAsync();
+const schema = z.object({
+  shell: shellSchema,
+});
 
-  if (success) {
-    logger.info("Shell started!");
-    revalidatePath("/", "layout");
-    await QueriesService.changeShellRunningStatusAsync(shell);
-    return { success: true };
-  }
+export const startShellAction = action(
+  schema,
+  async ({ shell }): Promise<OperationResult> => {
+    shell.running = true;
+    const { success, error } = await new ContainerHelper(
+      shell,
+    ).startContainer();
 
-  logger.error(`Failed to start ${shell.name}! Error: ${error}`);
-  return { success: false };
-}
+    if (success) {
+      logger.info("Shell started!");
+      revalidatePath("/", "layout");
+      await QueriesService.changeShellRunningStatus(shell);
+      return { success: true };
+    }
+
+    logger.error(`Failed to start ${shell.name}! Error: ${error}`);
+    return { success: false };
+  },
+);

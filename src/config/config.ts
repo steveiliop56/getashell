@@ -1,8 +1,9 @@
 import { logger } from "@/lib/logger";
 import { envSchema } from "@/schemas/environmentSchema";
+import { EnvironmentData } from "@/types/types";
 import dotenv from "dotenv";
 
-export const getConfig = () => {
+export const getConfig = (): EnvironmentData => {
   logger.info("Loading .env file");
   dotenv.config({ path: ".env" });
 
@@ -12,6 +13,9 @@ export const getConfig = () => {
       migrationDir: process.env.MIGRATION_DIR || "",
       dataDir: process.env.DATA_DIR || "",
       ncHost: process.env.NC_HOST || "",
+      username: process.env.USERNAME || "",
+      password: process.env.PASSWORD || "",
+      secretKey: process.env.SECRET_KEY || "",
     };
   }
 
@@ -23,5 +27,8 @@ export const getConfig = () => {
     migrationDir: "migrations",
     dataDir: "data",
     ncHost: "127.0.0.1",
+    username: "user",
+    password: "password",
+    secretKey: "verylongsupersecretkeythatnobodywillsee",
   };
 };

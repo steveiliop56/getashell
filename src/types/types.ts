@@ -21,3 +21,17 @@ export interface SupportedDistros {
     supported_architectures: Array<string>;
   };
 }
+
+export interface EnvironmentData {
+  migrationDir: string;
+  dataDir: string;
+  ncHost: string;
+  username: string;
+  password: string;
+  secretKey: string;
+}
+
+export interface SessionData {
+  username: string;
+  isLoggedIn: boolean;
+}

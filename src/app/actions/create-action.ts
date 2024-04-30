@@ -2,47 +2,54 @@
 
 import QueriesService from "@/server/queries/queries.service";
 import { OperationResult } from "@/types/types";
-import ContainerService from "@/utils/container.service";
 import { logger } from "@/lib/logger";
-import PortService from "@/utils/port.service";
-import RandomService from "@/utils/random.service";
 import { revalidatePath } from "next/cache";
+import { generateString } from "@/utils/random";
+import PortHelper from "@/helpers/port.helper";
+import ContainerHelper from "@/helpers/container.helper";
+import { z } from "zod";
+import { action } from "@/lib/safe-action";
 
-export async function createShellActionAsync(
-  name: string,
-  distro: string,
-  extraArgs: string,
-): Promise<OperationResult> {
-  logger.info(
-    `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`,
-  );
+const schema = z.object({
+  name: z.string(),
+  distro: z.string(),
+  extraArgs: z.string(),
+});
 
-  if (await QueriesService.checkIfShellExistsAsync(name)) {
-    return { success: false, shellExists: true };
-  }
+export const createShellAction = action(
+  schema,
+  async ({ name, distro, extraArgs }): Promise<OperationResult> => {
+    logger.info(
+      `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`,
+    );
 
-  let port = await PortService.getAvailablePortAsync();
+    if (await QueriesService.checkIfShellExists(name)) {
+      return { success: false, shellExists: true };
+    }
 
-  const data = {
-    id: (await QueriesService.getShellIdsAsync()) + 1,
-    distro: distro,
-    name: name,
-    port: port,
-    password: RandomService.createRandomPassword(),
-    extraArgs: extraArgs,
-    running: true,
-  };
+    let port = await PortHelper.getAvailablePort();
 
-  const { success, error } = await new ContainerService(
-    data,
-  ).createContainerAsync();
+    const data = {
+      id: 0,
+      distro: distro,
+      name: name,
+      port: port,
+      password: generateString(8),
+      extraArgs: extraArgs,
+      running: true,
+    };
 
-  if (success) {
-    logger.info("Server ready!");
-    await QueriesService.addShellAsync(data);
-    revalidatePath("/", "layout");
-    return { success: true };
-  }
-  logger.warn(`Failed to bake server: ${error}`);
-  return { success: false };
-}
+    const { success, error } = await new ContainerHelper(
+      data,
+    ).createContainer();
+
+    if (success) {
+      logger.info("Server ready!");
+      await QueriesService.addShell(data);
+      revalidatePath("/", "layout");
+      return { success: true };
+    }
+    logger.warn(`Failed to bake server: ${error}`);
+    return { success: false };
+  },
+);
