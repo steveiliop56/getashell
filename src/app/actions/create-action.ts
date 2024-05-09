@@ -46,7 +46,7 @@ export const createShellAction = action(
     if (success) {
       logger.info("Server ready!");
       await QueriesService.addShell(data);
-      revalidatePath("/", "layout");
+      revalidatePath("/home", "layout");
       return { success: true };
     }
     logger.warn(`Failed to bake server: ${error}`);

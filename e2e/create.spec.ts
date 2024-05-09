@@ -1,19 +1,25 @@
 import { test, expect } from "@playwright/test";
-import { deleteShell, loginUser } from "./fixtures/fixtures";
+import { loginUser } from "./fixtures/fixtures";
+import { clearDatabase } from "./helpers/db";
+import { deleteContainer } from "./helpers/commands";
 
 test.beforeEach(async ({ page }) => {
   await loginUser(page);
 });
 
+test.afterEach(async () => {
+  await clearDatabase();
+  await deleteContainer("debian-debian");
+});
+
 test("user can create a shell without extra arguments", async ({ page }) => {
-  test.setTimeout(120000);
   await page.goto("/home");
 
-  // Clean up
-  await deleteShell(page);
+  // Set timeout
+  test.setTimeout(120000);
 
   // Select distro
-  await page.getByText("select").click();
+  await page.getByText("Select").click();
   for (let i = 0; i <= 3; i++) await page.keyboard.press("ArrowDown");
   await page.keyboard.press("Enter");
 
@@ -24,37 +30,41 @@ test("user can create a shell without extra arguments", async ({ page }) => {
   await page.getByRole("button", { name: "Get me a shell" }).click();
 
   // The shell should be created
-  await expect(page.getByRole("button", { name: "Stop" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Stop" })).toBeVisible({
+    timeout: 120000,
+  });
 });
 
-// test("user can create a shell with extra arguments", async ({ page }) => {
-//   await loginUser(page);
-//   await page.goto("/home");
+test("user can create a shell with extra arguments", async ({ page }) => {
+  await page.goto("/home");
 
-//   // Fill form
-//   await page
-//     .getByTestId("create-shell-form-distro-select")
-//     .selectOption("Debian 12");
-//   await page
-//     .getByTestId("create-shell-form-distro-name")
-//     .fill("debian-extra-args");
-//   await page
-//     .getByTestId("create-shell-form-distro-extra-args")
-//     .fill("-e HELLO=world");
+  // Set timeout
+  test.setTimeout(120000);
 
-//   // Submit
-//   await page.getByTestId("create-shell-form-submit").click();
+  // Select distro
+  await page.getByText("Select").click();
+  for (let i = 0; i <= 3; i++) await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Enter");
 
-//   // The shell should be created
-//   await expect(page.getByTestId("rendered-shells")).toContainText(
-//     "debian-extra-args",
-//   );
+  // Name
+  await page.getByPlaceholder("Enter a name...").fill("debian");
 
-//   // Open shell settings
-//   await page.getByTestId("shell-settings-button").click();
+  // Extra Arguments
+  await page
+    .getByPlaceholder("Enter extra arguments...")
+    .fill("-e HELLO=world");
 
-//   // Check if the extra arguments exist
-//   await expect(page.getByTestId("shell-settings-dialog")).toContainText(
-//     "-e HELLO=world",
-//   );
-// });
+  // Submit
+  await page.getByRole("button", { name: "Get me a shell" }).click();
+
+  // The shell should be created
+  await expect(page.getByRole("button", { name: "Stop" })).toBeVisible({
+    timeout: 120000,
+  });
+
+  // Open settings
+  await page.getByRole("button", { name: "Settings" }).click();
+
+  // Try to find the extra arguments
+  await expect(page.getByText("-e HELLO=world")).toBeVisible();
+});

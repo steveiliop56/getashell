@@ -8,6 +8,7 @@ export const LogoutButton = () => {
   return (
     <IconButton
       className="absolute top-5 right-5"
+      data-testid="logout-button"
       onClick={async () => {
         await logoutAction();
       }}

@@ -12,9 +12,7 @@ test("user can log in and be reditected to the app", async ({ page }) => {
   await page.getByRole("button", { name: "Login" }).click();
 
   // Expect for the create shell form to pop up
-  await expect(
-    page.getByRole("button", { name: "Get me a shell" }),
-  ).toBeVisible();
+  await expect(page.getByTestId("logout-button")).toBeVisible();
 });
 
 test("user can log out", async ({ page }) => {
@@ -22,8 +20,7 @@ test("user can log out", async ({ page }) => {
   await page.goto("/home");
 
   // Click logout button
-  await page.keyboard.press("Tab");
-  await page.keyboard.press("Enter");
+  await page.getByTestId("logout-button").click();
 
   // Expect for the login form to pop up
   await expect(page.getByRole("button", { name: "Login" })).toBeVisible();

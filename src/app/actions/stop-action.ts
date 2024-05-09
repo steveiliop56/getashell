@@ -20,7 +20,7 @@ export const stopShellAction = action(
 
     if (success) {
       logger.info("Shell stopped!");
-      revalidatePath("/", "layout");
+      revalidatePath("/home", "layout");
       await QueriesService.changeShellRunningStatus(shell);
       return { success: true };
     }
