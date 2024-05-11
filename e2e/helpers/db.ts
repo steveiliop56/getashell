@@ -4,7 +4,7 @@ import * as schema from "../../src/server/db/schema";
 
 const sqlite = new Database(`data/sqlite.db`);
 
-export const db = drizzle(sqlite);
+const db = drizzle(sqlite);
 
 export const clearDatabase = async () => {
   await db.delete(schema.shells);

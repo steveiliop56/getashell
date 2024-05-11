@@ -8,7 +8,7 @@ const defaultSession: SessionData = {
   isLoggedIn: false,
 };
 
-export const sessionOptions: SessionOptions = {
+const sessionOptions: SessionOptions = {
   password: getConfig().secretKey,
   cookieName: "session",
   cookieOptions: {
