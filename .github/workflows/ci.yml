@@ -53,11 +53,8 @@ jobs:
           files: dockerfiles/Dockerfile.*
           matrix: true
 
-      - name: Debug Matrix Json
-        run: echo ${{ fromJson(steps.changed-dockerfiles.outputs.all_changed_files) }}
-
       - name: Debug Matrix
-        run: echo ${{ steps.changed-dockerfiles.outputs.all_changed_files }}
+        run: echo ${{ steps.changed-dockerfiles.outputs.all_changed_files != [] }}
 
   build-shells:
     needs: [get-changed-dockerfiles]
