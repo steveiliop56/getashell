@@ -23,7 +23,7 @@ export const startShellAction = action(
 
     if (success) {
       logger.info("Shell started!");
-      revalidatePath("/", "layout");
+      revalidatePath("/home", "layout");
       await QueriesService.changeShellRunningStatus(shell);
       return { success: true };
     }

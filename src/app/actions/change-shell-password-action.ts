@@ -26,7 +26,7 @@ export const changeShellPasswordAction = action(
     if (success) {
       logger.info("Password changed!");
       await QueriesService.changeShellPassword(shell);
-      revalidatePath("/", "layout");
+      revalidatePath("/home", "layout");
       return { success: true };
     }
 

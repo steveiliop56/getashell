@@ -27,14 +27,14 @@ export const removeShellAction = action(
     if (remove.success) {
       logger.info("Container killed! Removing from db...");
       await QueriesService.deleteShell(id);
-      revalidatePath("/", "layout");
+      revalidatePath("/home", "layout");
       return { success: true };
     }
     logger.warn(
       `Cannot remove container, still removing from db, error: ${remove.error}`,
     );
     await QueriesService.deleteShell(id);
-    revalidatePath("/", "layout");
+    revalidatePath("/home", "layout");
     return { success: false };
   },
 );
