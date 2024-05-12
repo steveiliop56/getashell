@@ -53,14 +53,11 @@ jobs:
           files: dockerfiles/Dockerfile.*
           matrix: true
 
-      - name: Debug Matrix
-        run: echo ${{ steps.changed-dockerfiles.outputs.all_changed_files != [] }}
-
   build-shells:
     needs: [get-changed-dockerfiles]
     runs-on: ubuntu-latest
     name: Build Shells
-    if: ${{ needs.get-changed-dockerfiles.outputs.matrix != '' }}
+    if: ${{ needs.get-changed-dockerfiles.outputs.matrix != '[]' && needs.get-changed-dockerfiles.outputs.matrix != '' }}
     strategy:
       fail-fast: false
       max-parallel: 4
