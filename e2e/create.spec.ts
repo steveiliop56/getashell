@@ -42,5 +42,5 @@ test("user can delete a shell", async ({ page }) => {
   await page.getByRole("button", { name: "Delete" }).click();
 
   // The shell should be now gone
-  await expect(page.getByText("ubuntu")).not.toBeVisible({ timeout: 120000 });
+  await expect(page.getByText("debian")).not.toBeVisible({ timeout: 120000 });
 });
