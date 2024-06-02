@@ -1,6 +1,6 @@
 import { eq } from "drizzle-orm";
 import { db } from "../db/db";
-import { shells } from "../db/schema";
+import { shells, users } from "../db/schema";
 import { ContainerData } from "../../types/types";
 import Database from "better-sqlite3";
 
@@ -11,7 +11,7 @@ export default class QueriesService {
   }
 
   public static async addShell(
-    data: ContainerData,
+    data: ContainerData
   ): Promise<Database.RunResult> {
     const result = await db.insert(shells).values({
       distro: data.distro,
@@ -33,7 +33,7 @@ export default class QueriesService {
   }
 
   public static async getShellFromId(
-    id: number,
+    id: number
   ): Promise<ContainerData | undefined> {
     return (await db.select().from(shells).where(eq(shells.id, id))).at(0);
   }
@@ -45,7 +45,7 @@ export default class QueriesService {
   }
 
   public static async changeShellPassword(
-    shell: ContainerData,
+    shell: ContainerData
   ): Promise<Database.RunResult> {
     return await db
       .update(shells)
@@ -54,11 +54,39 @@ export default class QueriesService {
   }
 
   public static async changeShellRunningStatus(
-    shell: ContainerData,
+    shell: ContainerData
   ): Promise<Database.RunResult> {
     return await db
       .update(shells)
       .set({ running: shell.running })
       .where(eq(shells.id, shell.id));
+  }
+
+  public static async doSignUp(): Promise<boolean> {
+    return (await db.select().from(users)).length === 0;
+  }
+
+  public static async addUser(
+    username: string,
+    password: string
+  ): Promise<Database.RunResult> {
+    const result = await db.insert(users).values({
+      username: username,
+      password: password,
+    });
+    return result;
+  }
+
+  public static async checkIfUserExists(username: string): Promise<boolean> {
+    return (
+      (await db.select().from(users).where(eq(users.username, username)))
+        .length > 0
+    );
+  }
+
+  public static async getUserPassword(username: string): Promise<string> {
+    return (
+      await db.select().from(users).where(eq(users.username, username))
+    ).at(0)!.password;
   }
 }

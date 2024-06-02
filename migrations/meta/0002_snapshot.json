@@ -1,6 +1,8 @@
 {
   "version": "6",
   "dialect": "sqlite",
+  "id": "4a85d80a-8870-4502-98df-ebbaa79b86f3",
+  "prevId": "4e855da6-f319-4b0c-aaf8-9177a674bf7e",
   "tables": {
     "shells": {
       "name": "shells",
@@ -8,9 +10,9 @@
         "id": {
           "name": "id",
           "type": "integer",
-          "primaryKey": false,
+          "primaryKey": true,
           "notNull": true,
-          "autoincrement": false
+          "autoincrement": true
         },
         "distro": {
           "name": "distro",
@@ -49,6 +51,36 @@
         },
         "running": {
           "name": "running",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "users": {
+      "name": "users",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "integer",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "password": {
+          "name": "password",
           "type": "text",
           "primaryKey": false,
           "notNull": true,
@@ -63,9 +95,11 @@
   },
   "enums": {},
   "_meta": {
+    "schemas": {},
     "tables": {},
     "columns": {}
   },
-  "id": "4e855da6-f319-4b0c-aaf8-9177a674bf7e",
-  "prevId": "8bb98af3-fe24-4378-8a91-f420b7cccf82"
+  "internal": {
+    "indexes": {}
+  }
 }

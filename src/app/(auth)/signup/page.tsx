@@ -1,10 +1,10 @@
-import { Flex, Heading } from "@radix-ui/themes";
-import { LoginForm } from "./components/loginForm/loginForm";
-import { redirect } from "next/navigation";
 import QueriesService from "@/server/queries/queries.service";
+import { Flex, Heading } from "@radix-ui/themes";
+import { redirect } from "next/navigation";
+import { SignupForm } from "./components/signupForm";
 
 export default async function LoginPage() {
-  if (await QueriesService.doSignUp()) redirect("/signup");
+  if (!(await QueriesService.doSignUp())) redirect("/login");
 
   return (
     <Flex className="flex-col gap-10 p-10 text-center h-screen">
@@ -16,7 +16,7 @@ export default async function LoginPage() {
         >
           Get A Shell
         </Heading>
-        <LoginForm />
+        <SignupForm />
       </Flex>
     </Flex>
   );
