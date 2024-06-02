@@ -1,8 +1,8 @@
 import { exec as execCallback } from "child_process";
 import * as util from "util";
-import { getConfig } from "../config/config";
+import { getConfig } from "../../config/config";
 import QueriesService from "@/server/queries/queries.service";
-import { logger } from "../lib/logger";
+import { logger } from "../logger";
 
 export default class PortHelper {
   private static exec = util.promisify(execCallback);
@@ -14,7 +14,7 @@ export default class PortHelper {
         logger.warn(`Port ${port} isn't available. Generating a new port...`);
       port = this.generateRandomPort();
       logger.info(
-        `Generated port ${port}. Checking it's not already in use...`,
+        `Generated port ${port}. Checking it's not already in use...`
       );
     } while (
       !(await this.checkPortIsAvailable(port)).success ||
@@ -29,15 +29,15 @@ export default class PortHelper {
   }
 
   private static async checkPortIsAvailable(
-    port: number,
+    port: number
   ): Promise<{ success: boolean; error: unknown }> {
     try {
       const { ncHost } = getConfig();
       const { stdout: tcpStdout, stderr: tcpStderr } = await this.exec(
-        `nc -zv ${ncHost} ${port}`,
+        `nc -zv ${ncHost} ${port}`
       );
       const { stdout: udpStdout, stderr: udpStderr } = await this.exec(
-        `nc -zuv ${ncHost} ${port}`,
+        `nc -zuv ${ncHost} ${port}`
       );
       return {
         success: false,

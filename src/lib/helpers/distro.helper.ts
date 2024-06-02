@@ -28,7 +28,7 @@ export default class distroHelper {
     try {
       const systemArch = process.arch;
       const distros = this.getJsonData();
-      let supportedDistros: SupportedDistros = {};
+      const supportedDistros: SupportedDistros = {};
 
       if (systemArch != "arm64" && systemArch != "x64") {
         this.logger.error("Not supported architecture!");

@@ -15,7 +15,7 @@ export const loginUser = async (page: Page) => {
 };
 
 export const createShell = async (page: Page) => {
-  await page.goto("/home");
+  await page.goto("/");
 
   // Select distro
   await page.getByText("Select").click();

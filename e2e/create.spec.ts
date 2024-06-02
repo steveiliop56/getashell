@@ -8,7 +8,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("user can create a shell", async ({ page }) => {
-  await page.goto("/home");
+  await page.goto("/");
 
   // Select distro
   await page.getByText("Select").click();
@@ -46,6 +46,6 @@ test("user can delete a shell", async ({ page }) => {
 
   // The shell should be deleted
   await expect(
-    page.getByRole("button", { name: "Settings" }),
+    page.getByRole("button", { name: "Settings" })
   ).not.toBeVisible();
 });

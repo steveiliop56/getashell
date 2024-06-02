@@ -4,7 +4,7 @@ import QueriesService from "@/server/queries/queries.service";
 import { ContainerData, OperationResult } from "@/types/types";
 import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
-import ContainerHelper from "@/helpers/container.helper";
+import ContainerHelper from "@/lib/helpers/container.helper";
 import { shellSchema } from "@/schemas/shellSchema";
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
@@ -18,17 +18,17 @@ export const startShellAction = action(
   async ({ shell }): Promise<OperationResult> => {
     shell.running = true;
     const { success, error } = await new ContainerHelper(
-      shell,
+      shell
     ).startContainer();
 
     if (success) {
       logger.info("Shell started!");
-      revalidatePath("/home", "layout");
+      revalidatePath("/", "layout");
       await QueriesService.changeShellRunningStatus(shell);
       return { success: true };
     }
 
     logger.error(`Failed to start ${shell.name}! Error: ${error}`);
     return { success: false };
-  },
+  }
 );

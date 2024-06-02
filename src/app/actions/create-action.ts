@@ -5,8 +5,8 @@ import { OperationResult } from "@/types/types";
 import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
 import { generateString } from "@/utils/random";
-import PortHelper from "@/helpers/port.helper";
-import ContainerHelper from "@/helpers/container.helper";
+import PortHelper from "@/lib/helpers/port.helper";
+import ContainerHelper from "@/lib/helpers/container.helper";
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
 
@@ -20,14 +20,14 @@ export const createShellAction = action(
   schema,
   async ({ name, distro, extraArgs }): Promise<OperationResult> => {
     logger.info(
-      `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`,
+      `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`
     );
 
     if (await QueriesService.checkIfShellExists(name)) {
       return { success: false, shellExists: true };
     }
 
-    let port = await PortHelper.getAvailablePort();
+    const port = await PortHelper.getAvailablePort();
 
     const data = {
       id: 0,
@@ -40,16 +40,16 @@ export const createShellAction = action(
     };
 
     const { success, error } = await new ContainerHelper(
-      data,
+      data
     ).createContainer();
 
     if (success) {
       logger.info("Server ready!");
       await QueriesService.addShell(data);
-      revalidatePath("/home", "layout");
+      revalidatePath("/", "layout");
       return { success: true };
     }
     logger.warn(`Failed to bake server: ${error}`);
     return { success: false };
-  },
+  }
 );

@@ -3,10 +3,10 @@
 import { Flex, Heading } from "@radix-ui/themes";
 import { ShellActions } from "./components/shell-actions";
 import QueriesService from "@/server/queries/queries.service";
-import distroHelper from "@/helpers/distro.helper";
+import distroHelper from "@/lib/helpers/distro.helper";
 import { redirect } from "next/navigation";
 import { LogoutButton } from "./components/logout-button";
-import { getSession } from "@/helpers/session.helper";
+import { getSession } from "@/lib/helpers/session.helper";
 
 export default async function Home() {
   const session = await getSession();

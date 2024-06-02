@@ -1,9 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { ContainerData, OperationResult } from "@/types/types";
+import { OperationResult } from "@/types/types";
 import QueriesService from "@/server/queries/queries.service";
-import ContainerHelper from "@/helpers/container.helper";
+import ContainerHelper from "@/lib/helpers/container.helper";
 import { logger } from "@/lib/logger";
 import { action } from "@/lib/safe-action";
 import { z } from "zod";
@@ -20,17 +20,17 @@ export const changeShellPasswordAction = action(
     shell.password = newPassword;
 
     const { success, error } = await new ContainerHelper(
-      shell,
+      shell
     ).changePassword();
 
     if (success) {
       logger.info("Password changed!");
       await QueriesService.changeShellPassword(shell);
-      revalidatePath("/home", "layout");
+      revalidatePath("/", "layout");
       return { success: true };
     }
 
     logger.error(`Error changing password! Error: ${error}`);
     return { success: false };
-  },
+  }
 );

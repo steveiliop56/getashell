@@ -1,7 +1,7 @@
 "use server";
 
 import { getConfig } from "@/config/config";
-import { getSession } from "@/helpers/session.helper";
+import { getSession } from "@/lib/helpers/session.helper";
 import { action } from "@/lib/safe-action";
 import { redirect } from "next/navigation";
 import { z } from "zod";

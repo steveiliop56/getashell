@@ -3,7 +3,7 @@ import QueriesService from "@/server/queries/queries.service";
 import { OperationResult } from "@/types/types";
 import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
-import ContainerHelper from "@/helpers/container.helper";
+import ContainerHelper from "@/lib/helpers/container.helper";
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
 import { shellSchema } from "@/schemas/shellSchema";
@@ -20,12 +20,12 @@ export const stopShellAction = action(
 
     if (success) {
       logger.info("Shell stopped!");
-      revalidatePath("/home", "layout");
+      revalidatePath("/", "layout");
       await QueriesService.changeShellRunningStatus(shell);
       return { success: true };
     }
 
     logger.error(`Failed to stop ${shell.name}! Error: ${error}`);
     return { success: false };
-  },
+  }
 );

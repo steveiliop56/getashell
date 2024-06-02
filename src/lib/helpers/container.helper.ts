@@ -1,7 +1,7 @@
 import * as util from "util";
 import { exec as execCallback } from "child_process";
-import { ContainerData, OperationResult } from "../types/types";
-import { logger } from "../lib/logger";
+import { ContainerData, OperationResult } from "../../types/types";
+import { logger } from "../logger";
 
 export default class ContainerHelper {
   shell: ContainerData;
@@ -36,7 +36,7 @@ export default class ContainerHelper {
       }
     }
     this.logger.warn(
-      `This is probably not an error ${error} in job ${job}... Returning success...`,
+      `This is probably not an error ${error} in job ${job}... Returning success...`
     );
     return { success: false, error: "" };
   }
@@ -44,7 +44,7 @@ export default class ContainerHelper {
   private async findImage(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
-        `docker image ls --format "{{.Repository}}::{{.Tag}}"`,
+        `docker image ls --format "{{.Repository}}::{{.Tag}}"`
       );
 
       if (stdout.includes(`getashell:${this.shell.distro}`)) {
@@ -63,7 +63,7 @@ export default class ContainerHelper {
 
       if (success && message == "not-found") {
         const { stdout, stderr } = await this.exec(
-          `docker buildx build -t getashell:${this.shell.distro} -f dockerfiles/Dockerfile.${this.shell.distro} .`,
+          `docker buildx build -t getashell:${this.shell.distro} -f dockerfiles/Dockerfile.${this.shell.distro} .`
         );
       } else if (error) {
         throw error;
@@ -77,7 +77,7 @@ export default class ContainerHelper {
   public async findContainer(running: boolean): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
-        `docker container ls ${running ? "-a" : ""} --format "{{.Names}}"`,
+        `docker container ls ${running ? "-a" : ""} --format "{{.Names}}"`
       );
 
       if (
@@ -96,7 +96,7 @@ export default class ContainerHelper {
   private async removeVolume(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
-        `docker volume rm -f ${this.shell.name}-${this.shell.distro}`,
+        `docker volume rm -f ${this.shell.name}-${this.shell.distro}`
       );
 
       return { success: true, error: "" };
@@ -111,7 +111,7 @@ export default class ContainerHelper {
 
       if (running.message == "found" && !running.error) {
         const { stdout, stderr } = await this.exec(
-          `docker exec ${this.containerName} sh -c "echo ${this.shell.distro}:${this.shell.password} | chpasswd"`,
+          `docker exec ${this.containerName} sh -c "echo ${this.shell.distro}:${this.shell.password} | chpasswd"`
         );
 
         if (stderr && stderr.includes("chpasswd")) {
@@ -135,7 +135,7 @@ export default class ContainerHelper {
 
       if (success && message == "found") {
         const { stdout, stderr } = await this.exec(
-          `docker rm -f ${this.shell.name}-${this.shell.distro}`,
+          `docker rm -f ${this.shell.name}-${this.shell.distro}`
         );
 
         await this.removeVolume();
@@ -158,7 +158,7 @@ export default class ContainerHelper {
 
         const dockerArguments = `-t -d --restart unless-stopped --name ${this.containerName} --hostname ${this.containerName} --volume ${this.containerName}:/home/${this.shell.distro} -p ${this.shell.port}:22 ${this.shell.extraArgs}`;
         const { stdout, stderr } = await this.exec(
-          `docker run ${dockerArguments} getashell:${this.shell.distro}`,
+          `docker run ${dockerArguments} getashell:${this.shell.distro}`
         );
 
         await this.changePassword();
@@ -175,7 +175,7 @@ export default class ContainerHelper {
   public async stopContainer(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
-        `docker stop ${this.containerName}`,
+        `docker stop ${this.containerName}`
       );
 
       return { success: true, error: "" };
@@ -187,7 +187,7 @@ export default class ContainerHelper {
   public async startContainer(): Promise<OperationResult> {
     try {
       const { stdout, stderr } = await this.exec(
-        `docker start ${this.containerName}`,
+        `docker start ${this.containerName}`
       );
 
       return { success: true, error: "" };

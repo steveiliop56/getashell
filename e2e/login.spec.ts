@@ -17,7 +17,7 @@ test("user can log in and be reditected to the app", async ({ page }) => {
 
 test("user can log out", async ({ page }) => {
   await loginUser(page);
-  await page.goto("/home");
+  await page.goto("/");
 
   // Click logout button
   await page.getByTestId("logout-button").click();
