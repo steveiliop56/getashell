@@ -1,6 +1,5 @@
 "use server";
 
-import { getConfig } from "@/config/config";
 import { getSession } from "@/lib/helpers/session.helper";
 import { action } from "@/lib/safe-action";
 import AuthService from "@/server/services/auth/auth.service";
@@ -14,11 +13,6 @@ const schema = z.object({
 });
 
 export const signupAction = action(schema, async ({ username, password }) => {
-  const user = {
-    username: getConfig().username,
-    password: getConfig().password,
-  };
-
   const authService = new AuthService();
   const session = await getSession();
   const salt = await genSalt(10);
@@ -26,7 +20,7 @@ export const signupAction = action(schema, async ({ username, password }) => {
 
   await authService.addUser(username, hashedPassword);
 
-  session.username = user.username;
+  session.username = username;
   session.isLoggedIn = true;
   await session.save();
 

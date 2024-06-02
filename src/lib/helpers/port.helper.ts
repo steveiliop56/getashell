@@ -5,9 +5,9 @@ import { logger } from "../logger";
 import ShellService from "@/server/services/shell/shell.service";
 
 export default class PortHelper {
-  private static exec = util.promisify(execCallback);
+  private exec = util.promisify(execCallback);
 
-  public static async getAvailablePort(): Promise<number> {
+  public getAvailablePort = async (): Promise<number> => {
     let port: number | undefined;
     const shellService = new ShellService();
 
@@ -24,15 +24,15 @@ export default class PortHelper {
     );
     logger.info(`Success! Using port ${port}`);
     return port;
-  }
+  };
 
-  private static generateRandomPort(): number {
+  private generateRandomPort = (): number => {
     return Math.floor(Math.random() * (10000 - 1023)) + 1023;
-  }
+  };
 
-  private static async checkPortIsAvailable(
+  private checkPortIsAvailable = async (
     port: number
-  ): Promise<{ success: boolean; error: unknown }> {
+  ): Promise<{ success: boolean; error: unknown }> => {
     try {
       const { ncHost } = getConfig();
       const { stdout: tcpStdout, stderr: tcpStderr } = await this.exec(
@@ -48,5 +48,5 @@ export default class PortHelper {
     } catch (e) {
       return { success: true, error: e };
     }
-  }
+  };
 }
