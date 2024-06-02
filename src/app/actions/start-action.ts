@@ -1,6 +1,5 @@
 "use server";
 
-import QueriesService from "@/server/queries/queries.service";
 import { ContainerData, OperationResult } from "@/types/types";
 import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
@@ -8,6 +7,7 @@ import ContainerHelper from "@/lib/helpers/container.helper";
 import { shellSchema } from "@/schemas/shellSchema";
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
+import ShellService from "@/server/services/shell/shell.service";
 
 const schema = z.object({
   shell: shellSchema,
@@ -22,9 +22,10 @@ export const startShellAction = action(
     ).startContainer();
 
     if (success) {
+      const shellService = new ShellService();
       logger.info("Shell started!");
       revalidatePath("/", "layout");
-      await QueriesService.changeShellRunningStatus(shell);
+      await shellService.changeShellRunningStatus(shell);
       return { success: true };
     }
 

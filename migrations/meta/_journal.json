@@ -15,6 +15,13 @@
       "when": 1711990928976,
       "tag": "0001_running_status",
       "breakpoints": false
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1717338033162,
+      "tag": "0002_users_table",
+      "breakpoints": false
     }
   ]
 }

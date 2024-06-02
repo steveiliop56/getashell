@@ -2,12 +2,12 @@
 
 import { revalidatePath } from "next/cache";
 import { OperationResult } from "@/types/types";
-import QueriesService from "@/server/queries/queries.service";
 import ContainerHelper from "@/lib/helpers/container.helper";
 import { logger } from "@/lib/logger";
 import { action } from "@/lib/safe-action";
 import { z } from "zod";
 import { shellSchema } from "@/schemas/shellSchema";
+import ShellService from "@/server/services/shell/shell.service";
 
 const schema = z.object({
   shell: shellSchema,
@@ -24,8 +24,9 @@ export const changeShellPasswordAction = action(
     ).changePassword();
 
     if (success) {
+      const shellService = new ShellService();
       logger.info("Password changed!");
-      await QueriesService.changeShellPassword(shell);
+      await shellService.changeShellPassword(shell);
       revalidatePath("/", "layout");
       return { success: true };
     }

@@ -26,12 +26,16 @@ export interface EnvironmentData {
   migrationDir: string;
   dataDir: string;
   ncHost: string;
-  username: string;
-  password: string;
   secretKey: string;
 }
 
 export interface SessionData {
   username: string;
   isLoggedIn: boolean;
+}
+
+export interface userData {
+  id: number;
+  username: string;
+  password: string;
 }

@@ -2,18 +2,19 @@
 
 import { Flex, Heading } from "@radix-ui/themes";
 import { ShellActions } from "./components/shell-actions";
-import QueriesService from "@/server/queries/queries.service";
 import distroHelper from "@/lib/helpers/distro.helper";
 import { redirect } from "next/navigation";
 import { LogoutButton } from "./components/logout-button";
 import { getSession } from "@/lib/helpers/session.helper";
+import ShellService from "@/server/services/shell/shell.service";
 
 export default async function Home() {
   const session = await getSession();
+  const shellService = new ShellService();
 
   if (!session.isLoggedIn) redirect("/login");
 
-  const shellData = await QueriesService.getShells();
+  const shellData = await shellService.getShells();
   const availableDistos = new distroHelper().getDistros();
 
   return (
