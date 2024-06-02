@@ -4,6 +4,8 @@ Have you ever wanted to just spin up a quick server that you can ssh into to tes
 
 ![Preview](screenshots/app.png)
 
+> Warning ⚠️: The project is **not** unmaintained, i just don't have anything else to add it. If you have a cool idea on what to include open an issue : )
+
 > Warning ⚠️: The app is in early stages of development, I am still quite new to both writing full stack apps and using technologies like drizzle and react. Any contributions are welcome.
 
 ### Installation ⏬
