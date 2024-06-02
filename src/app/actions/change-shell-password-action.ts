@@ -7,7 +7,7 @@ import { logger } from "@/lib/logger";
 import { action } from "@/lib/safe-action";
 import { z } from "zod";
 import { shellSchema } from "@/schemas/shellSchema";
-import ShellService from "@/server/services/shell/shell.service";
+import ShellQueries from "@/server/queries/shell/shell.queries";
 
 const schema = z.object({
   shell: shellSchema,
@@ -24,9 +24,9 @@ export const changeShellPasswordAction = action(
     ).changePassword();
 
     if (success) {
-      const shellService = new ShellService();
+      const shellQueries = new ShellQueries();
       logger.info("Password changed!");
-      await shellService.changeShellPassword(shell);
+      await shellQueries.changeShellPassword(shell);
       revalidatePath("/", "layout");
       return { success: true };
     }

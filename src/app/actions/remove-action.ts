@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import ContainerHelper from "@/lib/helpers/container.helper";
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
-import ShellService from "@/server/services/shell/shell.service";
+import ShellQueries from "@/server/queries/shell/shell.queries";
 
 const schema = z.object({
   id: z.number(),
@@ -15,9 +15,9 @@ const schema = z.object({
 export const removeShellAction = action(
   schema,
   async ({ id }): Promise<OperationResult> => {
-    const shellService = new ShellService();
+    const shellQueries = new ShellQueries();
 
-    const shell = await shellService.getShellFromId(id);
+    const shell = await shellQueries.getShellFromId(id);
 
     if (!shell) {
       logger.info(
@@ -29,14 +29,14 @@ export const removeShellAction = action(
 
     if (remove.success) {
       logger.info("Container killed! Removing from db...");
-      await shellService.deleteShell(id);
+      await shellQueries.deleteShell(id);
       revalidatePath("/", "layout");
       return { success: true };
     }
     logger.warn(
       `Cannot remove container, still removing from db, error: ${remove.error}`
     );
-    await shellService.deleteShell(id);
+    await shellQueries.deleteShell(id);
     revalidatePath("/", "layout");
     return { success: false };
   }

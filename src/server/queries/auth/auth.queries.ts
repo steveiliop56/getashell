@@ -2,9 +2,9 @@ import { eq } from "drizzle-orm";
 import { db } from "../../db/db";
 import { users } from "../../db/schema";
 import Database from "better-sqlite3";
-import { userData } from "@/types/types";
+import { userData } from "../../../types/types";
 
-export default class AuthService {
+export default class AuthQueries {
   public doSignUp = async (): Promise<boolean> => {
     return (await db.select().from(users)).length === 0;
   };

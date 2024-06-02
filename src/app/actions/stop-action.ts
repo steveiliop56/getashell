@@ -7,7 +7,7 @@ import ContainerHelper from "@/lib/helpers/container.helper";
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
 import { shellSchema } from "@/schemas/shellSchema";
-import ShellService from "@/server/services/shell/shell.service";
+import ShellQueries from "@/server/queries/shell/shell.queries";
 
 const schema = z.object({
   shell: shellSchema,
@@ -20,10 +20,10 @@ export const stopShellAction = action(
     const { success, error } = await new ContainerHelper(shell).stopContainer();
 
     if (success) {
-      const shellService = new ShellService();
+      const shellQueries = new ShellQueries();
       logger.info("Shell stopped!");
       revalidatePath("/", "layout");
-      await shellService.changeShellRunningStatus(shell);
+      await shellQueries.changeShellRunningStatus(shell);
       return { success: true };
     }
 

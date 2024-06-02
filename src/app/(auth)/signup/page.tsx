@@ -1,12 +1,12 @@
 import { Flex, Heading } from "@radix-ui/themes";
 import { redirect } from "next/navigation";
 import { SignupForm } from "./components/signupForm";
-import AuthService from "@/server/services/auth/auth.service";
+import AuthQueries from "@/server/queries/auth/auth.queries";
 
 export default async function LoginPage() {
-  const authService = new AuthService();
+  const authQueries = new AuthQueries();
 
-  if (!(await authService.doSignUp())) redirect("/login");
+  if (!(await authQueries.doSignUp())) redirect("/login");
 
   return (
     <Flex className="flex-col gap-10 p-10 text-center h-screen">

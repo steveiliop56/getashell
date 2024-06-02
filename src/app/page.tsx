@@ -6,15 +6,15 @@ import distroHelper from "@/lib/helpers/distro.helper";
 import { redirect } from "next/navigation";
 import { LogoutButton } from "./components/logout-button";
 import { getSession } from "@/lib/helpers/session.helper";
-import ShellService from "@/server/services/shell/shell.service";
+import ShellQueries from "@/server/queries/shell/shell.queries";
 
 export default async function Home() {
   const session = await getSession();
-  const shellService = new ShellService();
+  const shellQueries = new ShellQueries();
 
   if (!session.isLoggedIn) redirect("/login");
 
-  const shellData = await shellService.getShells();
+  const shellData = await shellQueries.getShells();
   const availableDistos = new distroHelper().getDistros();
 
   return (

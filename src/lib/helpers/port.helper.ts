@@ -2,14 +2,14 @@ import { exec as execCallback } from "child_process";
 import * as util from "util";
 import { getConfig } from "../../config/config";
 import { logger } from "../logger";
-import ShellService from "@/server/services/shell/shell.service";
+import ShellQueries from "@/server/queries/shell/shell.queries";
 
 export default class PortHelper {
   private exec = util.promisify(execCallback);
 
   public getAvailablePort = async (): Promise<number> => {
     let port: number | undefined;
-    const shellService = new ShellService();
+    const ShellQueries = new ShellQueries();
 
     do {
       if (port)
@@ -20,7 +20,7 @@ export default class PortHelper {
       );
     } while (
       !(await this.checkPortIsAvailable(port)).success ||
-      !shellService.isPortAvailable(port)
+      !ShellQueries.isPortAvailable(port)
     );
     logger.info(`Success! Using port ${port}`);
     return port;

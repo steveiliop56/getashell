@@ -1,9 +1,8 @@
 "use server";
 
-import { getConfig } from "@/config/config";
 import { getSession } from "@/lib/helpers/session.helper";
 import { action } from "@/lib/safe-action";
-import AuthService from "@/server/services/auth/auth.service";
+import AuthQueries from "@/server/queries/auth/auth.queries";
 import { compare } from "bcrypt-ts";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -14,19 +13,14 @@ const schema = z.object({
 });
 
 export const loginAction = action(schema, async ({ username, password }) => {
-  const user = {
-    username: getConfig().username,
-    password: getConfig().password,
-  };
-
   const session = await getSession();
-  const authService = new AuthService();
+  const authQueries = new AuthQueries();
 
-  if (await authService.checkIfUserExists(username)) {
+  if (await authQueries.checkIfUserExists(username)) {
     if (
-      await compare(password, (await authService.getUser(username)).password)
+      await compare(password, (await authQueries.getUser(username)).password)
     ) {
-      session.username = user.username;
+      session.username = username;
       session.isLoggedIn = true;
       await session.save();
       redirect("/");

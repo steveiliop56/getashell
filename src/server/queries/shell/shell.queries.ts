@@ -4,7 +4,7 @@ import { shells } from "../../db/schema";
 import { ContainerData } from "../../../types/types";
 import Database from "better-sqlite3";
 
-export default class ShellService {
+export default class ShellQueries {
   public isPortAvailable = async (port: number): Promise<boolean> => {
     return (
       (await db.select().from(shells).where(eq(shells.port, port))).length === 0

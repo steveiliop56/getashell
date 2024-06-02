@@ -8,7 +8,7 @@ import PortHelper from "@/lib/helpers/port.helper";
 import ContainerHelper from "@/lib/helpers/container.helper";
 import { z } from "zod";
 import { action } from "@/lib/safe-action";
-import ShellService from "@/server/services/shell/shell.service";
+import ShellQueries from "@/server/queries/shell/shell.queries";
 
 const schema = z.object({
   name: z.string(),
@@ -19,17 +19,17 @@ const schema = z.object({
 export const createShellAction = action(
   schema,
   async ({ name, distro, extraArgs }): Promise<OperationResult> => {
-    const shellService = new ShellService();
+    const shellQueries = new ShellQueries();
 
     logger.info(
       `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`
     );
 
-    if (await shellService.checkIfShellExists(name)) {
+    if (await shellQueries.checkIfShellExists(name)) {
       return { success: false, shellExists: true };
     }
 
-    const port = await PortHelper.getAvailablePort();
+    const port = await new PortHelper().getAvailablePort();
 
     const data = {
       id: 0,
@@ -47,7 +47,7 @@ export const createShellAction = action(
 
     if (success) {
       logger.info("Server ready!");
-      await shellService.addShell(data);
+      await shellQueries.addShell(data);
       revalidatePath("/", "layout");
       return { success: true };
     }
