@@ -26,8 +26,6 @@ export interface EnvironmentData {
   migrationDir: string;
   dataDir: string;
   ncHost: string;
-  username: string;
-  password: string;
   secretKey: string;
 }
 

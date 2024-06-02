@@ -27,7 +27,7 @@ docker compose up -d
 Alternatively you can run the application with a simple docker run command, you will still need to run the openssl command and get the secret key though. Here is the full docker run command:
 
 ```Bash
-docker run -t -d --name getashell --restart unless-stopped -p 3000:3000 -v ./data:/app/data -v /var/run/docker.sock:/var/run/docker.sock -e USERNAME=me -e PASSWORD=supersecurepassword -e SECRET_KEY=verylongsupersecretkeythatnobodywillsee --add-host host.docker.internal:host-gateway ghcr.io/steveiliop56/getashell:latest
+docker run -t -d --name getashell --restart unless-stopped -p 3000:3000 -v ./data:/app/data -v /var/run/docker.sock:/var/run/docker.sock -e SECRET_KEY=verylongsupersecretkeythatnobodywillsee --add-host host.docker.internal:host-gateway ghcr.io/steveiliop56/getashell:latest
 ```
 
 > Note 🗒️: If you don't want to run all of these commands you can install the app through [Runtipi](https://runtipi.io) which will configure everything for you.
