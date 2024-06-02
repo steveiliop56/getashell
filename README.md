@@ -16,7 +16,7 @@ The installation is very simple and straight forward. You will firstly need to g
 openssl rand -base64 32
 ```
 
-Now you simply need to take the output (which will be something like this: `0sWoIgLqYIskcvHbe4mENjj9btHKuOS3vDdYzhob6Mg=`) and put it in the [docker-compose](docker-compose.yml) file in the `SECRET_KEY` environment variable, there you can also change your username and password.
+Now you simply need to take the output (which will be something like this: `0sWoIgLqYIskcvHbe4mENjj9btHKuOS3vDdYzhob6Mg=`) and put it in the [docker-compose](docker-compose.yml) file in the `SECRET_KEY` environment variable:
 
 Finally just start the app with this command:
 
