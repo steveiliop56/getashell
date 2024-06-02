@@ -27,7 +27,7 @@ export default class ContainerHelper {
     ];
   }
 
-  private handleError(error: any, job: string) {
+  private handleError = (error: any, job: string) => {
     this.logger.info(`Job name: ${job}`);
     for (let i = 0; i < this.errorMessages.length; i++) {
       if (error.toString().includes(this.errorMessages[i])) {
@@ -39,9 +39,9 @@ export default class ContainerHelper {
       `This is probably not an error ${error} in job ${job}... Returning success...`
     );
     return { success: false, error: "" };
-  }
+  };
 
-  private async findImage(): Promise<OperationResult> {
+  private findImage = async (): Promise<OperationResult> => {
     try {
       const { stdout, stderr } = await this.exec(
         `docker image ls --format "{{.Repository}}::{{.Tag}}"`
@@ -55,9 +55,9 @@ export default class ContainerHelper {
     } catch (e) {
       return this.handleError(e, "findImage");
     }
-  }
+  };
 
-  private async buildImage(): Promise<OperationResult> {
+  private buildImage = async (): Promise<OperationResult> => {
     try {
       const { message, error, success } = await this.findImage();
 
@@ -65,6 +65,10 @@ export default class ContainerHelper {
         const { stdout, stderr } = await this.exec(
           `docker buildx build -t getashell:${this.shell.distro} -f dockerfiles/Dockerfile.${this.shell.distro} .`
         );
+
+        if (stderr) {
+          throw stderr;
+        }
       } else if (error) {
         throw error;
       }
@@ -72,9 +76,9 @@ export default class ContainerHelper {
     } catch (e) {
       return this.handleError(e, "buildImage");
     }
-  }
+  };
 
-  public async findContainer(running: boolean): Promise<OperationResult> {
+  public findContainer = async (running: boolean): Promise<OperationResult> => {
     try {
       const { stdout, stderr } = await this.exec(
         `docker container ls ${running ? "-a" : ""} --format "{{.Names}}"`
@@ -91,21 +95,25 @@ export default class ContainerHelper {
     } catch (e) {
       return this.handleError(e, "findContainer");
     }
-  }
+  };
 
-  private async removeVolume(): Promise<OperationResult> {
+  private removeVolume = async (): Promise<OperationResult> => {
     try {
       const { stdout, stderr } = await this.exec(
         `docker volume rm -f ${this.shell.name}-${this.shell.distro}`
       );
 
+      if (stderr) {
+        throw stderr;
+      }
+
       return { success: true, error: "" };
     } catch (e) {
       return this.handleError(e, "removeVolume");
     }
-  }
+  };
 
-  public async changePassword(): Promise<OperationResult> {
+  public changePassword = async (): Promise<OperationResult> => {
     try {
       const running = await this.findContainer(false);
 
@@ -127,9 +135,9 @@ export default class ContainerHelper {
     } catch (e) {
       return this.handleError(e, "changePassword");
     }
-  }
+  };
 
-  public async removeContainer(): Promise<OperationResult> {
+  public removeContainer = async (): Promise<OperationResult> => {
     try {
       const { success, error, message } = await this.findContainer(true);
 
@@ -138,7 +146,15 @@ export default class ContainerHelper {
           `docker rm -f ${this.shell.name}-${this.shell.distro}`
         );
 
-        await this.removeVolume();
+        if (stderr) {
+          throw stderr;
+        }
+
+        const remove = await this.removeVolume();
+
+        if (remove.error) {
+          throw remove.error;
+        }
       } else if (error) {
         throw error;
       }
@@ -147,21 +163,32 @@ export default class ContainerHelper {
     } catch (e) {
       return this.handleError(e, "removeContainer");
     }
-  }
+  };
 
-  public async createContainer(): Promise<OperationResult> {
+  public createContainer = async (): Promise<OperationResult> => {
     try {
       const { success, error } = await this.buildImage();
 
       if (success) {
-        await this.removeContainer();
+        const remove = await this.removeContainer();
+        if (remove.error) {
+          throw remove.error;
+        }
 
         const dockerArguments = `-t -d --restart unless-stopped --name ${this.containerName} --hostname ${this.containerName} --volume ${this.containerName}:/home/${this.shell.distro} -p ${this.shell.port}:22 ${this.shell.extraArgs}`;
         const { stdout, stderr } = await this.exec(
           `docker run ${dockerArguments} getashell:${this.shell.distro}`
         );
 
-        await this.changePassword();
+        if (stderr) {
+          throw stderr;
+        }
+
+        const change = await this.changePassword();
+
+        if (change.error) {
+          throw change.error;
+        }
       } else if (error) {
         throw error;
       }
@@ -170,29 +197,37 @@ export default class ContainerHelper {
     } catch (e) {
       return this.handleError(e, "createContainer");
     }
-  }
+  };
 
-  public async stopContainer(): Promise<OperationResult> {
+  public stopContainer = async (): Promise<OperationResult> => {
     try {
       const { stdout, stderr } = await this.exec(
         `docker stop ${this.containerName}`
       );
 
+      if (stderr) {
+        throw stderr;
+      }
+
       return { success: true, error: "" };
     } catch (e) {
       return this.handleError(e, "stopContainer");
     }
-  }
+  };
 
-  public async startContainer(): Promise<OperationResult> {
+  public startContainer = async (): Promise<OperationResult> => {
     try {
       const { stdout, stderr } = await this.exec(
         `docker start ${this.containerName}`
       );
 
+      if (stderr) {
+        throw stderr;
+      }
+
       return { success: true, error: "" };
     } catch (e) {
       return this.handleError(e, "startContainer");
     }
-  }
+  };
 }
