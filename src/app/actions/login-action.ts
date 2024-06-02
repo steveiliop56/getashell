@@ -3,7 +3,7 @@
 import { getConfig } from "@/config/config";
 import { getSession } from "@/lib/helpers/session.helper";
 import { action } from "@/lib/safe-action";
-import QueriesService from "@/server/queries/queries.service";
+import AuthService from "@/server/services/auth/auth.service";
 import { compare } from "bcrypt-ts";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -20,10 +20,11 @@ export const loginAction = action(schema, async ({ username, password }) => {
   };
 
   const session = await getSession();
+  const authService = new AuthService();
 
-  if (await QueriesService.checkIfUserExists(username)) {
+  if (await authService.checkIfUserExists(username)) {
     if (
-      await compare(password, await QueriesService.getUserPassword(username))
+      await compare(password, (await authService.getUser(username)).password)
     ) {
       session.username = user.username;
       session.isLoggedIn = true;

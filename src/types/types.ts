@@ -35,3 +35,9 @@ export interface SessionData {
   username: string;
   isLoggedIn: boolean;
 }
+
+export interface userData {
+  id: number;
+  username: string;
+  password: string;
+}

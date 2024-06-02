@@ -3,7 +3,7 @@
 import { getConfig } from "@/config/config";
 import { getSession } from "@/lib/helpers/session.helper";
 import { action } from "@/lib/safe-action";
-import QueriesService from "@/server/queries/queries.service";
+import AuthService from "@/server/services/auth/auth.service";
 import { genSalt, hash } from "bcrypt-ts";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -19,11 +19,12 @@ export const signupAction = action(schema, async ({ username, password }) => {
     password: getConfig().password,
   };
 
+  const authService = new AuthService();
   const session = await getSession();
   const salt = await genSalt(10);
   const hashedPassword = await hash(password, salt);
 
-  await QueriesService.addUser(username, hashedPassword);
+  await authService.addUser(username, hashedPassword);
 
   session.username = user.username;
   session.isLoggedIn = true;

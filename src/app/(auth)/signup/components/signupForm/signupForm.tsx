@@ -12,6 +12,9 @@ export const SignupForm = () => {
     const username = formData.get("username") as string;
     const password = formData.get("password") as string;
     const passwordVerify = formData.get("password-verify") as string;
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long!");
+    }
     if (passwordVerify !== password) {
       toast.error("Passwords do not match!");
       return;
