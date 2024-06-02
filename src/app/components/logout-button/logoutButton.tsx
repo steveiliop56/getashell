@@ -1,6 +1,6 @@
 "use client";
 
-import { logoutAction } from "@/app/actions/logout-action";
+import { logoutAction } from "../../actions/logout-action";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { IconButton } from "@radix-ui/themes";
 

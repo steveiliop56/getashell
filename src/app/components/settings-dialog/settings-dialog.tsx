@@ -1,6 +1,6 @@
 "use client";
 
-import { removeShellAction } from "../../../actions/remove-action";
+import { removeShellAction } from "../../actions/remove-action";
 import { ContainerData } from "@/types/types";
 import { GearIcon, Pencil1Icon } from "@radix-ui/react-icons";
 import {
@@ -14,7 +14,7 @@ import {
 } from "@radix-ui/themes";
 import React, { FormEvent, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { changeShellPasswordAction } from "../../../actions/change-shell-password-action";
+import { changeShellPasswordAction } from "../../actions/change-shell-password-action";
 
 interface shellData {
   shell: ContainerData;
@@ -38,12 +38,12 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
         toast.success("Shell deleted!");
       } else {
         toast.error(
-          "Error in deleting shell, please check logs. Still removing from database...",
+          "Error in deleting shell, please check logs. Still removing from database..."
         );
       }
     } else {
       toast.error(
-        "Error in deleting shell, please check logs. Still removing from database...",
+        "Error in deleting shell, please check logs. Still removing from database..."
       );
     }
   };
@@ -53,7 +53,7 @@ export const SettingsDialog: React.FC<shellData> = ({ shell }) => {
     setPasswdEdit(false);
     setOpen(false);
     const newPassword = new FormData(e.currentTarget).get(
-      "new-password",
+      "new-password"
     ) as string;
     const result = await changeShellPasswordAction({ shell, newPassword });
     if (result.data) {

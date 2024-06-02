@@ -23,7 +23,7 @@ export const loginAction = action(schema, async ({ username, password }) => {
     session.username = user.username;
     session.isLoggedIn = true;
     await session.save();
-    redirect("/home");
+    redirect("/");
   }
 
   return { success: false };

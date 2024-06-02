@@ -1,7 +1,7 @@
 "use client";
 
 import { SupportedDistros } from "@/types/types";
-import { createShellAction } from "../../../actions/create-action";
+import { createShellAction } from "../../actions/create-action";
 import { Button, Flex, Select, TextField } from "@radix-ui/themes";
 import React, { FormEvent } from "react";
 import { toast } from "react-toastify";

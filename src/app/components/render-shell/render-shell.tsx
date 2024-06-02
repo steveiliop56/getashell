@@ -4,8 +4,8 @@ import { ContainerData } from "@/types/types";
 import { Card, Flex, Text, Button } from "@radix-ui/themes";
 import { SettingsDialog } from "../settings-dialog";
 import { toast } from "react-toastify";
-import { stopShellAction } from "../../../actions/stop-action";
-import { startShellAction } from "../../../actions/start-action";
+import { stopShellAction } from "../../actions/stop-action";
+import { startShellAction } from "../../actions/start-action";
 
 export const renderShell = (shell: ContainerData) => {
   const handleStopStart = async () => {
