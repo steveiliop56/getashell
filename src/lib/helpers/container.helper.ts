@@ -38,7 +38,7 @@ export default class ContainerHelper {
     this.logger.warn(
       `This is probably not an error ${error} in job ${job}... Returning success...`
     );
-    return { success: false, error: "" };
+    return { success: true, error: "" };
   };
 
   private findImage = async (): Promise<OperationResult> => {
@@ -167,9 +167,11 @@ export default class ContainerHelper {
 
   public createContainer = async (): Promise<OperationResult> => {
     try {
+      console.log("heyy");
       const { success, error } = await this.buildImage();
 
       if (success) {
+        console.log("heyyy");
         const remove = await this.removeContainer();
         if (remove.error) {
           throw remove.error;

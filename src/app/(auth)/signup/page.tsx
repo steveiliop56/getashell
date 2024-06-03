@@ -2,9 +2,13 @@ import { Flex, Heading } from "@radix-ui/themes";
 import { redirect } from "next/navigation";
 import { SignupForm } from "./components/signupForm";
 import AuthQueries from "@/server/queries/auth/auth.queries";
+import { getSession } from "@/lib/helpers/session.helper";
 
 export default async function LoginPage() {
   const authQueries = new AuthQueries();
+  const session = await getSession();
+
+  if (session.isLoggedIn) redirect("/");
 
   if (!(await authQueries.doSignUp())) redirect("/login");
 
