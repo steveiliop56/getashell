@@ -26,6 +26,7 @@ jobs:
       - name: Run Playwright tests
         run: npx playwright test
       - name: Stop app
+        run: pm2 stop app
       - uses: actions/upload-artifact@v4
         if: always()
         with:
