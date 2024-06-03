@@ -3,7 +3,7 @@
 import { getSession } from "@/lib/helpers/session.helper";
 import { action } from "@/lib/safe-action";
 import AuthQueries from "@/server/queries/auth/auth.queries";
-import { genSalt, hash } from "bcrypt-ts";
+import { genSalt, hash } from "bcrypt";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 

@@ -22,7 +22,9 @@ export const createShellAction = action(
     const shellQueries = new ShellQueries();
 
     logger.info(
-      `Creating shell with name ${name}, distro ${distro}, extra arguments ${extraArgs}...`
+      `Creating shell with name ${name}, distro ${distro}, extra arguments ${
+        extraArgs.length !== 0 ? extraArgs : "none"
+      }...`
     );
 
     if (await shellQueries.checkIfShellExists(name)) {

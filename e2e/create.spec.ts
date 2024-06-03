@@ -33,7 +33,7 @@ test("user can create a shell", async ({ page }) => {
 
 test("user can delete a shell", async ({ page }) => {
   await createShell(page);
-  await page.goto("home");
+  await page.goto("/");
 
   // Open settings menu
   await page.getByRole("button", { name: "Settings" }).click();

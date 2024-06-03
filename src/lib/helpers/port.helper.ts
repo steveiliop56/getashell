@@ -9,7 +9,7 @@ export default class PortHelper {
 
   public getAvailablePort = async (): Promise<number> => {
     let port: number | undefined;
-    const ShellQueries = new ShellQueries();
+    const shellQueries = new ShellQueries();
 
     do {
       if (port)
@@ -20,7 +20,7 @@ export default class PortHelper {
       );
     } while (
       !(await this.checkPortIsAvailable(port)).success ||
-      !ShellQueries.isPortAvailable(port)
+      !shellQueries.isPortAvailable(port)
     );
     logger.info(`Success! Using port ${port}`);
     return port;

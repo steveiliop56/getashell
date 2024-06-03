@@ -1,6 +1,9 @@
 import { expect, Page } from "@playwright/test";
+import { addUser, clearDatabase } from "../helpers/db";
 
 export const loginUser = async (page: Page) => {
+  await clearDatabase();
+  await addUser();
   await page.goto("/login");
 
   // Enter credentials

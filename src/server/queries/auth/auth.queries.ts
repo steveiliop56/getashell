@@ -20,16 +20,9 @@ export default class AuthQueries {
     return result;
   };
 
-  public checkIfUserExists = async (username: string): Promise<boolean> => {
-    return (
-      (await db.select().from(users).where(eq(users.username, username)))
-        .length > 0
-    );
-  };
-
-  public getUser = async (username: string): Promise<userData> => {
+  public getUser = async (username: string): Promise<userData | undefined> => {
     return (
       await db.select().from(users).where(eq(users.username, username))
-    ).at(0)!;
+    ).at(0);
   };
 }
