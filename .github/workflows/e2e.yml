@@ -22,10 +22,18 @@ jobs:
       - name: Ensure pm2 is installed
         run: npm install pm2 -g
       - name: Run Playwright tests
-        run: pm2 start npm -- run start && npx playwright test
+        run: pm2 start npm --name=app -- run start && npx playwright test
+      - name: Get pm2 logs
+        run: pm2 logs app -o app.log
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: playwright-report
           path: playwright-report/
+          retention-days: 30
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: app-logs
+          path: app.log
           retention-days: 30
