@@ -21,10 +21,11 @@ jobs:
         run: npm run build
       - name: Ensure pm2 is installed
         run: npm install pm2 -g
+      - name: Start app in background
+        run: m2 start npm --name=app -- run start
       - name: Run Playwright tests
-        run: pm2 start npm --name=app -- run start && npx playwright test
-      - name: Get pm2 logs
-        run: pm2 logs app -o app.log
+        run: npx playwright test
+      - name: Stop app
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -35,5 +36,5 @@ jobs:
         if: always()
         with:
           name: app-logs
-          path: app.log
+          path: .pm2/logs/
           retention-days: 30
