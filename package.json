@@ -33,7 +33,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@playwright/test": "^1.43.1",
+    "@playwright/test": "^1.44.1",
     "@types/bcrypt": "^5.0.2",
     "@types/better-sqlite3": "^7.6.9",
     "@types/node": "^20.14.0",
