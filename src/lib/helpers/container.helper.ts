@@ -18,7 +18,6 @@ export default class ContainerHelper {
     this.errorMessages = [
       "Error",
       "ERROR",
-      "error",
       "Container not running/doesn't exist.",
       "/bin/sh: 1:",
       "no space left on device",
@@ -167,11 +166,9 @@ export default class ContainerHelper {
 
   public createContainer = async (): Promise<OperationResult> => {
     try {
-      console.log("heyy");
       const { success, error } = await this.buildImage();
 
       if (success) {
-        console.log("heyyy");
         const remove = await this.removeContainer();
         if (remove.error) {
           throw remove.error;
