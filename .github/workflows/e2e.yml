@@ -22,7 +22,7 @@ jobs:
       - name: Ensure pm2 is installed
         run: npm install pm2 -g
       - name: Start app in background
-        run: m2 start npm --name=app -- run start
+        run: pm2 start npm --name=app -- run start
       - name: Run Playwright tests
         run: npx playwright test
       - name: Stop app
