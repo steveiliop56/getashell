@@ -37,5 +37,5 @@ jobs:
         if: always()
         with:
           name: app-logs
-          path: .pm2/logs/
+          path: /home/runner/.pm2/logs/
           retention-days: 30
