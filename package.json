@@ -20,7 +20,7 @@
     "bcrypt": "^5.1.1",
     "better-sqlite3": "^9.6.0",
     "dotenv": "^16.4.5",
-    "drizzle-orm": "^0.31.0",
+    "drizzle-orm": "^0.31.2",
     "iron-session": "^8.0.1",
     "next": "14.2.3",
     "next-safe-action": "^6.2.0",
