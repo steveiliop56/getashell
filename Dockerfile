@@ -3,7 +3,7 @@ FROM node:21.7-alpine as node_base
 # ---- BUILDER BASE ----
 FROM node_base as builder_base
 
-RUN apk add --no-cache tar wget
+RUN apk add --no-cache tar wget python3
 
 # ---- BUILD APP ----
 FROM builder_base as builder
