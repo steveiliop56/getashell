@@ -6,8 +6,6 @@ Have you ever wanted to just spin up a quick server that you can ssh into to tes
 
 > Warning ⚠️: The project is **not** unmaintained, i just don't have anything else to add it. If you have a cool idea on what to include open an issue : )
 
-> Warning ⚠️: The app is in early stages of development, I am still quite new to both writing full stack apps and using technologies like drizzle and react. Any contributions are welcome.
-
 ### Installation ⏬
 
 The installation is very simple and straight forward. You will firstly need to generate a super secure secret key with openssl. This can be done with this command:
