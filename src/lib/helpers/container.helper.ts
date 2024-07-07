@@ -16,12 +16,10 @@ export default class ContainerHelper {
     this.containerName = `${this.shell.name}-${this.shell.distro}`;
     this.logger = logger;
     this.errorMessages = [
-      "Error",
-      "ERROR",
+      "error",
       "Container not running/doesn't exist.",
       "/bin/sh: 1:",
       "no space left on device",
-      "Error running job",
       "Command failed",
     ];
   }
@@ -29,7 +27,7 @@ export default class ContainerHelper {
   private handleError = (error: any, job: string) => {
     this.logger.info(`Job name: ${job}`);
     for (let i = 0; i < this.errorMessages.length; i++) {
-      if (error.toString().includes(this.errorMessages[i])) {
+      if (error.toString().toLowerCase().includes(this.errorMessages[i])) {
         this.logger.error(`Error in job ${job}. Error: ${error}`);
         return { success: false, error: error };
       }
