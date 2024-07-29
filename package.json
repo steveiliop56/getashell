@@ -23,7 +23,7 @@
     "drizzle-orm": "^0.31.2",
     "iron-session": "^8.0.1",
     "next": "14.2.4",
-    "next-safe-action": "^6.2.0",
+    "next-safe-action": "^7.4.3",
     "postcss-import": "^16.1.0",
     "react": "^18.3.1",
     "react-dom": "^18",
