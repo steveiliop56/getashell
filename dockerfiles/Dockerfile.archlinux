@@ -8,7 +8,6 @@ RUN echo '%sudo ALL=(ALL:ALL) ALL' > /etc/sudoers
 RUN useradd archlinux
 RUN usermod -aG sudo archlinux
 
-RUN mkdir /run/sshd
 RUN ssh-keygen -A
 
 EXPOSE 22
