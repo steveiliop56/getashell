@@ -23,6 +23,8 @@ jobs:
         run: npm install pm2 -g
       - name: Start app in background
         run: pm2 start npm --name=app -- run start
+      - name: Check app logs
+        run: pm2 logs app --nostream
       - name: Run Playwright tests
         run: npx playwright test
       - name: Stop app
