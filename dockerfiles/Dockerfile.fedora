@@ -8,7 +8,6 @@ RUN echo '%sudo ALL=(ALL:ALL) ALL' > /etc/sudoers.d/sudo
 RUN adduser fedora
 RUN usermod -aG sudo fedora
 
-RUN mkdir /run/sshd
 RUN ssh-keygen -A
 
 EXPOSE 22

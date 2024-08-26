@@ -1,6 +1,6 @@
 FROM alpine:3.19.1
 
-RUN apk update && apk add openssh-server sudo passwd
+RUN apk update && apk add openssh-server sudo
 
 RUN addgroup sudo
 RUN echo '%sudo ALL=(ALL:ALL) ALL' > /etc/sudoers.d/sudo
