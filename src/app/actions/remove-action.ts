@@ -5,16 +5,16 @@ import { logger } from "@/lib/logger";
 import { revalidatePath } from "next/cache";
 import ContainerHelper from "@/lib/helpers/container.helper";
 import { z } from "zod";
-import { action } from "@/lib/safe-action";
 import ShellQueries from "@/server/queries/shell/shell.queries";
+import { actionClient } from "@/lib/safe-action";
 
 const schema = z.object({
   id: z.number(),
 });
 
-export const removeShellAction = action(
-  schema,
-  async ({ id }): Promise<OperationResult> => {
+export const removeShellAction = actionClient
+  .schema(schema)
+  .action(async ({ parsedInput: { id } }): Promise<OperationResult> => {
     const shellQueries = new ShellQueries();
 
     const shell = await shellQueries.getShellFromId(id);
@@ -39,5 +39,4 @@ export const removeShellAction = action(
     await shellQueries.deleteShell(id);
     revalidatePath("/", "layout");
     return { success: false };
-  }
-);
+  });
