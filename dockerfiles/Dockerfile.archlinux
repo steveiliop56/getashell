@@ -1,6 +1,6 @@
 FROM archlinux:base
 
-RUN pacman -Syu --noconfirm && pacman -S --noconfirm openssh sudo
+RUN pacman -Syu --noconfirm && pacman -S --noconfirm openssh sudo passwd
 
 RUN groupadd sudo
 RUN echo '%sudo ALL=(ALL:ALL) ALL' > /etc/sudoers
