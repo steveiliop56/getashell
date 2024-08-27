@@ -9,7 +9,7 @@ RUN adduser amazonlinux
 RUN usermod -aG sudo amazonlinux
 
 RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
-RUN -p mkdir /run/sshd
+RUN mkdir -p /run/sshd
 RUN ssh-keygen -A
 
 EXPOSE 22
