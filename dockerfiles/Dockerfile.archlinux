@@ -8,6 +8,8 @@ RUN echo '%sudo ALL=(ALL:ALL) ALL' > /etc/sudoers
 RUN useradd archlinux
 RUN usermod -aG sudo archlinux
 
+RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
+RUN -p mkdir /run/sshd
 RUN ssh-keygen -A
 
 EXPOSE 22

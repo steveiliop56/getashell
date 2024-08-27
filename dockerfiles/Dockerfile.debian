@@ -5,7 +5,9 @@ RUN apt update && apt install openssh-server sudo passwd -y
 RUN adduser debian
 RUN usermod -aG sudo debian
 
-RUN mkdir /run/sshd
+RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
+RUN -p mkdir /run/sshd
+RUN ssh-keygen -A
 
 EXPOSE 22
 
