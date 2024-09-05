@@ -8,7 +8,7 @@ RUN echo '%sudo ALL=(ALL:ALL) ALL' > /etc/sudoers.d/sudo
 RUN adduser fedora
 RUN usermod -aG sudo fedora
 
-RUN echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
+RUN sed -i 's/PasswordAuthentication no/PasswordAuthentication yes/g' /etc/ssh/sshd_config
 RUN mkdir -p /run/sshd
 RUN ssh-keygen -A
 
