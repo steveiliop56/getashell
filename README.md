@@ -30,6 +30,13 @@ docker run -t -d --name getashell --restart unless-stopped -p 3000:3000 -v ./dat
 
 > Note 🗒️: If you don't want to run all of these commands you can install the app through [Runtipi](https://runtipi.io) which will configure everything for you.
 
+### Tutorials and Blog Posts ✏️
+
+Thanks a lot to the blog posts below that wrote about GetAShell:
+
+- [Awesome Homelab](https://www.awesome-homelab.com/products/steveiliop56/getashell)
+- [Belginux](https://belginux.com/installer-get-a-shell-avec-docker/)
+  
 ### Contributing ❤️
 
 As I mentioned above I am fairly new to all these technologies and my code may be _probably is_ terrifying to look at. Any contributions on fixing my mistakes (lol) are welcome. In order to get started follow the Contribution Guide [here](CONTRIBUTING.md).
