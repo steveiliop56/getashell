@@ -4,7 +4,7 @@ Have you ever wanted to just spin up a quick server that you can ssh into to tes
 
 ![Preview](screenshots/app.png)
 
-> Warning ⚠️: The project for now is in maintenance mode meaning that I will not be adding new features because I have focused on other things. But if you find a bug feel free to open an issue do I can fix it. I may continue development in the future but I can't guarantee that for now.
+> Warning ⚠️: The project is in maintenance mode meaning that I will not be adding new features because I have focused on other things. But if you find a bug feel free to open an issue so I can fix it. I may continue development in the future but I can't guarantee that for now.
 
 ### Installation ⏬
 
