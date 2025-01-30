@@ -1,10 +1,11 @@
+> [!WARNING]
+> This project is no longer maintained, I decided to move forward since this was just a side project to test my skills. I have now moved on and I will not be adding any new features.
+
 ## Get A Shell 🐚
 
 Have you ever wanted to just spin up a quick server that you can ssh into to test something real quick? Well with get a shell you can just spin up the UI select a distro and click _Get me a shell!_ and boom you have an ssh server with your specified distro. No need to spin up vms, run commands or anything harder than a click!
 
 ![Preview](screenshots/app.png)
-
-> Warning ⚠️: The project is in maintenance mode meaning that I will not be adding new features because I have focused on other things. But if you find a bug feel free to open an issue so I can fix it. I may continue development in the future but I can't guarantee that for now.
 
 ### Installation ⏬
 
